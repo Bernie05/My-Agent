@@ -53,29 +53,41 @@ Written for this repo; they orchestrate the agents and skills above.
 
 Built-in commands that complement these (no files needed): `/code-review`, `/security-review`, `/simplify`, `/init`.
 
-## Sync to other devices
+## Sync to other devices and projects
 
-This repo is the source of truth. `scripts/sync-claude.sh` installs the agents, skills, and commands into `~/.claude/` so they work in **every** project on a device.
+This repo is the source of truth. `scripts/sync-claude.sh` installs agents, skills, and commands into one of two targets:
+
+| Target | Command | Where | Install mode |
+|---|---|---|---|
+| **User** (all projects on a device) | `./scripts/sync-claude.sh` | `~/.claude/` | symlink (updates on `git pull`) |
+| **Project** (one project) | `~/My-Agent/scripts/sync-claude.sh --project` from the project root | `<project>/.claude/` | copy (committed with the project) |
 
 ```bash
-# first time on a device
-git clone https://github.com/Bernie05/My-Agent.git && cd My-Agent
-./scripts/sync-claude.sh
+# once per device
+git clone https://github.com/Bernie05/My-Agent.git ~/My-Agent
+~/My-Agent/scripts/sync-claude.sh                  # user level
 
-# later: pull + re-sync (symlink mode picks up pulled changes even without re-running,
-# but re-run to install newly added items and prune removed ones)
-./scripts/sync-claude.sh
+# in a new project
+cd ~/code/my-new-app
+~/My-Agent/scripts/sync-claude.sh --project        # opens a checklist on first run
+git add .claude && git commit -m "chore: add Claude toolkit"
 ```
+
+**Choosing what a project gets.** The first `--project` run opens a checklist (toggle numbers like `1 3 5-8`, `a` all, `n` none, `d` done). The choice is saved to `<project>/.claude/sync.list`. Later runs re-sync exactly that list with no prompt, so commit it and every device or teammate gets the same set. To change it, run with `--select` or edit the file; items you remove are deleted from the project on the next sync.
 
 | Flag | Effect |
 |---|---|
-| *(none)* | `git pull --ff-only`, run the security audit, then symlink each item |
-| `--copy` | Copy instead of symlink (default on Git Bash for Windows) |
+| `--project [DIR]` | Target a project (`DIR` defaults to the current directory) |
+| `--select` | Open the checklist to change the selection |
+| `--all` | Select everything, no checklist |
+| `--copy` / `--link` | Override the install mode (Git Bash on Windows always copies) |
 | `--dry-run` | Show what would change without changing anything |
-| `--no-pull` | Skip `git pull` |
-| `--uninstall` | Remove everything this script installed |
+| `--no-pull` | Skip `git pull` of the toolkit |
+| `--uninstall` | Remove everything this script installed in the target |
 
-Behavior: only items listed in `~/.claude/.my-agent-sync-manifest` are ever changed or removed, so your own agents are untouched; an unmanaged item with the same name is backed up as `*.bak-<timestamp>`. If the audit reports unreviewed findings, nothing is installed. `settings.json` and `CLAUDE.md` stay project-only by design. Respects `CLAUDE_CONFIG_DIR` if set.
+**Safety.** Nothing is installed unless the prompt-injection audit passes. Only items recorded in the target's `.my-agent-sync-manifest` are ever changed or removed, so your own agents are untouched. An unmanaged item with the same name, or a synced copy you edited locally (detected by content hash), is backed up as `*.bak-<timestamp>` before being replaced. The script refuses to sync into the toolkit repo itself. `settings.json` and `CLAUDE.md` are never synced. Respects `CLAUDE_CONFIG_DIR` in user mode.
+
+Tip: add `alias claude-sync="$HOME/My-Agent/scripts/sync-claude.sh"` to your shell profile, then run `claude-sync --project` in any project.
 
 ## Upstream versions
 
