@@ -1,6 +1,6 @@
 # Claude Code toolkit
 
-Project-scoped agents, skills, and slash commands for a **Next.js + TypeScript + Supabase + Vercel** stack. Claude Code picks these up automatically when run from this repo.
+Agents, skills, and slash commands for a **Next.js + TypeScript + Supabase + Vercel** stack. Claude Code picks these up automatically when run from this repo; to use them in other projects or on other devices, see [Sync to other devices and projects](#sync-to-other-devices-and-projects).
 
 | Type | Folder | How it's used |
 |---|---|---|
