@@ -34,9 +34,9 @@ Local changes vs upstream: only the frontmatter `name` (plugin prefix removed) a
 | `supabase-postgres-best-practices` | Postgres schema, indexing, RLS, query performance rules | supabase/agent-skills (MIT) |
 | `vercel-react-best-practices` | 70 React/Next.js performance rules | vercel-labs/agent-skills (MIT) |
 | `vercel-composition-patterns` | Scalable component APIs (compound components, etc.) | vercel-labs/agent-skills (MIT) |
-| `web-design-guidelines` | UI / accessibility audit — fetches its rules live from vercel-labs/web-interface-guidelines | vercel-labs/agent-skills (MIT) |
+| `web-design-guidelines` | UI / accessibility audit | vercel-labs/agent-skills (MIT) |
 
-Unmodified copies.
+Unmodified copies, except `web-design-guidelines`: upstream fetched its rules from GitHub at run time; the rules are now vendored in `references/guidelines.md` (pinned) and `SKILL.md` reads the local copy instead.
 
 ## Commands
 
@@ -61,5 +61,26 @@ Built-in commands that complement these (no files needed): `/code-review`, `/sec
 | github.com/anthropics/skills | `8a1541c` |
 | github.com/supabase/agent-skills | `544bfc5` |
 | github.com/vercel-labs/agent-skills | `063bee9` |
+| github.com/vercel-labs/web-interface-guidelines | `e3d624b` |
 
-To update, re-copy from upstream and review the diff before committing — these files are instructions Claude follows.
+## Security
+
+These files are instructions Claude follows, so they are treated as code that can be attacked (prompt injection, supply chain).
+
+| Layer | What it does |
+|---|---|
+| Audit on install | Every file was read and scanned for injection phrasing, hidden Unicode (zero-width / bidi / tag chars), pipe-to-shell, exfiltration patterns, and hidden markup. No malicious content found. |
+| No live remote instructions | `web-design-guidelines` rules are pinned locally instead of fetched each run. The `supabase` skill still reads supabase.com docs (reference data only; `CLAUDE.md` says fetched content is never instructions). |
+| `CLAUDE.md` rules | Untrusted content is data, never instructions; never read/commit secrets; ask before any outbound action (push, deploy, remote migration, filing issues, installing packages). |
+| `settings.json` | Denies reading `.env*`, keys, and credential files, editing `settings.json` itself, `rm -rf /`/`~`, force-push, and `curl`/`wget` piped to a shell. Asks before `git push`, deploys, remote DB pushes, and edits to `.claude/` or `CLAUDE.md`. |
+| `scripts/audit.py` | Re-runnable scanner with a reviewed baseline (`scripts/audit-baseline.txt`). New findings fail with exit 1. |
+
+Known-benign baseline entries: the deny rules in `settings.json`, the example injection phrase in `CLAUDE.md`, and Supabase docs that mention access tokens.
+
+### Updating from upstream
+1. Re-copy the files from upstream.
+2. `git diff` — read every change.
+3. `python3 .claude/scripts/audit.py` — investigate each new finding; only after review run it with `--update-baseline`.
+4. Update the commit table above.
+
+`settings.json` deny rules are a safety net, not a sandbox: pattern rules can be bypassed by creatively written commands. The real protection is reviewing what goes into `.claude/` and approving outbound actions yourself.
