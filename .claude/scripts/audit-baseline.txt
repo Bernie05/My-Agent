@@ -1,3 +1,4 @@
+.claude/README.md	destructive command	| `settings.json` | Denies reading `.env*`, keys, and credential files, editing `settings.json` itself, `rm -rf /`/`~`, 
 .claude/settings.json	destructive command	"Bash(git push --force*)",
 .claude/settings.json	destructive command	"Bash(git push -f*)",
 .claude/settings.json	destructive command	"Bash(rm -rf /*)",

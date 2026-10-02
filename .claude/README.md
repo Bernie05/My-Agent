@@ -53,6 +53,30 @@ Written for this repo; they orchestrate the agents and skills above.
 
 Built-in commands that complement these (no files needed): `/code-review`, `/security-review`, `/simplify`, `/init`.
 
+## Sync to other devices
+
+This repo is the source of truth. `scripts/sync-claude.sh` installs the agents, skills, and commands into `~/.claude/` so they work in **every** project on a device.
+
+```bash
+# first time on a device
+git clone https://github.com/Bernie05/My-Agent.git && cd My-Agent
+./scripts/sync-claude.sh
+
+# later: pull + re-sync (symlink mode picks up pulled changes even without re-running,
+# but re-run to install newly added items and prune removed ones)
+./scripts/sync-claude.sh
+```
+
+| Flag | Effect |
+|---|---|
+| *(none)* | `git pull --ff-only`, run the security audit, then symlink each item |
+| `--copy` | Copy instead of symlink (default on Git Bash for Windows) |
+| `--dry-run` | Show what would change without changing anything |
+| `--no-pull` | Skip `git pull` |
+| `--uninstall` | Remove everything this script installed |
+
+Behavior: only items listed in `~/.claude/.my-agent-sync-manifest` are ever changed or removed, so your own agents are untouched; an unmanaged item with the same name is backed up as `*.bak-<timestamp>`. If the audit reports unreviewed findings, nothing is installed. `settings.json` and `CLAUDE.md` stay project-only by design. Respects `CLAUDE_CONFIG_DIR` if set.
+
 ## Upstream versions
 
 | Repo | Commit |
