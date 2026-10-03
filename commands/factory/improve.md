@@ -12,3 +12,5 @@ Handle its replies here, in the main session:
 4. **Done**: relay the diff summary (`kept | removed | added | fixed`), where the new or edited file is, and the backup path for local items. If the new item replaces a plugin item, say that both now exist and offer to disable the plugin (`claude plugin disable <plugin>`). Run that only after the user approves.
 
 Relay the agent's final report briefly.
+
+**Flow log:** load the `flow-log` skill and keep this run's `FLOW.md` current: create it when the run starts, then update it at every step, gate, pause and finish. Show its path in your first message.

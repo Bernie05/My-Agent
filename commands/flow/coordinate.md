@@ -15,3 +15,5 @@ Arguments: $ARGUMENTS
    - Product/business decision → the user (AskUserQuestion with a recommendation)
 3. Dispatch independent unblock actions in parallel.
 4. Update Blockers in PROJECT_CONTEXT.md and log to activity.log. Report what was unblocked, what's still waiting, and the next step.
+
+**Flow log:** if the run folder has a `FLOW.md`, update it for what this command changed (`flow-log` skill).

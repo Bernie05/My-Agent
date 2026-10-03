@@ -13,3 +13,5 @@ Then, in the main session:
 5. Tell the user a restart may be needed for renamed or moved agents to load.
 
 Relay the agent's final report briefly.
+
+**Flow log:** load the `flow-log` skill and keep this run's `FLOW.md` current: create it when the run starts, then update it at every step, gate, pause and finish. Show its path in your first message.

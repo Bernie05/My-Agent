@@ -32,3 +32,5 @@ Handle its other replies here, in the main session. The agent has no shell, so t
 5. When done, delete the quarantine folder for this item. The review record stays in `factory/REGISTRY.md`.
 
 Relay the agent's final report briefly.
+
+**Flow log:** load the `flow-log` skill and keep this run's `FLOW.md` current: create it when the run starts, then update it at every step, gate, pause and finish. Show its path in your first message.

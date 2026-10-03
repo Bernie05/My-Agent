@@ -16,3 +16,5 @@ If no mode is given, show the current mode and this table, then ask which to use
 | **parallel** | Specs gated → frontend, backend and QA test-planning all at once | Clear, well-separated tasks; speed |
 
 Set `Mode:` in `PROJECT_CONTEXT.md` → Flow State (create the Flow State block if missing; if there is no feature yet, just confirm the mode to use for the next /flow:start). Work already done is kept; the new mode applies from the next phase. Log to `activity.log`: `<timestamp> | orchestrator | mode → <mode>`.
+
+**Flow log:** if the run folder has a `FLOW.md`, update it for what this command changed (`flow-log` skill).

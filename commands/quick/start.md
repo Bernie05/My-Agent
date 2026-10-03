@@ -31,3 +31,5 @@ Set `Phase: done` and add a Log line. Final report (10 lines max): what was buil
 
 ## Throughout
 Keep messages short. The user can interrupt; to pause, set `Phase: stopped` in PLAN.md and a one-line resume note in its Log. Running `/quick:start` again resumes it.
+
+**Flow log:** load the `flow-log` skill and keep this run's `FLOW.md` current: create it when the run starts, then update it at every step, gate, pause and finish. Show its path in your first message.

@@ -125,6 +125,7 @@ The same commands exist in both groups. `/be:security` is backend only; `/fe:acc
 | Area | Skill | What it's for |
 |---|---|---|
 | **General** | `token-efficiency` | Rules for keeping token use low; preloaded in every agent |
+| **General** | `flow-log` | FLOW.md format: the live flow of a /flow, /quick, /court or /factory run (step diagram, timeline, gate decisions, what's next) |
 | **Ponytail** | `ponytail` | Write the least code that works: YAGNI → reuse → stdlib → native → one line. Preloaded in frontend-dev and backend-dev |
 | | `ponytail-review` | Over-engineering findings, one line each, with `net: -N lines` |
 | | `ponytail-audit` | The same review across the whole repo, plus unneeded dependencies |

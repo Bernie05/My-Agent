@@ -71,3 +71,5 @@ qa-agent **approve-feature**. If it recommends GO, ask the user to confirm, then
 - Keep Flow State (phase, scope, current section, gates, blockers) in PROJECT_CONTEXT.md current, so /flow:status and /flow:resume work from any session.
 - Keep your messages to the user short: phase or section, what just finished, what's next.
 - The user can interrupt at any time; /flow:stop pauses cleanly.
+
+**Flow log:** load the `flow-log` skill and keep this run's `FLOW.md` current: create it when the run starts, then update it at every step, gate, pause and finish. Show its path in your first message.

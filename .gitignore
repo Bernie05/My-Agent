@@ -17,6 +17,7 @@
 /skills/.trash/
 /factory/quarantine/
 /factory/backups/
+/factory/runs/
 
 # --- Secrets & credentials ---
 .env
