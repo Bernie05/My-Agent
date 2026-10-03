@@ -1,0 +1,71 @@
+# This folder (~/.claude) is the My-Agent repo. It is an allow-list:
+# everything is ignored except the toolkit below. Credentials, sessions,
+# history, project memory, plugin cache and settings never leave this PC.
+/*
+!/.gitignore
+!/README.md
+!/CLAUDE.md
+!/CATALOG.md
+!/agents/
+!/skills/
+!/commands/
+!/docs/
+!/factory/
+
+# --- Inside allowed folders: app-managed or local-only ---
+/skills/synced/
+/skills/.trash/
+/factory/quarantine/
+/factory/backups/
+
+# --- Secrets & credentials ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+id_rsa*
+id_ed25519*
+*.keystore
+*.jks
+credentials*.json
+.credentials*
+service-account*.json
+secrets.*
+*.secret
+.npmrc
+.pypirc
+.netrc
+settings.json
+settings.local.json
+
+# --- Local tool / cloud config (may hold tokens) ---
+.vercel/
+.netlify/
+.firebase/
+.supabase/
+.terraform/
+*.tfstate
+*.tfstate.*
+.aws/
+
+# --- Logs, dumps & local data ---
+*.log
+logs/
+*.sqlite
+*.sqlite3
+*.db
+*.dump
+
+# --- OS & editor ---
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+node_modules/
+__pycache__/
