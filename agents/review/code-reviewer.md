@@ -4,6 +4,7 @@ description: Use when the user asks for a code review, wants feedback on a diff 
 tools: Read, Grep, Glob, Bash, Skill
 model: sonnet
 skills:
+  - ponytail
   - ponytail-review
 ---
 

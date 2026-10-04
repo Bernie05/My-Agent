@@ -4,6 +4,7 @@ description: Deployment engineer for Vercel. Use to deploy a project to Vercel (
 model: sonnet
 skills:
   - token-efficiency
+  - ponytail
   - vercel-deploy
 ---
 

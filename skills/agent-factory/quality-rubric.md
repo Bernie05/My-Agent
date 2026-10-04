@@ -8,7 +8,7 @@ Load this only for the **improve** and **organize** operations. Score each item 
 | Q1 | Description picks the item | It doesn't say **what** and **when**, or a stack-specific skill has no "Use ONLY when…" |
 | Q2 | Least privilege | An agent has no `tools:` line, has `*`, or lists a tool its body never uses |
 | Q3 | Right model | `opus` for routine work, or `sonnet`/`haiku` for security or final verdicts |
-| Q4 | Lean preload | An agent's `skills:` has more than `token-efficiency` + 2, or preloads something only some runs need |
+| Q4 | Lean preload | A coding agent's `skills:` is missing `ponytail`; or `skills:` has more than `token-efficiency` (+ `ponytail` for coding agents) + 2, or preloads something only some runs need |
 | Q5 | Progressive disclosure | SKILL.md is over ~150 lines, or holds long checklists/templates that belong in sibling files |
 | Q6 | Structure | An agent body is missing its role line, operations, rules or a **Report back** block of 15 lines or fewer |
 | Q7 | Thin command | A command holds logic that belongs in its agent, or uses `allowed-tools`/`!` lines without a justifying comment |

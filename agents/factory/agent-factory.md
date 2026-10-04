@@ -5,6 +5,7 @@ tools: Read, Grep, Glob, Write, Edit, WebSearch, WebFetch, Skill
 model: opus
 skills:
   - token-efficiency
+  - ponytail
   - agent-factory
 ---
 

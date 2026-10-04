@@ -25,7 +25,7 @@ Every file read, preloaded skill, agent call and long reply costs tokens. Do the
 - **Report back in 15 lines or fewer**, using the agent's report format. Put details in the files, not in the reply.
 
 ## Code output (Ponytail)
-- Generated code is output tokens too. The developer agents preload the `ponytail` skill: climb the ladder (YAGNI → reuse → stdlib → native → installed dep → one line → minimum) and write the shortest diff that meets the spec.
+- Generated code is output tokens too. Every coding agent preloads the `ponytail` skill: climb the ladder (YAGNI → reuse → stdlib → native → installed dep → one line → minimum) and write the shortest diff that meets the spec.
 - After code, explain in at most 3 lines (`skipped: X, add when Y`), not paragraphs.
 - Spec requirements, validation, security and accessibility are never cut to save tokens.
 - Pass `ponytail: lite|ultra|off` in a command's arguments to change the level for that call. The default is `full`.

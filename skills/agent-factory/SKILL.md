@@ -20,7 +20,7 @@ Names are lowercase-kebab. Put related items in the same group, following the ex
   - `tools:` listed explicitly with least privilege. **Never leave it out**, because an agent without it inherits every tool.
   - Don't combine a shell tool with WebFetch or WebSearch unless the job truly needs both, since that pairing is a path for sending data out.
   - `model:` is `sonnet` for routine work (coding, searching, writing). Use `opus` for judgment: specs, security, final verdicts.
-  - `skills:` holds `token-efficiency` plus only the 1–2 core skills.
+  - `skills:` holds `token-efficiency`, then **`ponytail` for every coding agent** (one that writes, reviews, tests, deploys or designs code, specs or agent files), plus only the 1–2 core skills. Skip `ponytail` only for agents that never touch code (e.g. court, resume, Figma design); say so in the proposal.
 - **Body:**
   1. a one-line role
   2. a "load on demand" table (when → skill)
