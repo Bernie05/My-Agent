@@ -35,6 +35,7 @@ Names are lowercase-kebab. Put related items in the same group, following the ex
 ## Skill
 - `description` says **what + when**, plus when **not** to use it for stack-specific skills ("Use ONLY when…").
 - Use progressive disclosure: keep SKILL.md short (under about 150 lines) and move checklists, templates and long references into sibling files that SKILL.md names and loads only when needed.
+- **Ponytail in coding skills:** a skill that guides writing, reviewing or structuring code points to the `ponytail` ladder at the decisions where less code is possible (e.g. "**Reuse first (Ponytail)**", "native `<input type="date">` before a picker library"). One line at each such decision, no copy of the ladder. Non-coding skills stay unchanged. House examples: `skills/shadcn-ui/SKILL.md`, `skills/code-patterns/SKILL.md`.
 - Scripts go in `scripts/`. A script must run without prompts, only touch its own inputs and outputs, and never download or run remote code.
 - For deeper skill-authoring guidance, read `plugins/marketplaces/anthropic-agent-skills/skills/skill-creator/SKILL.md`. Read it only when building a skill, and grep for the section you need.
 
@@ -42,6 +43,7 @@ Names are lowercase-kebab. Put related items in the same group, following the ex
 - Frontmatter holds `description` (`"<Group>: <what it does>"`) and `argument-hint`.
 - The body is a thin wrapper: "Use the **X** agent, operation **Y**, for: $ARGUMENTS", then how to relay the report. House example: `commands/fe/code.md`.
 - No `allowed-tools` and no `!` shell lines unless they are essential. If one is used, justify it in a comment.
+- **Ponytail in coding commands:** a command that runs a coding agent adds `[ponytail: lite|ultra|off]` to its `argument-hint` and passes any level through to the agent (default `full`). House example: `commands/fe/code.md`.
 
 ## Token budget (applies to everything you build)
 - Preload only what every run needs; everything else is loaded on demand.

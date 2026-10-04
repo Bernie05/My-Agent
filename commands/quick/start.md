@@ -1,9 +1,9 @@
 ---
-description: "Quick: build a simple project with the small team (architect, frontend-dev, backend-dev) - one plan, one gate, parallel build, final check"
+description: "Quick: build a simple project with the small team (architect, frontend-dev, backend-dev) - one plan, one gate, parallel build, final check, optional Vercel deploy"
 argument-hint: "<project/feature description + specs> [--design none|frontend] [--frontend-only | --backend-only]"
 ---
 
-You are the orchestrator for a **simple** project. You run in the main session and delegate to **architect**, **frontend-dev** and **backend-dev** only: no QA agent, no figma-designer. Follow the `token-efficiency` skill. Arguments: $ARGUMENTS
+You are the orchestrator for a **simple** project. You run in the main session and delegate to **architect**, **frontend-dev** and **backend-dev** (plus **vercel-deployer** for the optional deploy): no QA agent, no figma-designer. Follow the `token-efficiency` skill. Arguments: $ARGUMENTS
 
 ## Setup
 1. Slug = lowercase-kebab of the name; the folder is `docs/features/<slug>/`. If `PLAN.md` already exists there, don't restart: continue from its `Phase`. If `SPEC.md` exists, this feature belongs to the big team: stop and suggest `/flow:resume`.
@@ -26,8 +26,17 @@ Set `Phase: check`.
 2. Walk each SC-# in PLAN.md once: run the app (`run` skill) or call the API, and check the expected result. For UI flows, use the `browser-testing` skill only if a quick look can't confirm it.
 3. Failures → send them to the owning dev's **debug** operation, several in one call, both devs in parallel if both are involved. Then re-check only what failed. Stop after 2 rounds and ask the user.
 
-## 4. Done
-Set `Phase: done` and add a Log line. Final report (10 lines max): what was built, how to run it, tests (pass/fail), scenarios (x/y passed), known gaps, and whether `/deploy:vercel` makes sense next.
+## 4. Deploy (optional, 1 hard stop)
+Only when the final check passed and the project can deploy to Vercel (a web app, or a `vercel.json` / `.vercel/` link). Otherwise set `Deploy: n/a` and go to step 5.
+1. Ask (AskUserQuestion): **Deploy a preview** / **Skip deploy** (→ `Deploy: skipped`, step 5).
+2. Set `Phase: deploy`. vercel-deployer **env**: missing required variables → list them, offer `/deploy:env add …`, and wait.
+3. vercel-deployer **deploy** (preview). Handle its replies as `/deploy:vercel` step 4 does; a build error caused by code goes to the owning dev's **debug**, then deploy once more. Stop and ask after a second failure.
+4. Confirm `READY` and HTTP 2xx, then re-walk 1–3 key SC-# against the preview URL yourself. Read-only ones only: a preview can share production data, so skip anything that creates, changes or deletes data unless the user confirms it uses a test database.
+5. Ask **Promote to production** / **Keep preview only**. Promote → vercel-deployer **promote** `<preview url>` with `confirmed: promote`. Never production without this explicit choice.
+6. Record `Deploy: preview <url> | production <url>` in the PLAN.md header and add a Log line.
+
+## 5. Done
+Set `Phase: done` and add a Log line. Final report (10 lines max): what was built, how to run it, tests (pass/fail), scenarios (x/y passed), deploy URL (or skipped / n/a), known gaps.
 
 ## Throughout
 Keep messages short. The user can interrupt; to pause, set `Phase: stopped` in PLAN.md and a one-line resume note in its Log. Running `/quick:start` again resumes it.

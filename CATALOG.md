@@ -22,7 +22,9 @@ A one-line reference for everything in `~/.claude`. For the full design → spec
 | `lawyer-attacker` | court | Attacks any work and finds every real hole (never fixes) |
 | `lawyer-defender` | court | Defends the work: rebuts, fixes holes, returns a stronger version |
 | `judge` | court | Neutral final verdict: rules on each hole, gives the best final version |
-| `vercel-deployer` | deploy | Deploys to Vercel (preview, or production after you confirm); status, logs, env, domains, rollback |
+| `vercel-deployer` | deploy | Deploys to Vercel (preview, or production after you confirm); status, logs, env, domains, rollback. The deploy stage of `/flow:start` and `/quick:start` |
+| `agent-factory` | factory | Finds, security-reviews, builds, improves and organizes agents, skills and commands. Proposal first; builds only after you approve |
+| `resume-manager` | personal | Keeps your MyResume site up to date from your GitHub projects |
 
 ---
 
@@ -82,7 +84,7 @@ The same commands exist in both groups. `/be:security` is backend only; `/fe:acc
 ### `/flow:*`: Run the whole pipeline
 | Command | What it does |
 |---|---|
-| `/flow:start` | Run design → spec → build → QA with gates (choose mode and scope) |
+| `/flow:start` | Run design → spec → build → QA → deploy with gates (choose mode and scope; design and deploy optional) |
 | `/flow:section` | Build and test one section, then stop at a checkpoint |
 | `/flow:status` | Progress, blockers, recent activity |
 | `/flow:distribute` | Plan which agent does which task, and in what order |
@@ -91,6 +93,26 @@ The same commands exist in both groups. `/be:security` is backend only; `/fe:acc
 | `/flow:mode` | Switch mode: hybrid / sequential / parallel |
 | `/flow:stop` / `/flow:resume` | Pause and resume a feature workflow |
 | `/flow:report` | Full project report |
+
+### `/quick:*`: Small team for simple projects
+| Command | What it does |
+|---|---|
+| `/quick:start` | One plan, one gate, parallel build, final check, optional deploy |
+| `/quick:status` | Status and deploy URL from PLAN.md |
+| `/quick:upgrade` | Move to the big team (`/flow:start`) keeping the work |
+
+---
+
+### `/factory:*`: Build and review agents, skills and commands
+| Command | What it does |
+|---|---|
+| `/factory:find` | Search local, Anthropic and GitHub; installs nothing |
+| `/factory:agent` · `/factory:skill` · `/factory:command` | Reuse a safe item or build one (proposal first) |
+| `/factory:review` | Security review of an item, plugin or GitHub repo |
+| `/factory:improve` | Better, leaner version of an existing item |
+| `/factory:organize` | Find duplicates, broken links and token waste; write a fix plan |
+
+---
 
 ### `/court:*`: Stress-test an idea
 | Command | What it does |
@@ -117,6 +139,7 @@ The same commands exist in both groups. `/be:security` is backend only; `/fe:acc
 | Command | What it does |
 |---|---|
 | `/summarize` | Summarize text, a file, or the conversation in a few bullets |
+| `/resume:update` | Update the MyResume site from your GitHub projects (resume-manager) |
 
 ---
 
@@ -163,6 +186,14 @@ The same commands exist in both groups. `/be:security` is backend only; `/fe:acc
 | | `browser-testing` | Playwright testing in a real browser |
 | **Court** | `court-terminal` | Runs the trial in Windows Terminal tabs (Clerk, Attacker, Defender, Judge) |
 | **Deploy** | `vercel-deploy` | Vercel preflight, deploy, verify, logs, env, domains, rollback |
+| **Design quality** | `design-taste` | Anti-slop visual taste for marketing UI |
+| | `impeccable` | Design critique and audit playbooks for app UI |
+| | `motion-design` | When and how to animate UI |
+| **Code structure** | `code-patterns` | Which design pattern a real code smell calls for (and when none does) |
+| **Cross-cutting** | `input-source` | Reference mode vs prompt mode for plan-driven agents |
+| | `project-gitignore` | Security-baseline .gitignore before a project's first commit |
+| **Factory** | `agent-factory` | House rules for building agents, skills and commands; quality rubric; security checklist |
+| **Personal** | `resume-portfolio` | Keeping the MyResume site up to date |
 
 ### Also available (plugins and built-in, not in this folder)
 - **Figma plugin** (`figma:*`): use, generate-design, generate-library, generate-diagram, code-connect, create-new-file

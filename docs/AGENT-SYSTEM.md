@@ -1,6 +1,6 @@
 # Multi-Agent System: Reference
 
-**11 agents · 59 commands · 39 skills · 3 modes · 5 hard stops**
+**13 agents · 72 commands · 47 skills · 3 modes · 6 hard stops**
 
 For a one-line list of everything, see [CATALOG.md](../CATALOG.md).
 
@@ -23,9 +23,13 @@ The system is generic and stack-agnostic. Agents take the tech stack from the sp
          qa-agent ──► issue ──► architect triage ──► GATE 4 Fix / Defer / Accept ──► dev fix ──► retest
                         ▼
          qa-agent approve-feature ──► release
+                        ▼
+         vercel-deployer ──► GATE 5 Deploy: env check ──► preview ──► smoke test ──► promote? (you confirm)
 ```
 
-`/flow:start` runs the whole pipeline. The design stage is optional: use `--design` or `--no-design`, and if you pass neither, it asks you.
+`/flow:start` runs the whole pipeline. The design stage is optional: use `--design` or `--no-design`, and if you pass neither, it asks you. The deploy stage is optional too: after release it offers a Vercel preview, smoke-tests it, and promotes to production only if you choose to.
+
+For simple projects, `/quick:start` runs a smaller pipeline: one plan (PLAN.md) → parallel build → final check → optional deploy.
 
 ## How it works
 - **Agents** are subagents. Only the main chat session can call them; they cannot call each other.
@@ -49,11 +53,13 @@ Or run it step by step: `/design:start …` → `/design:approve` → `/arch:bre
 agents/
   design/        figma-designer.md
   architecture/  architect.md
-  development/   frontend-dev.md, backend-dev.md
+  developer/     frontend-dev.md, backend-dev.md
   qa/            qa-agent.md
   review/        code-reviewer.md
   court/         trial-agent.md, lawyer-attacker.md, lawyer-defender.md, judge.md
   deploy/        vercel-deployer.md
+  factory/       agent-factory.md
+  personal/      resume-manager.md
 commands/
   design/  (7)   /design:*
   arch/    (11)  /arch:*
@@ -64,9 +70,13 @@ commands/
   court/   (1)   /court:trial
   deploy/  (5)   /deploy:*
   ponytail/ (3)  /ponytail:*
+  quick/   (3)   /quick:*
+  factory/ (7)   /factory:*
+  resume/  (1)   /resume:update
   summarize.md   /summarize
 skills/<name>/SKILL.md     (must stay flat; Claude Code only finds skills one level deep)
 docs/AGENT-SYSTEM.md       (this file)
+factory/REGISTRY.md        (every item built, improved or reviewed, with its security verdict)
 backups/agent-system-2026-09-25/   (previous version)
 ```
 
@@ -86,7 +96,9 @@ backups/agent-system-2026-09-25/   (previous version)
 | `lawyer-attacker` | court | sonnet | Finds every real hole in any work, including over-engineering | token-efficiency | — |
 | `lawyer-defender` | court | sonnet | Rebuts or fixes each hole with the smallest real fix; returns an enhanced version | token-efficiency | — |
 | `judge` | court | opus | Rules on each hole; final verdict and final version | token-efficiency | — |
-| `vercel-deployer` | deploy | sonnet | Vercel deploys (preview; prod after you confirm), status, logs, env, domains, rollback | token-efficiency, ponytail, vercel-deploy | — |
+| `vercel-deployer` | deploy | sonnet | Vercel deploys (preview; prod after you confirm), status, logs, env, domains, rollback. Runs Phase 5 of `/flow:start` and step 4 of `/quick:start` | token-efficiency, ponytail, vercel-deploy | — |
+| `agent-factory` | factory | opus | Finds, security-reviews, builds, improves and organizes agents, skills and commands. Proposal first, builds only after you approve; no shell | token-efficiency, ponytail, agent-factory | quality-rubric.md, security-checklist.md (files in its skill) |
+| `resume-manager` | personal | sonnet | Keeps your MyResume site current: adds GitHub projects, edits experience/skills/about, previews | token-efficiency, resume-portfolio | — |
 
 **Token saving:** each agent preloads only its core skills and loads the rest with the Skill tool when an operation needs them. Routine work runs on Sonnet, while the architect inherits your main model because spec quality drives everything after it. Bookkeeping commands (`/arch:checklist`, `/arch:update`, `/arch:summary`, `/flow:status`, `/deploy:status`, `/ponytail:debt`) run directly without spawning an agent. The full rules are in the `token-efficiency` skill.
 
@@ -154,6 +166,29 @@ The old `design-system` agent was replaced by `figma-designer`. Its skills carry
 | `/flow:report` | Writes REPORT.md |
 | `/flow:stop` · `/flow:resume` | Pauses and saves state · continues from it |
 
+### `/quick:*` (3): small team for simple projects
+| Command | What it does |
+|---|---|
+| `/quick:start <project> [--design none\|frontend] [--frontend-only\|--backend-only]` | architect writes one PLAN.md (1 gate) → frontend-dev ║ backend-dev → main session runs build, lint, tests and scenarios → optional deploy |
+| `/quick:status [feature\|all]` | Phase, tasks and deploy URL from PLAN.md (no agent) |
+| `/quick:upgrade [feature]` | Moves the project to the big team (`/flow:start`) without losing work |
+
+### `/factory:*` (7): agents, skills and commands
+| Command | What it does |
+|---|---|
+| `/factory:find <need>` | Search local, then Anthropic, then GitHub. Review only, installs nothing |
+| `/factory:agent` · `/factory:skill` · `/factory:command <need>` | Reuse a safe existing item or build one. Always a proposal first; builds after you approve |
+| `/factory:review <path\|plugin\|GitHub URL>` | Security review (GitHub code is cloned into quarantine, never run) |
+| `/factory:improve <item>` | A better, leaner, security-reviewed version (backup first) |
+| `/factory:organize` | Duplicates, broken links, grouping and token waste: writes a catalog and a fix plan |
+
+New coding agents always preload `ponytail`; coding skills point to its ladder and coding commands pass `ponytail: lite|ultra|off` (rules in the `agent-factory` skill). Every result gets a row in `factory/REGISTRY.md`.
+
+### `/resume:*` (1)
+| Command | What it does |
+|---|---|
+| `/resume:update` | Update the MyResume site: add GitHub projects, edit experience/skills/about, sync or remove projects, preview (resume-manager) |
+
 ### `/court:*` (1): stress-test an idea
 | Command | What it does |
 |---|---|
@@ -202,6 +237,7 @@ The scope and current section are saved in Flow State, so `/flow:resume` restart
 2. After `/arch:breakdown`: task review
 3. After `/arch:finalize`: final approval
 4. During QA, `/arch:analyze-issue`: Fix / Defer / Accept
+5. After release (optional): **deploy**. Preview first; production only if you pick **Promote to production**
 
 Each stop asks you **Approve / Send back / Reject**.
 
@@ -224,16 +260,20 @@ docs/features/<feature-slug>/
   REPORT.md            written by /flow:report
 ```
 
-## Skills (39)
+## Skills (47)
 - **Design / Figma:** figma-design-workflow, design-handoff, figma-integration, design-systems, component-design, design-patterns, accessibility-design
+- **Design quality:** design-taste (marketing UI), impeccable (app UI critique and audit), motion-design (animation)
 - **Architect:** architecture-analysis, scenario-validation, task-breakdown, decision-making, issue-triage
+- **Code structure:** code-patterns (design patterns, SOLID, layering; rung 7 of the ponytail ladder)
 - **Frontend:** frontend-component-development, frontend-api-integration, frontend-testing, frontend-design (official Anthropic)
 - **React-only:** react-best-practices, typescript-for-frontend, component-composition-patterns, react-data-fetching, react-testing-patterns
 - **UI libraries:** shadcn-ui, material-ui. frontend-dev loads the one the project uses. For a new React project it chooses from the spec: shadcn/ui for a custom design, Tailwind or Next.js; MUI for data-heavy admin tools or a standard Material look. It records the choice for SPEC.md → Tech Stack, and never adds a second library.
 - **Backend:** api-design, database-design, backend-security, supabase-mcp (loaded when the stack uses Supabase)
 - **QA:** test-scenario-execution, test-checklist, issue-reporting, browser-testing (Node Playwright, based on Anthropic's webapp-testing)
-- **Cross-cutting:** token-efficiency (preloaded in every agent)
+- **Cross-cutting:** token-efficiency (preloaded in every agent), input-source (reference vs prompt mode for plan-driven agents), project-gitignore (security baseline before the first commit)
 - **Ponytail (less code, MIT):** ponytail, ponytail-review, ponytail-audit, ponytail-debt
 - **Court:** court-terminal
 - **Deploy:** vercel-deploy
+- **Factory:** agent-factory (house rules, quality rubric, security checklist)
+- **Personal:** resume-portfolio
 - **Other:** hello-world

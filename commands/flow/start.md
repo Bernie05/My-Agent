@@ -1,9 +1,9 @@
 ---
-description: "Flow: run the full gated feature pipeline (optional design in Figma or by frontend-dev → architect → implement all or per section → QA) in the chosen mode"
+description: "Flow: run the full gated feature pipeline (optional design in Figma or by frontend-dev → architect → implement all or per section → QA → optional Vercel deploy) in the chosen mode"
 argument-hint: "<feature name/description + specs> [--mode hybrid|sequential|parallel] [--scope all|per-section] [--design figma|frontend|none] [Figma URL]"
 ---
 
-You are the orchestrator for this feature. You run in the main session and delegate to the subagents **figma-designer**, **architect**, **frontend-dev**, **backend-dev** and **qa-agent** (subagents can't call each other; only you can). Follow the `token-efficiency` skill throughout. Arguments: $ARGUMENTS
+You are the orchestrator for this feature. You run in the main session and delegate to the subagents **figma-designer**, **architect**, **frontend-dev**, **backend-dev**, **qa-agent** and **vercel-deployer** (subagents can't call each other; only you can). Follow the `token-efficiency` skill throughout. Arguments: $ARGUMENTS
 
 ## Setup
 1. Mode = `--mode` value if given, else the Mode in an existing `PROJECT_CONTEXT.md`, else **hybrid**.
@@ -65,7 +65,18 @@ After each build round: summarize the reports briefly and resolve blockers (spec
 4. Repeat until there are no open CRITICAL or HIGH issues.
 
 ## Phase 4 — Release
-qa-agent **approve-feature**. If it recommends GO, ask the user to confirm, then set phase `done`. Finish with a short final report (offer `/flow:report` for the full REPORT.md).
+qa-agent **approve-feature**. If it recommends GO, ask the user to confirm, then continue to Phase 5. If it says NO-GO, go back to Phase 3 with its blockers.
+
+## Phase 5 — Deploy (optional, 1 hard stop)
+Offer it only when the project can deploy to Vercel (a web app, or a `vercel.json` / `.vercel/` link) or the user asked for it. Otherwise set `Deploy: n/a`, set phase `done` and finish.
+1. **Gate 5** (AskUserQuestion): **Deploy a preview** / **Skip deploy**. Skip → `Deploy: skipped`, phase `done`, finish.
+2. Set phase `deploy`. vercel-deployer **env**: if required variables are missing, list them, offer `/deploy:env add …`, and wait. Never deploy with a required variable missing.
+3. vercel-deployer **deploy** (preview). Handle its replies exactly as `/deploy:vercel` step 4 does: `NEEDS CONFIRMATION`, login, missing env vars, or a build error caused by code → the owning dev's **debug** with the error lines, then deploy once more. Stop and ask the user after a second failure.
+4. **Smoke test the preview:** the report must show `READY` and HTTP 2xx. Then qa-agent **test-scenario** runs 1–3 critical SC-# with the preview URL as the target (say so explicitly in the prompt). Pick read-only scenarios: a preview can share production data and env vars, so skip any scenario that creates, changes or deletes data unless the user confirms the preview uses a test database. Failures go through Gate 4 triage as in Phase 3.
+5. Ask **Promote to production** / **Keep preview only**. Promote → vercel-deployer **promote** `<preview url>` with `confirmed: promote`. Production never happens without this explicit choice.
+6. Record `Deploy: preview <url> | production <url>` in Flow State, log it, and set phase `done`.
+
+Finish with a short final report, including the deploy URL (offer `/flow:report` for the full REPORT.md).
 
 ## Throughout
 - Keep Flow State (phase, scope, current section, gates, blockers) in PROJECT_CONTEXT.md current, so /flow:status and /flow:resume work from any session.

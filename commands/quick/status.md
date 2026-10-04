@@ -11,6 +11,7 @@ For one project, read only the header, the Tasks table and the last 5 Log lines 
 ```
 <Project> — Phase: <phase> · Status: <plan status> · Design: <none|frontend>
 Tasks      Backend x/n · Frontend x/n · blocked: <IDs or none>
+Deploy     <preview|production URL, skipped, n/a, or — if not reached>
 Recent     <last 5 Log lines>
 Next       <suggested command>
 ```

@@ -1,6 +1,6 @@
 # My-Agent
 
-My personal [Claude Code](https://claude.com/claude-code) setup: agents, skills and slash commands for a gated design → spec → build → QA workflow.
+My personal [Claude Code](https://claude.com/claude-code) setup: agents, skills and slash commands for a gated design → spec → build → QA → deploy workflow.
 
 This repo **is** `~/.claude`. Edits in `~/.claude` are edits to the repo. Everything Claude Code finds there is available in every project on that machine.
 

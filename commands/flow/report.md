@@ -9,7 +9,7 @@ Arguments: $ARGUMENTS
 
 Read all feature files and write `docs/features/<slug>/REPORT.md`:
 
-1. **Executive summary**: what was built, current phase, go/no-go.
+1. **Executive summary**: what was built, current phase, go/no-go, deployment (target and URL, or skipped / n/a).
 2. **Scope delivered**: requirements R# ✅ / partially / not done; changes from CHANGE HISTORY.
 3. **Work by agent**: tasks completed, open, blocked.
 4. **Quality**: QA results per category, issues by severity and status, test counts.

@@ -65,8 +65,9 @@ At the end of analyze, breakdown, finalize, plan-lite and analyze-issue, **stop*
 ## Flow State
 Mode: hybrid | sequential | parallel
 Design: figma | frontend | none
-Phase: design | analysis | breakdown | finalize | development | qa | done | stopped
-Gates passed: [ ] G0 Design (or n/a)  [ ] G1 Spec  [ ] G2 Tasks  [ ] G3 Final  | Open G4 issues: 0
+Phase: design | analysis | breakdown | finalize | development | qa | deploy | done | stopped
+Gates passed: [ ] G0 Design (or n/a)  [ ] G1 Spec  [ ] G2 Tasks  [ ] G3 Final  [ ] G5 Deploy (or n/a)  | Open G4 issues: 0
+Deploy: — | preview <url> | production <url> | skipped | n/a
 Scope: all | per-section      Current section: SEC-# | n/a
 Last updated: <timestamp>
 ## Sections
