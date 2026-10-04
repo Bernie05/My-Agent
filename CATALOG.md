@@ -14,8 +14,8 @@ A one-line reference for everything in `~/.claude`. For the full design → spec
 |---|---|---|
 | `figma-designer` | design | Designs features/apps in Figma (tokens, components, screens, flows) and writes DESIGN.md |
 | `architect` | architecture | Writes the spec (SPEC.md, scenarios), splits it into FE/BE/QA tasks, triages QA issues. No code |
-| `frontend-dev` | development | Builds frontend tasks (F#), and debugs, tests, refactors and fixes accessibility of UI code. Writes minimal code (Ponytail). Picks shadcn/ui or Material UI from the spec |
-| `backend-dev` | development | Builds backend tasks (B#): APIs, logic, database, migrations. Debugs, tests, secures. Writes minimal code (Ponytail) |
+| `frontend-dev` | developer | Builds frontend tasks (F#), and debugs, tests, refactors and fixes accessibility of UI code. Writes minimal code (Ponytail). Picks shadcn/ui or Material UI from the spec |
+| `backend-dev` | developer | Builds backend tasks (B#): APIs, logic, database, migrations. Debugs, tests, secures. Writes minimal code (Ponytail) |
 | `qa-agent` | qa | Plans and runs tests, reports issues with evidence, gives the release go/no-go |
 | `code-reviewer` | review | Reviews a diff, PR or files for bugs, security and risky logic, plus over-engineering. Also audits the whole repo for bloat |
 | `trial-agent` | court | Court clerk: asks you questions about an idea, writes the Case File, launches the trial tabs |
@@ -23,6 +23,8 @@ A one-line reference for everything in `~/.claude`. For the full design → spec
 | `lawyer-defender` | court | Defends the work: rebuts, fixes holes, returns a stronger version |
 | `judge` | court | Neutral final verdict: rules on each hole, gives the best final version |
 | `vercel-deployer` | deploy | Deploys to Vercel (preview, or production after you confirm); status, logs, env, domains, rollback |
+| `agent-factory` | factory | Finds, security-reviews, builds, improves and organizes agents, skills and commands |
+| `resume-manager` | personal | Keeps your MyResume portfolio site up to date: GitHub projects, experience, skills, about |
 
 ---
 
@@ -92,6 +94,13 @@ The same commands exist in both groups. `/be:security` is backend only; `/fe:acc
 | `/flow:stop` / `/flow:resume` | Pause and resume a feature workflow |
 | `/flow:report` | Full project report |
 
+### `/quick:*`: Small team for simple projects
+| Command | What it does |
+|---|---|
+| `/quick:start` | Architect + frontend-dev + backend-dev: one plan, one gate, parallel build, final check |
+| `/quick:status` | Status of a quick-team project from its PLAN.md |
+| `/quick:upgrade` | Move a quick-team project to the big team (`/flow:start`) without losing work |
+
 ### `/court:*`: Stress-test an idea
 | Command | What it does |
 |---|---|
@@ -113,6 +122,22 @@ The same commands exist in both groups. `/be:security` is backend only; `/fe:acc
 | `/ponytail:audit` | Whole-repo audit: ranked list of code and dependencies to cut |
 | `/ponytail:debt` | List every `ponytail:` shortcut comment with its limit and when to upgrade (`save` writes a file) |
 
+### `/factory:*`: Agents, skills and commands
+| Command | What it does |
+|---|---|
+| `/factory:find` | Search for an existing agent, skill, command or plugin (local, Anthropic, GitHub). Installs nothing |
+| `/factory:agent` | Get a new agent: reuse a safe existing one or build it, security-reviewed |
+| `/factory:skill` | Get a new skill: reuse a safe existing one or build it, security-reviewed |
+| `/factory:command` | Get a new command: reuse a safe existing one or build it, security-reviewed |
+| `/factory:improve` | Turn an existing agent, skill or command into a leaner, security-reviewed version |
+| `/factory:review` | Security review of an agent, skill, command or plugin (path, plugin name or GitHub URL) |
+| `/factory:organize` | Find duplicates, broken links, bad grouping and token waste; write a catalog and fix plan |
+
+### `/resume:*`: Portfolio site
+| Command | What it does |
+|---|---|
+| `/resume:update` | Update MyResume: add GitHub projects, edit experience/skills/about, sync or remove projects, preview |
+
 ### Other
 | Command | What it does |
 |---|---|
@@ -131,6 +156,9 @@ The same commands exist in both groups. `/be:security` is backend only; `/fe:acc
 | | `ponytail-debt` | Ledger of the `ponytail:` shortcut comments |
 | | `decision-making` | Compare options and record a decision |
 | | `hello-world` | Demo skill |
+| | `code-patterns` | Design patterns, SOLID, reuse, layering and folder structure for any stack; GoF + architecture catalog |
+| | `input-source` | How plan-driven agents pick their input (architect files vs. the prompt) and handle gaps; preloaded |
+| | `project-gitignore` | Create or fix a `.gitignore` so secrets, config, deps and build output never get committed |
 | **Design** | `figma-design-workflow` | Step-by-step Figma build process |
 | | `figma-integration` | Figma libraries, tokens, handoff |
 | | `design-handoff` | Writing DESIGN.md |
@@ -139,6 +167,9 @@ The same commands exist in both groups. `/be:security` is backend only; `/fe:acc
 | | `design-patterns` | Forms, navigation, tables, empty/error/loading states |
 | | `accessibility-design` | WCAG 2.1 AA, contrast, focus, keyboard |
 | | `frontend-design` | Distinctive visual direction when there's no Figma design |
+| | `design-taste` | Anti-slop taste for marketing pages: three dials, avoid the AI-default look, pre-flight check |
+| | `impeccable` | Design-quality playbooks for any UI: critique, audit, polish, harden, refine |
+| | `motion-design` | UI animation feel: when to animate, easing, duration, springs, reduced motion |
 | **Architecture** | `architecture-analysis` | Journeys, data flow, risks → SPEC.md |
 | | `scenario-validation` | Writing scenarios.md |
 | | `task-breakdown` | Spec → F# / B# / QA tasks |
@@ -163,6 +194,8 @@ The same commands exist in both groups. `/be:security` is backend only; `/fe:acc
 | | `browser-testing` | Playwright testing in a real browser |
 | **Court** | `court-terminal` | Runs the trial in Windows Terminal tabs (Clerk, Attacker, Defender, Judge) |
 | **Deploy** | `vercel-deploy` | Vercel preflight, deploy, verify, logs, env, domains, rollback |
+| **Factory** | `agent-factory` | House rules for building agents, skills and commands, plus the registry format |
+| **Personal** | `resume-portfolio` | Turning GitHub repos into honest portfolio entries and verifying the MyResume build |
 
 ### Also available (plugins and built-in, not in this folder)
 - **Figma plugin** (`figma:*`): use, generate-design, generate-library, generate-diagram, code-connect, create-new-file
