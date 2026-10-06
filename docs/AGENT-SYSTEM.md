@@ -35,6 +35,7 @@ For simple projects, `/quick:start` runs a smaller pipeline: one plan (PLAN.md) 
 - **Agents** are subagents. Only the main chat session can call them; they cannot call each other.
 - **Commands** are what you type, e.g. `/design:start`. Each command tells the main session which agent to call, and handles the hard stops.
 - **Skills** are preloaded into agents through their `skills:` field. Claude can also load them automatically when a task matches.
+- **Agents can ask for what they lack.** An agent first loads any existing skill that fits. If nothing fits, it ends its report with a `NEEDS:` block (skill or command, why, blocking or not). The main session checks whether it already exists, otherwise asks you and gets it through the agent factory (proposal → approval → security review → build), then resumes the agent where it stopped. Agents never create skills or commands themselves. Rules: `token-efficiency` (agent side) and `CLAUDE.md` (main session).
 - You can also call an agent in plain language: *"use the figma-designer agent to add a dark mode to the design"*.
 
 ## Quick start
@@ -91,7 +92,7 @@ backups/agent-system-2026-09-25/   (previous version)
 | `frontend-dev` | development | sonnet | UI tasks F#. Builds from Figma frames using `get_design_context` | token-efficiency, frontend-component-development, ponytail | frontend-api-integration, frontend-testing, browser-testing, frontend-design, react-*, shadcn-ui, material-ui, ponytail-review |
 | `backend-dev` | development | sonnet | API, logic and data tasks B# | token-efficiency, api-design, ponytail | database-design, backend-security, supabase-mcp, ponytail-review |
 | `qa-agent` | qa | sonnet | Test plan, scenarios, 9-category checklist, issues, go/no-go | token-efficiency, ponytail, test-scenario-execution | test-checklist, issue-reporting, issue-triage, browser-testing |
-| `code-reviewer` | review | sonnet | General code review plus an over-engineering section; whole-repo bloat audit | ponytail, ponytail-review | ponytail-audit |
+| `code-reviewer` | review | sonnet | General code review plus an over-engineering section; whole-repo bloat audit | token-efficiency, ponytail, ponytail-review | ponytail-audit |
 | `trial-agent` | court | sonnet | Intake questions → Case File → launches the live trial tabs | token-efficiency, court-terminal | — |
 | `lawyer-attacker` | court | sonnet | Finds every real hole in any work, including over-engineering | token-efficiency | — |
 | `lawyer-defender` | court | sonnet | Rebuts or fixes each hole with the smallest real fix; returns an enhanced version | token-efficiency | — |

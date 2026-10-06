@@ -149,7 +149,7 @@ The same commands exist in both groups. `/be:security` is backend only; `/fe:acc
 
 | Area | Skill | What it's for |
 |---|---|---|
-| **General** | `token-efficiency` | Rules for keeping token use low; preloaded in every agent |
+| **General** | `token-efficiency` | Rules for keeping token use low, plus the `NEEDS:` block agents use to request a missing skill or command; preloaded in every agent |
 | **Ponytail** | `ponytail` | Write the least code that works: YAGNI → reuse → stdlib → native → one line. Preloaded in every coding agent |
 | | `ponytail-review` | Over-engineering findings, one line each, with `net: -N lines` |
 | | `ponytail-audit` | The same review across the whole repo, plus unneeded dependencies |
