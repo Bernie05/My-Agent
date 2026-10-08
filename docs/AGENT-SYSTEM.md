@@ -1,6 +1,6 @@
 # Multi-Agent System: Reference
 
-**13 agents · 72 commands · 47 skills · 3 modes · 6 hard stops**
+**13 agents · 73 commands · 47 skills · 3 modes · 6 hard stops**
 
 For a one-line list of everything, see [CATALOG.md](../CATALOG.md).
 
@@ -35,7 +35,7 @@ For simple projects, `/quick:start` runs a smaller pipeline: one plan (PLAN.md) 
 - **Agents** are subagents. Only the main chat session can call them; they cannot call each other.
 - **Commands** are what you type, e.g. `/design:start`. Each command tells the main session which agent to call, and handles the hard stops.
 - **Skills** are preloaded into agents through their `skills:` field. Claude can also load them automatically when a task matches.
-- **Agents can ask for what they lack.** An agent first loads any existing skill that fits. If nothing fits, it ends its report with a `NEEDS:` block (skill or command, why, blocking or not). The main session checks whether it already exists, otherwise asks you and gets it through the agent factory (proposal → approval → security review → build), then resumes the agent where it stopped. Agents never create skills or commands themselves. Rules: `token-efficiency` (agent side) and `CLAUDE.md` (main session).
+- **Agents report what's missing or wrong; you decide.** Each agent ends its report with an optional `FEEDBACK:` block: `need` (missing skill or command), `fix`, `stale`, `remove` or `context`, each with evidence. A **blocking** need is handled right away (check local → ask you → agent factory → resume the agent). Everything else is queued in `factory/NEEDED.md`, where you review it and mark rows `approved` or `rejected`. A **weekly routine** runs `/factory:needed`, which builds only approved rows through the agent factory and opens a pull request for you to merge. Agents never change the toolkit themselves. Rules: `token-efficiency` (agents), `CLAUDE.md` (main session), `commands/factory/needed.md` (builder).
 - You can also call an agent in plain language: *"use the figma-designer agent to add a dark mode to the design"*.
 
 ## Quick start
@@ -72,12 +72,13 @@ commands/
   deploy/  (5)   /deploy:*
   ponytail/ (3)  /ponytail:*
   quick/   (3)   /quick:*
-  factory/ (7)   /factory:*
+  factory/ (8)   /factory:*
   resume/  (1)   /resume:update
   summarize.md   /summarize
 skills/<name>/SKILL.md     (must stay flat; Claude Code only finds skills one level deep)
 docs/AGENT-SYSTEM.md       (this file)
 factory/REGISTRY.md        (every item built, improved or reviewed, with its security verdict)
+factory/NEEDED.md          (agent feedback queue: you approve rows, the weekly routine builds them)
 backups/agent-system-2026-09-25/   (previous version)
 ```
 
@@ -174,7 +175,7 @@ The old `design-system` agent was replaced by `figma-designer`. Its skills carry
 | `/quick:status [feature\|all]` | Phase, tasks and deploy URL from PLAN.md (no agent) |
 | `/quick:upgrade [feature]` | Moves the project to the big team (`/flow:start`) without losing work |
 
-### `/factory:*` (7): agents, skills and commands
+### `/factory:*` (8): agents, skills and commands
 | Command | What it does |
 |---|---|
 | `/factory:find <need>` | Search local, then Anthropic, then GitHub. Review only, installs nothing |
@@ -182,6 +183,7 @@ The old `design-system` agent was replaced by `figma-designer`. Its skills carry
 | `/factory:review <path\|plugin\|GitHub URL>` | Security review (GitHub code is cloned into quarantine, never run) |
 | `/factory:improve <item>` | A better, leaner, security-reviewed version (backup first) |
 | `/factory:organize` | Duplicates, broken links, grouping and token waste: writes a catalog and a fix plan |
+| `/factory:needed [--pr] [N-ids]` | Builds the `approved` rows of `factory/NEEDED.md` (max 5 per run). Weekly routine: `--pr` opens a pull request; by hand: edits in place and asks before committing |
 
 New coding agents always preload `ponytail`; coding skills point to its ladder and coding commands pass `ponytail: lite|ultra|off` (rules in the `agent-factory` skill). Every result gets a row in `factory/REGISTRY.md`.
 

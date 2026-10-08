@@ -132,6 +132,7 @@ The same commands exist in both groups. `/be:security` is backend only; `/fe:acc
 | `/factory:improve` | Turn an existing agent, skill or command into a leaner, security-reviewed version |
 | `/factory:review` | Security review of an agent, skill, command or plugin (path, plugin name or GitHub URL) |
 | `/factory:organize` | Find duplicates, broken links, bad grouping and token waste; write a catalog and fix plan |
+| `/factory:needed` | Build the rows you approved in `factory/NEEDED.md` (agent feedback). Runs weekly as a routine that opens a PR |
 
 ### `/resume:*`: Portfolio site
 | Command | What it does |
@@ -149,7 +150,7 @@ The same commands exist in both groups. `/be:security` is backend only; `/fe:acc
 
 | Area | Skill | What it's for |
 |---|---|---|
-| **General** | `token-efficiency` | Rules for keeping token use low, plus the `NEEDS:` block agents use to request a missing skill or command; preloaded in every agent |
+| **General** | `token-efficiency` | Rules for keeping token use low, plus the `FEEDBACK:` block agents use to report missing or stale skills, commands and context; preloaded in every agent |
 | **Ponytail** | `ponytail` | Write the least code that works: YAGNI → reuse → stdlib → native → one line. Preloaded in every coding agent |
 | | `ponytail-review` | Over-engineering findings, one line each, with `net: -N lines` |
 | | `ponytail-audit` | The same review across the whole repo, plus unneeded dependencies |
