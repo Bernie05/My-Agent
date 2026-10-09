@@ -10,7 +10,7 @@ This repo **is** `~/.claude`. Edits in `~/.claude` are edits to the repo. Everyt
 |---|---|
 | `agents/` | Specialist agents (architect, frontend-dev, backend-dev, fullstack-dev, qa-agent, figma-designer, court, agent-factory, …) |
 | `skills/` | Skills the agents load on demand |
-| `commands/` | Slash commands (`/flow:*`, `/arch:*`, `/fe:*`, `/be:*`, `/qa:*`, `/factory:*`, …) |
+| `commands/` | Slash commands (`/flow:*`, `/arch:*`, `/fe:*`, `/be:*`, `/fs:*`, `/qa:*`, `/factory:*`, …) |
 | `docs/` | [AGENT-SYSTEM.md](docs/AGENT-SYSTEM.md): how the workflow fits together |
 | `factory/` | `REGISTRY.md`: every agent/skill/command built or reviewed, with its security verdict. `NEEDED.md`: agent feedback waiting for your review; a weekly routine builds the rows you approve and opens a PR |
 

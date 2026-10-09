@@ -57,8 +57,8 @@ A one-line reference for everything in `~/.claude`. For the full design → spec
 | `/arch:analyze-issue` | Triage a QA issue: bug, new requirement, or ambiguous (Gate 4) |
 | `/arch:issue-decision` | Record Fix / Defer / Accept for an issue |
 
-### `/fe:*` and `/be:*`: Frontend and backend developers
-The same commands exist in both groups. `/be:security` is backend only; `/fe:accessibility` is frontend only.
+### `/fe:*`, `/be:*` and `/fs:*`: Frontend, backend and full-stack developers
+The same commands exist in all three groups. `/be:security` is backend only; `/fe:accessibility` and `/fe:design` are frontend only. `/fs:*` (fullstack-dev) has all of them, including `design`, `accessibility` and `security`, and always uses fullstack-dev whatever the feature's Dev team is.
 
 | Command | What it does |
 |---|---|

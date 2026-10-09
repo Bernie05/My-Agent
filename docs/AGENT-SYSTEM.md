@@ -1,6 +1,6 @@
 # Multi-Agent System: Reference
 
-**14 agents · 74 commands · 46 skills · 3 modes · 6 hard stops**
+**14 agents · 84 commands · 46 skills · 3 modes · 6 hard stops**
 
 For a one-line list of everything, see [CATALOG.md](../CATALOG.md).
 
@@ -66,8 +66,9 @@ agents/
 commands/
   design/  (7)   /design:*
   arch/    (11)  /arch:*
-  fe/      (8)   /fe:*
+  fe/      (9)   /fe:*
   be/      (8)   /be:*
+  fs/      (10)  /fs:*
   qa/      (6)   /qa:*
   flow/    (11)  /flow:*
   court/   (1)   /court:trial
@@ -144,18 +145,21 @@ The old `design-system` agent was replaced by `figma-designer`. Its skills carry
 | `/arch:analyze-issue <ISSUE-###>` | Triages an issue. **Gate 4** |
 | `/arch:issue-decision <ISSUE-###> Fix\|Defer\|Accept` | Records the decision and assigns it |
 
-### `/fe:*` (8) and `/be:*` (8)
-| Command | fe | be | What it does |
-|---|---|---|---|
-| `code` | ✅ | ✅ | Implements tasks (F#/B#), with tests |
-| `debug` | ✅ | ✅ | Finds the root cause, fixes it, adds a regression test |
-| `ask` | ✅ | ✅ | Question, advice or explanation |
-| `review` | ✅ | ✅ | Review by severity, with file:line |
-| `test` | ✅ | ✅ | Writes or improves tests and runs them |
-| `refactor` | ✅ | ✅ | Restructures without changing behavior |
-| `performance` | ✅ | ✅ | Measures, then optimizes, then measures again |
-| `accessibility` | ✅ | | WCAG 2.1 AA audit and fixes |
-| `security` | | ✅ | Security audit and fixes |
+### `/fe:*` (9), `/be:*` (8) and `/fs:*` (10)
+`/fs:*` always uses `fullstack-dev`, whatever the feature's Dev team is: use it to ask or build directly across the whole stack.
+
+| Command | fe | be | fs | What it does |
+|---|---|---|---|---|
+| `code` | ✅ | ✅ | ✅ | Implements tasks (F#/B#, or both with fs), with tests |
+| `design` | ✅ | | ✅ | Designs in code (tokens, preview page, DESIGN.md), then Gate 0 |
+| `debug` | ✅ | ✅ | ✅ | Finds the root cause (fs: across UI → API → DB), fixes it, adds a regression test |
+| `ask` | ✅ | ✅ | ✅ | Question, advice or explanation |
+| `review` | ✅ | ✅ | ✅ | Review by severity, with file:line |
+| `test` | ✅ | ✅ | ✅ | Writes or improves tests and runs them |
+| `refactor` | ✅ | ✅ | ✅ | Restructures without changing behavior |
+| `performance` | ✅ | ✅ | ✅ | Measures, then optimizes, then measures again |
+| `accessibility` | ✅ | | ✅ | WCAG 2.1 AA audit and fixes |
+| `security` | | ✅ | ✅ | Security audit and fixes |
 
 ### `/qa:*` (6)
 `/qa:start-testing` · `/qa:test-scenario <SC-#>` · `/qa:report-issue` · `/qa:test-checklist` · `/qa:update-progress` · `/qa:approve-feature`
