@@ -1,6 +1,6 @@
 # Multi-Agent System: Reference
 
-**14 agents · 84 commands · 46 skills · 3 modes · 6 hard stops**
+**15 agents · 85 commands · 46 skills · 3 modes · 6 hard stops**
 
 For a one-line list of everything, see [CATALOG.md](../CATALOG.md).
 
@@ -38,6 +38,9 @@ For simple projects, `/quick:start` runs a smaller pipeline: one plan (PLAN.md) 
 - **Commands** are what you type, e.g. `/design:start`. Each command tells the main session which agent to call, and handles the hard stops.
 - **Skills** are preloaded into agents through their `skills:` field. Claude can also load them automatically when a task matches.
 - **Agents report what's missing or wrong; you decide.** Each agent ends its report with an optional `FEEDBACK:` block: `need` (missing skill or command), `fix`, `stale`, `remove` or `context`, each with evidence. A **blocking** need is handled right away (check local → ask you → agent factory → resume the agent). Everything else is queued in `factory/NEEDED.md`, where you review it and mark rows `approved` or `rejected`. A **weekly routine** runs `/factory:needed`, which builds only approved rows through the agent factory and opens a pull request for you to merge. Agents never change the toolkit themselves. Rules: `token-efficiency` (agents), `CLAUDE.md` (main session), `commands/factory/needed.md` (builder).
+- **An observer watches how agents actually work.** A `SubagentStop`/`Stop` hook logs one line per run (metadata only, local). `/factory:observe` turns those runs into stats (files re-read across runs, repeated errors and retries, user corrections, unused skills) and the read-only `observer` agent proposes evidence-backed rows for `factory/NEEDED.md`. It also imports the weekly report routines' findings (`factory/findings/`), so everything lands in one review queue. Install the hook once per device: `python3 factory/scripts/install_observer_hook.py`.
+
+**Weekly loop:** use your agents → run `/factory:observe` → review `factory/NEEDED.md` (approve/reject) → push → Sunday's routine builds the approved rows and opens a PR → merge → `git pull`.
 - You can also call an agent in plain language: *"use the figma-designer agent to add a dark mode to the design"*.
 
 ## Quick start
@@ -61,7 +64,7 @@ agents/
   review/        code-reviewer.md
   court/         trial-agent.md, lawyer-attacker.md, lawyer-defender.md, judge.md
   deploy/        vercel-deployer.md
-  factory/       agent-factory.md
+  factory/       agent-factory.md, observer.md
   personal/      resume-manager.md
 commands/
   design/  (7)   /design:*
@@ -75,7 +78,7 @@ commands/
   deploy/  (5)   /deploy:*
   ponytail/ (3)  /ponytail:*
   quick/   (3)   /quick:*
-  factory/ (8)   /factory:*
+  factory/ (9)   /factory:*
   resume/  (1)   /resume:update
   summarize.md   /summarize
 skills/<name>/SKILL.md     (must stay flat; Claude Code only finds skills one level deep)
@@ -83,6 +86,8 @@ docs/AGENT-SYSTEM.md       (this file)
 factory/REGISTRY.md        (every item built, improved or reviewed, with its security verdict)
 factory/NEEDED.md          (agent feedback queue: you approve rows, the weekly routine builds them)
 factory/evals/             (skill tests: before/after scores block regressions)
+factory/findings/          (weekly report routines' proposals, imported by /factory:observe)
+factory/observe/           (local only, git-ignored: run log from the hook + stats)
 factory/scripts/check.py   (consistency check: counts, docs, tools lines, skill sizes; run any time)
 backups/agent-system-2026-09-25/   (previous version)
 ```
@@ -106,6 +111,7 @@ backups/agent-system-2026-09-25/   (previous version)
 | `judge` | court | opus | Rules on each hole; final verdict and final version | token-efficiency | — |
 | `vercel-deployer` | deploy | sonnet | Vercel deploys (preview; prod after you confirm), status, logs, env, domains, rollback. Runs Phase 5 of `/flow:start` and step 4 of `/quick:start` | token-efficiency, ponytail, vercel-deploy | — |
 | `agent-factory` | factory | opus | Finds, security-reviews, builds, improves and organizes agents, skills and commands. Proposal first, builds only after you approve; no shell | token-efficiency, ponytail, agent-factory | quality-rubric.md, security-checklist.md (files in its skill) |
+| `observer` | factory | sonnet | Reviews run stats, activity and routine findings; proposes evidence-backed NEEDED.md rows. Read-only (never edits) | token-efficiency | — |
 | `resume-manager` | personal | sonnet | Keeps your MyResume site current: adds GitHub projects, edits experience/skills/about, previews | token-efficiency, resume-portfolio | — |
 
 **Token saving:** each agent preloads only its core skills and loads the rest with the Skill tool when an operation needs them. Routine work runs on Sonnet, while the architect inherits your main model because spec quality drives everything after it. Bookkeeping commands (`/arch:checklist`, `/arch:update`, `/arch:summary`, `/flow:status`, `/deploy:status`, `/ponytail:debt`) run directly without spawning an agent. The full rules are in the `token-efficiency` skill.
@@ -185,7 +191,7 @@ The old `design-system` agent was replaced by `figma-designer`. Its skills carry
 | `/quick:status [feature\|all]` | Phase, tasks and deploy URL from PLAN.md (no agent) |
 | `/quick:upgrade [feature]` | Moves the project to the big team (`/flow:start`) without losing work |
 
-### `/factory:*` (8): agents, skills and commands
+### `/factory:*` (9): agents, skills and commands
 | Command | What it does |
 |---|---|
 | `/factory:find <need>` | Search local, then Anthropic, then GitHub. Review only, installs nothing |
@@ -194,6 +200,7 @@ The old `design-system` agent was replaced by `figma-designer`. Its skills carry
 | `/factory:improve <item>` | A better, leaner, security-reviewed version (backup first) |
 | `/factory:organize` | Duplicates, broken links, grouping and token waste: writes a catalog and a fix plan |
 | `/factory:needed [--pr] [N-ids]` | Builds the `approved` rows of `factory/NEEDED.md` (max 5 per run). Weekly routine: `--pr` opens a pull request; by hand: edits in place and asks before committing |
+| `/factory:observe [--days 14]` | Run stats from the hook's run log + routine findings → the observer proposes rows → queued in NEEDED.md (laptop only: transcripts stay local) |
 
 New coding agents always preload `ponytail`; coding skills point to its ladder and coding commands pass `ponytail: lite|ultra|off` (rules in the `agent-factory` skill). Every result gets a row in `factory/REGISTRY.md`.
 

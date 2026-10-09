@@ -25,6 +25,7 @@ A one-line reference for everything in `~/.claude`. For the full design → spec
 | `judge` | court | Neutral final verdict: rules on each hole, gives the best final version |
 | `vercel-deployer` | deploy | Deploys to Vercel (preview, or production after you confirm); status, logs, env, domains, rollback. The deploy stage of `/flow:start` and `/quick:start` |
 | `agent-factory` | factory | Finds, security-reviews, builds, improves and organizes agents, skills and commands. Proposal first; builds only after you approve |
+| `observer` | factory | Watches how the agents actually worked (run stats, routine findings) and proposes improvements for NEEDED.md. Read-only |
 | `resume-manager` | personal | Keeps your MyResume portfolio site up to date: GitHub projects, experience, skills, about |
 
 ---
@@ -135,6 +136,7 @@ The same commands exist in all three groups. `/be:security` is backend only; `/f
 | `/factory:review` | Security review of an agent, skill, command or plugin (path, plugin name or GitHub URL) |
 | `/factory:organize` | Find duplicates, broken links, bad grouping and token waste; write a catalog and fix plan |
 | `/factory:needed` | Build the rows you approved in `factory/NEEDED.md` (agent feedback). Runs weekly as a routine that opens a PR |
+| `/factory:observe` | Analyze recent agent runs and routine findings, queue evidence-backed improvements in NEEDED.md |
 
 ### `/resume:*`: Portfolio site
 | Command | What it does |

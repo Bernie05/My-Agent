@@ -12,7 +12,7 @@ This repo **is** `~/.claude`. Edits in `~/.claude` are edits to the repo. Everyt
 | `skills/` | Skills the agents load on demand |
 | `commands/` | Slash commands (`/flow:*`, `/arch:*`, `/fe:*`, `/be:*`, `/fs:*`, `/qa:*`, `/factory:*`, …) |
 | `docs/` | [AGENT-SYSTEM.md](docs/AGENT-SYSTEM.md): how the workflow fits together |
-| `factory/` | `REGISTRY.md`: every agent/skill/command built or reviewed, with its security verdict. `NEEDED.md`: agent feedback waiting for your review; a weekly routine builds the rows you approve and opens a PR |
+| `factory/` | `REGISTRY.md`: every agent/skill/command built or reviewed, with its security verdict. `NEEDED.md`: improvement queue (agent feedback, the observer, the report routines) waiting for your review; a weekly routine builds the rows you approve and opens a PR. One-time per device: `python3 factory/scripts/install_observer_hook.py` |
 
 One-line reference for everything: [CATALOG.md](CATALOG.md).
 

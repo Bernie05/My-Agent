@@ -1,6 +1,6 @@
 # Needed: toolkit improvement queue
 
-Agents report what's missing or wrong in their `FEEDBACK:` block; the main session queues it here. **You review it**, and the weekly routine (`/factory:needed`) builds only the rows you mark `approved`, then opens a pull request for you to merge.
+Rows come from three sources: agents' own `FEEDBACK:` blocks (queued by the main session), the `observer` (`/factory:observe`, from run stats), and the weekly report routines (imported from `factory/findings/`). **You review it**, and the weekly routine (`/factory:needed`) builds only the rows you mark `approved`, then opens a pull request for you to merge.
 
 ## How to review
 1. Read each `new` row. Edit the Evidence or add **Your notes** (what you want, constraints, "merge into X", …). You can also add your own rows: Type, Target and Evidence are enough.
