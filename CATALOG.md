@@ -156,7 +156,6 @@ The same commands exist in both groups. `/be:security` is backend only; `/fe:acc
 | | `ponytail-audit` | The same review across the whole repo, plus unneeded dependencies |
 | | `ponytail-debt` | Ledger of the `ponytail:` shortcut comments |
 | | `decision-making` | Compare options and record a decision |
-| | `hello-world` | Demo skill |
 | | `code-patterns` | Design patterns, SOLID, reuse, layering and folder structure for any stack; GoF + architecture catalog |
 | | `input-source` | How plan-driven agents pick their input (architect files vs. the prompt) and handle gaps; preloaded |
 | | `project-gitignore` | Create or fix a `.gitignore` so secrets, config, deps and build output never get committed |

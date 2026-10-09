@@ -10,8 +10,8 @@ Security review of: $ARGUMENTS
    - An installed plugin name: find its folder under `~/.claude/plugins/cache/` or `~/.claude/plugins/marketplaces/` (Glob for the name).
    - A GitHub URL: clone it into quarantine and record the SHA. Never run anything inside quarantine.
      ```
-     git clone --depth 1 <url> "$HOME\.claude\factory\quarantine\<repo>"
-     git -C "$HOME\.claude\factory\quarantine\<repo>" rev-parse HEAD
+     git clone --depth 1 <url> "$HOME/.claude/factory/quarantine/<repo>"
+     git -C "$HOME/.claude/factory/quarantine/<repo>" rev-parse HEAD
      ```
 2. Use the **agent-factory** agent, operation **review**, with the path (and the SHA, for GitHub). Say which pass to use: **light** for `anthropics/*` first-party items, **full** for everything else.
 3. Relay the verdict and top findings briefly, plus where the full findings file is if the agent wrote one.

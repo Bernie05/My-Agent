@@ -18,6 +18,7 @@ Names are lowercase-kebab. Put related items in the same group, following the ex
 - **Frontmatter:**
   - `name`, and a `description` that says what it does **and when to use it**. The description is how the agent gets picked.
   - `tools:` listed explicitly with least privilege. **Never leave it out**, because an agent without it inherits every tool.
+  - Connector (MCP) tools: grant a whole server with `mcp__<server>`, and list the name variants, since the server name differs between machines (claude.ai connector, plugin, local): e.g. `mcp__Figma, mcp__figma, mcp__claude_ai_Figma, mcp__plugin_figma_figma`. Only the servers the agent's job needs.
   - Don't combine a shell tool with WebFetch or WebSearch unless the job truly needs both, since that pairing is a path for sending data out.
   - `model:` is `sonnet` for routine work (coding, searching, writing). Use `opus` for judgment: specs, security, final verdicts.
   - `skills:` holds `token-efficiency`, then **`ponytail` for every coding agent** (one that writes, reviews, tests, deploys or designs code, specs or agent files), plus only the 1–2 core skills. Skip `ponytail` only for agents that never touch code (e.g. court, resume, Figma design); say so in the proposal.

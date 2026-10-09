@@ -25,11 +25,12 @@ Use the **agent-factory** agent. If that agent type isn't available (a cloud rou
 
    Then call the factory with operation **build** and `APPROVED: pre-approved via NEEDED.md <ID>. <notes>` plus the proposal. Otherwise don't build: set Status `failed: needs your review - <reason>` (or `needs-laptop: <install/clone needed>`) and put the proposal in the report.
 3. `remove`: after the review, back up the target to `factory/backups/` (in place mode), delete it with `git rm`, and remove the lines that referenced it.
-4. **Check:** every agent's `skills:` entries exist under `skills/`, every file the change names exists, and no `.env`, key or credential file is staged. Fix or mark the row `failed`.
-5. Set the row's Status to `done` (or `failed: …` / `needs-laptop: …`). The factory adds the `factory/REGISTRY.md` row.
+4. **Skill tests:** if the row changed a skill that has `factory/evals/<skill>.md`, run it as `factory/evals/README.md` describes (old vs new version, blind grader). If the new version scores lower or loses any check it passed before, revert that skill's change and set Status `failed: regression - <lost checks>`. Put both scores in the report.
+5. **Check:** run `python3 -I <Root>/factory/scripts/check.py <Root>` (counts, docs, tools lines, preloaded skills, skill sizes, links) and confirm no `.env`, key or credential file is staged. Fix what it reports, or mark the row `failed`.
+6. Set the row's Status to `done` (or `failed: …` / `needs-laptop: …`). The factory adds the `factory/REGISTRY.md` row.
 
 ## Finish
-- `--pr`: commit on the branch (`factory: build NEEDED <IDs>`), push it, and open a pull request to the default branch. Body: one line per row (ID · type · target · result · files changed · security verdict), then the `failed` / `needs-laptop` rows with their proposals. Never merge it yourself.
+- `--pr`: commit on the branch (`factory: build NEEDED <IDs>`), push it, and open a pull request to the default branch. Body: one line per row (ID · type · target · result · files changed · security verdict · test score old → new), then the `failed` / `needs-laptop` rows with their proposals. Never merge it yourself.
 - In place: show the diff summary and ask before committing or pushing.
 
 Report (10 lines max): rows done / failed / waiting, the PR link, and anything that needs the user.

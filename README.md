@@ -16,6 +16,8 @@ This repo **is** `~/.claude`. Edits in `~/.claude` are edits to the repo. Everyt
 
 One-line reference for everything: [CATALOG.md](CATALOG.md).
 
+After editing anything, run `python3 factory/scripts/check.py`: it catches stale counts, undocumented items, agents without a `tools:` line, oversized skills and broken links.
+
 ## Daily use
 
 ```bash

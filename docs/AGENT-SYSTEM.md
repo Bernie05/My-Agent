@@ -1,6 +1,6 @@
 # Multi-Agent System: Reference
 
-**13 agents · 73 commands · 47 skills · 3 modes · 6 hard stops**
+**13 agents · 73 commands · 46 skills · 3 modes · 6 hard stops**
 
 For a one-line list of everything, see [CATALOG.md](../CATALOG.md).
 
@@ -79,6 +79,8 @@ skills/<name>/SKILL.md     (must stay flat; Claude Code only finds skills one le
 docs/AGENT-SYSTEM.md       (this file)
 factory/REGISTRY.md        (every item built, improved or reviewed, with its security verdict)
 factory/NEEDED.md          (agent feedback queue: you approve rows, the weekly routine builds them)
+factory/evals/             (skill tests: before/after scores block regressions)
+factory/scripts/check.py   (consistency check: counts, docs, tools lines, skill sizes; run any time)
 backups/agent-system-2026-09-25/   (previous version)
 ```
 
@@ -263,7 +265,7 @@ docs/features/<feature-slug>/
   REPORT.md            written by /flow:report
 ```
 
-## Skills (47)
+## Skills (46)
 - **Design / Figma:** figma-design-workflow, design-handoff, figma-integration, design-systems, component-design, design-patterns, accessibility-design
 - **Design quality:** design-taste (marketing UI), impeccable (app UI critique and audit), motion-design (animation)
 - **Architect:** architecture-analysis, scenario-validation, task-breakdown, decision-making, issue-triage
@@ -279,4 +281,3 @@ docs/features/<feature-slug>/
 - **Deploy:** vercel-deploy
 - **Factory:** agent-factory (house rules, quality rubric, security checklist)
 - **Personal:** resume-portfolio
-- **Other:** hello-world
