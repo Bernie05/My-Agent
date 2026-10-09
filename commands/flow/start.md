@@ -1,9 +1,9 @@
 ---
 description: "Flow: run the full gated feature pipeline (optional design in Figma or by frontend-dev → architect → implement all or per section → QA → optional Vercel deploy) in the chosen mode"
-argument-hint: "<feature name/description + specs> [--mode hybrid|sequential|parallel] [--scope all|per-section] [--design figma|frontend|none] [Figma URL]"
+argument-hint: "<feature name/description + specs> [--mode hybrid|sequential|parallel] [--scope all|per-section] [--team split|fullstack] [--design figma|frontend|none] [Figma URL]"
 ---
 
-You are the orchestrator for this feature. You run in the main session and delegate to the subagents **figma-designer**, **architect**, **frontend-dev**, **backend-dev**, **qa-agent** and **vercel-deployer** (subagents can't call each other; only you can). Follow the `token-efficiency` skill throughout. Arguments: $ARGUMENTS
+You are the orchestrator for this feature. You run in the main session and delegate to the subagents **figma-designer**, **architect**, **frontend-dev**, **backend-dev**, **qa-agent** and **vercel-deployer**, plus **fullstack-dev** when Dev team is `fullstack` (subagents can't call each other; only you can). Follow the `token-efficiency` skill throughout. Arguments: $ARGUMENTS
 
 ## Setup
 1. Mode = `--mode` value if given, else the Mode in an existing `PROJECT_CONTEXT.md`, else **hybrid**.
@@ -36,9 +36,11 @@ Use `--scope` if given, else the Scope in Flow State. Otherwise show the Section
 
 Save `Scope:` (and `Current section:`) in Flow State.
 
+**Dev team** (in the same AskUserQuestion call, unless `--team` was given or Flow State already has it): **Split: frontend-dev + backend-dev** (parallel; best for large features) / **Full-stack: one fullstack-dev** (one context, fewer handoffs, higher model; best for small and medium features). Save `Dev team:` in Flow State.
+
 ## Phase 2 + 3 — Build and test
 ### Scope: all
-1. **Build.** Dispatch by Mode:
+1. **Build.** `Dev team: fullstack` → one fullstack-dev **code** call with all B and F tasks (backend first, then UI against the contract); in **parallel** mode, run qa-agent **start-testing** alongside it. Otherwise dispatch by Mode:
    - **hybrid:** backend-dev (all B tasks) and frontend-dev (all F tasks, against the API contract; mock if the backend isn't ready) **in parallel**, as two Agent calls in one message. Run a second round for anything blocked by dependencies.
    - **sequential:** backend-dev → frontend-dev, with a short check-in after each report.
    - **parallel:** backend-dev, frontend-dev and qa-agent (**start-testing**: plan and automated tests) in one message.

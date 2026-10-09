@@ -11,7 +11,7 @@ Read-only; don't call agents, just read the files directly.
 - Otherwise, for the resolved feature (`docs/features/<slug>/`), read PROJECT_CONTEXT.md (it already has progress and sections). Only Grep the task files or issues.md if a number is missing, and read just the last ~15 lines of activity.log. Show:
 
 ```
-<Feature> — Phase: <phase> · Mode: <mode> · Gates: G0 ✅|n/a G1 ✅ G2 ✅ G3 ⏳ G5 ⏳|n/a
+<Feature> — Phase: <phase> · Mode: <mode> · Dev team: <split|fullstack> · Gates: G0 ✅|n/a G1 ✅ G2 ✅ G3 ⏳ G5 ⏳|n/a
 Design     <source: figma | frontend> <DESIGN.md status + Figma link or preview route, or "no design stage">
 Scope      all | per-section — current: SEC-n <name>
 Sections   SEC-1 ✅ · SEC-2 🔄 · SEC-3 ⏳   (per-section only)

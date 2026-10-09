@@ -1,6 +1,6 @@
 # Multi-Agent System: Reference
 
-**13 agents · 73 commands · 46 skills · 3 modes · 6 hard stops**
+**14 agents · 74 commands · 46 skills · 3 modes · 6 hard stops**
 
 For a one-line list of everything, see [CATALOG.md](../CATALOG.md).
 
@@ -29,7 +29,9 @@ The system is generic and stack-agnostic. Agents take the tech stack from the sp
 
 `/flow:start` runs the whole pipeline. The design stage is optional: use `--design` or `--no-design`, and if you pass neither, it asks you. The deploy stage is optional too: after release it offers a Vercel preview, smoke-tests it, and promotes to production only if you choose to.
 
-For simple projects, `/quick:start` runs a smaller pipeline: one plan (PLAN.md) → parallel build → final check → optional deploy.
+For simple projects, `/quick:start` runs a smaller pipeline: one plan (PLAN.md) → build → final check → optional deploy.
+
+**Dev team toggle.** Each feature records `Dev team: split | fullstack`. **split**: `frontend-dev` and `backend-dev` build F# and B# in parallel; best for large features. **fullstack**: one `fullstack-dev` (Opus) builds both sides in one context, so fewer handoffs and contract mismatches; best for small and medium features. `/quick` defaults to fullstack; `/flow:start` asks (or `--team`). Switch any time with `/flow:team`; task IDs and the API contract don't change, so it's safe mid-feature. The routing rule is in `CLAUDE.md`.
 
 ## How it works
 - **Agents** are subagents. Only the main chat session can call them; they cannot call each other.
@@ -54,7 +56,7 @@ Or run it step by step: `/design:start …` → `/design:approve` → `/arch:bre
 agents/
   design/        figma-designer.md
   architecture/  architect.md
-  developer/     frontend-dev.md, backend-dev.md
+  developer/     frontend-dev.md, backend-dev.md, fullstack-dev.md
   qa/            qa-agent.md
   review/        code-reviewer.md
   court/         trial-agent.md, lawyer-attacker.md, lawyer-defender.md, judge.md
@@ -67,7 +69,7 @@ commands/
   fe/      (8)   /fe:*
   be/      (8)   /be:*
   qa/      (6)   /qa:*
-  flow/    (10)  /flow:*
+  flow/    (11)  /flow:*
   court/   (1)   /court:trial
   deploy/  (5)   /deploy:*
   ponytail/ (3)  /ponytail:*
@@ -94,6 +96,7 @@ backups/agent-system-2026-09-25/   (previous version)
 | `architect` | architecture | inherit | Spec (built from DESIGN.md when there is one), scenarios, tasks and sections, issue triage. Never writes app code. Keeps specs lean (extras go to Out of Scope) | token-efficiency, ponytail | architecture-analysis, scenario-validation, task-breakdown, issue-triage, decision-making |
 | `frontend-dev` | development | sonnet | UI tasks F#. Builds from Figma frames using `get_design_context` | token-efficiency, frontend-component-development, ponytail | frontend-api-integration, frontend-testing, browser-testing, frontend-design, react-*, shadcn-ui, material-ui, ponytail-review |
 | `backend-dev` | development | sonnet | API, logic and data tasks B# | token-efficiency, api-design, ponytail | database-design, backend-security, supabase-mcp, ponytail-review |
+| `fullstack-dev` | development | opus | F# and B# tasks in one context when Dev team is `fullstack` (default for `/quick`): DB → API → UI, debug across the stack | token-efficiency, ponytail, input-source | the frontend and backend skills above, per task |
 | `qa-agent` | qa | sonnet | Test plan, scenarios, 9-category checklist, issues, go/no-go | token-efficiency, ponytail, test-scenario-execution | test-checklist, issue-reporting, issue-triage, browser-testing |
 | `code-reviewer` | review | sonnet | General code review plus an over-engineering section; whole-repo bloat audit | token-efficiency, ponytail, ponytail-review | ponytail-audit |
 | `trial-agent` | court | sonnet | Intake questions → Case File → launches the live trial tabs | token-efficiency, court-terminal | — |
@@ -157,10 +160,11 @@ The old `design-system` agent was replaced by `figma-designer`. Its skills carry
 ### `/qa:*` (6)
 `/qa:start-testing` · `/qa:test-scenario <SC-#>` · `/qa:report-issue` · `/qa:test-checklist` · `/qa:update-progress` · `/qa:approve-feature`
 
-### `/flow:*` (10): orchestration
+### `/flow:*` (11): orchestration
 | Command | What it does |
 |---|---|
 | `/flow:mode <mode>` | Sets or switches hybrid / sequential / parallel |
+| `/flow:team <split\|fullstack>` | Switches the Dev team for a feature: frontend-dev + backend-dev, or one fullstack-dev (works for /quick features too) |
 | `/flow:start <feature> [--scope all\|per-section] [--design\|--no-design]` | Runs the full gated pipeline. Before building, asks **Implement all** or **Implement per section** |
 | `/flow:section <SEC-# \| name \| next>` | Builds and tests one section, then stops at a checkpoint |
 | `/flow:status [all]` | Gates, design link, progress, blockers, recent activity |
@@ -173,7 +177,7 @@ The old `design-system` agent was replaced by `figma-designer`. Its skills carry
 ### `/quick:*` (3): small team for simple projects
 | Command | What it does |
 |---|---|
-| `/quick:start <project> [--design none\|frontend] [--frontend-only\|--backend-only]` | architect writes one PLAN.md (1 gate) → frontend-dev ║ backend-dev → main session runs build, lint, tests and scenarios → optional deploy |
+| `/quick:start <project> [--team fullstack\|split] [--design none\|frontend] [--frontend-only\|--backend-only]` | architect writes one PLAN.md (1 gate) → fullstack-dev (default) or frontend-dev ║ backend-dev → main session runs build, lint, tests and scenarios → optional deploy |
 | `/quick:status [feature\|all]` | Phase, tasks and deploy URL from PLAN.md (no agent) |
 | `/quick:upgrade [feature]` | Moves the project to the big team (`/flow:start`) without losing work |
 

@@ -26,7 +26,7 @@ All feature files live in the project at `docs/features/<feature-slug>/` (slug =
 
 | File | Owner | Purpose |
 |---|---|---|
-| `design-brief.md` / `DESIGN.md` | figma-designer, or frontend-dev when `Source: code` | Design brief and approved design handoff (read-only for you) |
+| `design-brief.md` / `DESIGN.md` | figma-designer, or frontend-dev / fullstack-dev when `Source: code` | Design brief and approved design handoff (read-only for you) |
 | `SPEC.md` | you | Master spec: requirements, tech stack, data model, permissions, Q&A log, decisions, CHANGE HISTORY. Never name it `claude.md` (collides with `CLAUDE.md` on Windows/macOS) |
 | `analysis.md` | you | Architecture reasoning, data flow, risks |
 | `scenarios.md` | you | User scenarios SC-# in the standard format |
@@ -64,6 +64,7 @@ At the end of analyze, breakdown, finalize, plan-lite and analyze-issue, **stop*
 # <Feature> — Project Context
 ## Flow State
 Mode: hybrid | sequential | parallel
+Dev team: split | fullstack      (who builds F#/B#: frontend-dev + backend-dev, or one fullstack-dev)
 Design: figma | frontend | none
 Phase: design | analysis | breakdown | finalize | development | qa | deploy | done | stopped
 Gates passed: [ ] G0 Design (or n/a)  [ ] G1 Spec  [ ] G2 Tasks  [ ] G3 Final  [ ] G5 Deploy (or n/a)  | Open G4 issues: 0

@@ -8,7 +8,7 @@ This repo **is** `~/.claude`. Edits in `~/.claude` are edits to the repo. Everyt
 
 | Folder | Contents |
 |---|---|
-| `agents/` | Specialist agents (architect, frontend-dev, backend-dev, qa-agent, figma-designer, court, agent-factory, …) |
+| `agents/` | Specialist agents (architect, frontend-dev, backend-dev, fullstack-dev, qa-agent, figma-designer, court, agent-factory, …) |
 | `skills/` | Skills the agents load on demand |
 | `commands/` | Slash commands (`/flow:*`, `/arch:*`, `/fe:*`, `/be:*`, `/qa:*`, `/factory:*`, …) |
 | `docs/` | [AGENT-SYSTEM.md](docs/AGENT-SYSTEM.md): how the workflow fits together |

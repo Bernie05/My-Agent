@@ -16,6 +16,7 @@ A one-line reference for everything in `~/.claude`. For the full design → spec
 | `architect` | architecture | Writes the spec (SPEC.md, scenarios), splits it into FE/BE/QA tasks, triages QA issues. No code |
 | `frontend-dev` | developer | Builds frontend tasks (F#), and debugs, tests, refactors and fixes accessibility of UI code. Writes minimal code (Ponytail). Picks shadcn/ui or Material UI from the spec |
 | `backend-dev` | developer | Builds backend tasks (B#): APIs, logic, database, migrations. Debugs, tests, secures. Writes minimal code (Ponytail) |
+| `fullstack-dev` | developer | Builds both frontend (F#) and backend (B#) tasks in one context when Dev team is `fullstack` (default for `/quick`). Runs on Opus |
 | `qa-agent` | qa | Plans and runs tests, reports issues with evidence, gives the release go/no-go |
 | `code-reviewer` | review | Reviews a diff, PR or files for bugs, security and risky logic, plus over-engineering. Also audits the whole repo for bloat |
 | `trial-agent` | court | Court clerk: asks you questions about an idea, writes the Case File, launches the trial tabs |
@@ -91,13 +92,14 @@ The same commands exist in both groups. `/be:security` is backend only; `/fe:acc
 | `/flow:coordinate` | Unblock dependencies between agents |
 | `/flow:handoff` | Move a feature to its next phase, with readiness checks |
 | `/flow:mode` | Switch mode: hybrid / sequential / parallel |
+| `/flow:team` | Switch a feature's Dev team: split (frontend-dev + backend-dev) or fullstack (one fullstack-dev) |
 | `/flow:stop` / `/flow:resume` | Pause and resume a feature workflow |
 | `/flow:report` | Full project report |
 
 ### `/quick:*`: Small team for simple projects
 | Command | What it does |
 |---|---|
-| `/quick:start` | Architect + frontend-dev + backend-dev: one plan, one gate, parallel build, final check, optional deploy |
+| `/quick:start` | Architect + fullstack-dev (or frontend-dev + backend-dev with `--team split`): one plan, one gate, build, final check, optional deploy |
 | `/quick:status` | Status and deploy URL of a quick-team project from its PLAN.md |
 | `/quick:upgrade` | Move a quick-team project to the big team (`/flow:start`) without losing work |
 

@@ -1,6 +1,7 @@
 # Global rules
 
 - **New projects get a .gitignore first.** When creating or scaffolding a project, running `git init`, or working in a repo with no `.gitignore`, load the `project-gitignore` skill and add or merge its security baseline **before the first commit**. Never commit `.env` files, keys, credentials or local cloud config. If one is already tracked, untrack it and tell the user to rotate the secret.
+- **Dev team toggle.** A feature's `Dev team:` (Flow State in `PROJECT_CONTEXT.md`, or the `PLAN.md` header) is `split` or `fullstack`. When it is `fullstack`, send every piece of work meant for `frontend-dev` or `backend-dev` (F#/B# tasks, `/fe:*` and `/be:*` operations, debug and fixes from issue triage) to `fullstack-dev` instead, as **one** call covering both sides. No feature or no setting → `split`. Switch it with `/flow:team`.
 - **Agent feedback (`FEEDBACK:`, older `NEEDS:`).** When an agent's report ends with one (format in the `token-efficiency` skill):
   - **`need … blocking: yes` → handle now:**
     1. Check `~/.claude/skills`, `~/.claude/commands` and installed plugins. If it exists, call the agent again with the same operation plus "load skill `<name>`" (no Skill tool: "read `~/.claude/skills/<name>/SKILL.md`"), or run the command yourself.
