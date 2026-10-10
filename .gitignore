@@ -18,6 +18,8 @@
 /factory/quarantine/
 /factory/backups/
 /factory/runs/
+# observer run log + stats (built from local transcripts): never committed
+/factory/observe/
 
 # --- Secrets & credentials ---
 .env

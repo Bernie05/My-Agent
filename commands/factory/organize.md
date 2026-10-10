@@ -3,6 +3,8 @@ description: "Factory: organize all agents, skills and commands - find duplicate
 argument-hint: "[focus, e.g. 'skills only' or 'duplicates']"
 ---
 
+First run `python3 -I ~/.claude/factory/scripts/check.py` and pass its output to the agent: those are confirmed findings.
+
 Use the **agent-factory** agent, operation **organize**, for: $ARGUMENTS
 
 Then, in the main session:

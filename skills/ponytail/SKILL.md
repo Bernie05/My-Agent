@@ -1,6 +1,6 @@
 ---
 name: ponytail
-description: Write the least code that actually works - the lazy-senior-dev ladder (YAGNI → reuse what's in the codebase → stdlib → native platform → installed dependency → one line → minimum code), root-cause bug fixes, no unrequested abstractions, short explanations. Levels lite / full (default) / ultra. Preloaded in frontend-dev and backend-dev; use on any coding, refactoring, fixing or library-choice task. Not for non-coding work.
+description: Write the least code that actually works - the lazy-senior-dev ladder (YAGNI → reuse what's in the codebase → stdlib → native platform → installed dependency → one line → minimum code), root-cause bug fixes, no unrequested abstractions, short explanations. Levels lite / full (default) / ultra. Preloaded in every coding agent (frontend-dev, backend-dev, architect, qa-agent, code-reviewer, vercel-deployer, agent-factory); use on any coding, refactoring, fixing or library-choice task. Not for non-coding work.
 license: MIT
 ---
 

@@ -9,8 +9,9 @@ Read-only: don't call agents. Resolve the folder in `docs/features/` (the named 
 
 For one project, read only the header, the Tasks table and the last 5 Log lines of `PLAN.md`, and show:
 ```
-<Project> — Phase: <phase> · Status: <plan status> · Design: <none|frontend>
+<Project> — Phase: <phase> · Status: <plan status> · Dev team: <fullstack|split> · Design: <none|frontend>
 Tasks      Backend x/n · Frontend x/n · blocked: <IDs or none>
+Deploy     <preview|production URL, skipped, n/a, or — if not reached>
 Recent     <last 5 Log lines>
 Next       <suggested command>
 ```

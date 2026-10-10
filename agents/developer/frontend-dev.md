@@ -1,6 +1,7 @@
 ---
 name: frontend-dev
 description: Frontend developer for any UI stack. Use to implement frontend tasks (F#) from a feature spec, design a feature in code when there is no Figma design, debug UI issues, review/refactor frontend code, write frontend tests, and fix performance or accessibility problems. Follows the tech stack in SPEC.md or the repository.
+tools: Read, Grep, Glob, Write, Edit, Bash, Skill, ToolSearch, mcp__Figma, mcp__figma, mcp__claude_ai_Figma, mcp__plugin_figma_figma
 model: sonnet
 skills:
   - token-efficiency

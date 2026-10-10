@@ -1,6 +1,6 @@
 # Multi-Agent System: Reference
 
-**11 agents · 59 commands · 39 skills · 3 modes · 5 hard stops**
+**15 agents · 85 commands · 46 skills · 3 modes · 6 hard stops**
 
 For a one-line list of everything, see [CATALOG.md](../CATALOG.md).
 
@@ -23,14 +23,24 @@ The system is generic and stack-agnostic. Agents take the tech stack from the sp
          qa-agent ──► issue ──► architect triage ──► GATE 4 Fix / Defer / Accept ──► dev fix ──► retest
                         ▼
          qa-agent approve-feature ──► release
+                        ▼
+         vercel-deployer ──► GATE 5 Deploy: env check ──► preview ──► smoke test ──► promote? (you confirm)
 ```
 
-`/flow:start` runs the whole pipeline. The design stage is optional: use `--design` or `--no-design`, and if you pass neither, it asks you.
+`/flow:start` runs the whole pipeline. The design stage is optional: use `--design` or `--no-design`, and if you pass neither, it asks you. The deploy stage is optional too: after release it offers a Vercel preview, smoke-tests it, and promotes to production only if you choose to.
+
+For simple projects, `/quick:start` runs a smaller pipeline: one plan (PLAN.md) → build → final check → optional deploy.
+
+**Dev team toggle.** Each feature records `Dev team: split | fullstack`. **split**: `frontend-dev` and `backend-dev` build F# and B# in parallel; best for large features. **fullstack**: one `fullstack-dev` (Opus) builds both sides in one context, so fewer handoffs and contract mismatches; best for small and medium features. `/quick` defaults to fullstack; `/flow:start` asks (or `--team`). Switch any time with `/flow:team`; task IDs and the API contract don't change, so it's safe mid-feature. The routing rule is in `CLAUDE.md`.
 
 ## How it works
 - **Agents** are subagents. Only the main chat session can call them; they cannot call each other.
 - **Commands** are what you type, e.g. `/design:start`. Each command tells the main session which agent to call, and handles the hard stops.
 - **Skills** are preloaded into agents through their `skills:` field. Claude can also load them automatically when a task matches.
+- **Agents report what's missing or wrong; you decide.** Each agent ends its report with an optional `FEEDBACK:` block: `need` (missing skill or command), `fix`, `stale`, `remove` or `context`, each with evidence. A **blocking** need is handled right away (check local → ask you → agent factory → resume the agent). Everything else is queued in `factory/NEEDED.md`, where you review it and mark rows `approved` or `rejected`. A **weekly routine** runs `/factory:needed`, which builds only approved rows through the agent factory and opens a pull request for you to merge. Agents never change the toolkit themselves. Rules: `token-efficiency` (agents), `CLAUDE.md` (main session), `commands/factory/needed.md` (builder).
+- **An observer watches how agents actually work.** A `SubagentStop`/`Stop` hook logs one line per run (metadata only, local). `/factory:observe` turns those runs into stats (files re-read across runs, repeated errors and retries, user corrections, unused skills) and the read-only `observer` agent proposes evidence-backed rows for `factory/NEEDED.md`. It also imports the weekly report routines' findings (`factory/findings/`), so everything lands in one review queue. Install the hook once per device: `python3 factory/scripts/install_observer_hook.py`.
+
+**Weekly loop:** use your agents → run `/factory:observe` → review `factory/NEEDED.md` (approve/reject) → push → Sunday's routine builds the approved rows and opens a PR → merge → `git pull`.
 - You can also call an agent in plain language: *"use the figma-designer agent to add a dark mode to the design"*.
 
 ## Quick start
@@ -49,24 +59,36 @@ Or run it step by step: `/design:start …` → `/design:approve` → `/arch:bre
 agents/
   design/        figma-designer.md
   architecture/  architect.md
-  development/   frontend-dev.md, backend-dev.md
+  developer/     frontend-dev.md, backend-dev.md, fullstack-dev.md
   qa/            qa-agent.md
   review/        code-reviewer.md
   court/         trial-agent.md, lawyer-attacker.md, lawyer-defender.md, judge.md
   deploy/        vercel-deployer.md
+  factory/       agent-factory.md, observer.md
+  personal/      resume-manager.md
 commands/
   design/  (7)   /design:*
   arch/    (11)  /arch:*
-  fe/      (8)   /fe:*
+  fe/      (9)   /fe:*
   be/      (8)   /be:*
+  fs/      (10)  /fs:*
   qa/      (6)   /qa:*
-  flow/    (10)  /flow:*
+  flow/    (11)  /flow:*
   court/   (1)   /court:trial
   deploy/  (5)   /deploy:*
   ponytail/ (3)  /ponytail:*
+  quick/   (3)   /quick:*
+  factory/ (9)   /factory:*
+  resume/  (1)   /resume:update
   summarize.md   /summarize
 skills/<name>/SKILL.md     (must stay flat; Claude Code only finds skills one level deep)
 docs/AGENT-SYSTEM.md       (this file)
+factory/REGISTRY.md        (every item built, improved or reviewed, with its security verdict)
+factory/NEEDED.md          (agent feedback queue: you approve rows, the weekly routine builds them)
+factory/evals/             (skill tests: before/after scores block regressions)
+factory/findings/          (weekly report routines' proposals, imported by /factory:observe)
+factory/observe/           (local only, git-ignored: run log from the hook + stats)
+factory/scripts/check.py   (consistency check: counts, docs, tools lines, skill sizes; run any time)
 backups/agent-system-2026-09-25/   (previous version)
 ```
 
@@ -77,20 +99,24 @@ backups/agent-system-2026-09-25/   (previous version)
 | Agent | Folder | Model | Role | Preloaded | Loaded on demand |
 |---|---|---|---|---|---|
 | `figma-designer` | design | sonnet | Designs in Figma through the MCP (foundations, components, screens, flows); writes DESIGN.md | token-efficiency, figma-design-workflow | design-handoff, design-systems, component-design, design-patterns, accessibility-design, figma-integration, frontend-design |
-| `architect` | architecture | inherit | Spec (built from DESIGN.md when there is one), scenarios, tasks and sections, issue triage. Never writes app code. Keeps specs lean (extras go to Out of Scope) | token-efficiency | architecture-analysis, scenario-validation, task-breakdown, issue-triage, decision-making, ponytail |
+| `architect` | architecture | inherit | Spec (built from DESIGN.md when there is one), scenarios, tasks and sections, issue triage. Never writes app code. Keeps specs lean (extras go to Out of Scope) | token-efficiency, ponytail | architecture-analysis, scenario-validation, task-breakdown, issue-triage, decision-making |
 | `frontend-dev` | development | sonnet | UI tasks F#. Builds from Figma frames using `get_design_context` | token-efficiency, frontend-component-development, ponytail | frontend-api-integration, frontend-testing, browser-testing, frontend-design, react-*, shadcn-ui, material-ui, ponytail-review |
 | `backend-dev` | development | sonnet | API, logic and data tasks B# | token-efficiency, api-design, ponytail | database-design, backend-security, supabase-mcp, ponytail-review |
-| `qa-agent` | qa | sonnet | Test plan, scenarios, 9-category checklist, issues, go/no-go | token-efficiency, test-scenario-execution | test-checklist, issue-reporting, issue-triage, browser-testing |
-| `code-reviewer` | review | sonnet | General code review plus an over-engineering section; whole-repo bloat audit | ponytail-review | ponytail-audit |
+| `fullstack-dev` | development | opus | F# and B# tasks in one context when Dev team is `fullstack` (default for `/quick`): DB → API → UI, debug across the stack | token-efficiency, ponytail, input-source | the frontend and backend skills above, per task |
+| `qa-agent` | qa | sonnet | Test plan, scenarios, 9-category checklist, issues, go/no-go | token-efficiency, ponytail, test-scenario-execution | test-checklist, issue-reporting, issue-triage, browser-testing |
+| `code-reviewer` | review | sonnet | General code review plus an over-engineering section; whole-repo bloat audit | token-efficiency, ponytail, ponytail-review | ponytail-audit |
 | `trial-agent` | court | sonnet | Intake questions → Case File → launches the live trial tabs | token-efficiency, court-terminal | — |
 | `lawyer-attacker` | court | sonnet | Finds every real hole in any work, including over-engineering | token-efficiency | — |
 | `lawyer-defender` | court | sonnet | Rebuts or fixes each hole with the smallest real fix; returns an enhanced version | token-efficiency | — |
 | `judge` | court | opus | Rules on each hole; final verdict and final version | token-efficiency | — |
-| `vercel-deployer` | deploy | sonnet | Vercel deploys (preview; prod after you confirm), status, logs, env, domains, rollback | token-efficiency, vercel-deploy | — |
+| `vercel-deployer` | deploy | sonnet | Vercel deploys (preview; prod after you confirm), status, logs, env, domains, rollback. Runs Phase 5 of `/flow:start` and step 4 of `/quick:start` | token-efficiency, ponytail, vercel-deploy | — |
+| `agent-factory` | factory | opus | Finds, security-reviews, builds, improves and organizes agents, skills and commands. Proposal first, builds only after you approve; no shell | token-efficiency, ponytail, agent-factory | quality-rubric.md, security-checklist.md (files in its skill) |
+| `observer` | factory | sonnet | Reviews run stats, activity and routine findings; proposes evidence-backed NEEDED.md rows. Read-only (never edits) | token-efficiency | — |
+| `resume-manager` | personal | sonnet | Keeps your MyResume site current: adds GitHub projects, edits experience/skills/about, previews | token-efficiency, resume-portfolio | — |
 
 **Token saving:** each agent preloads only its core skills and loads the rest with the Skill tool when an operation needs them. Routine work runs on Sonnet, while the architect inherits your main model because spec quality drives everything after it. Bookkeeping commands (`/arch:checklist`, `/arch:update`, `/arch:summary`, `/flow:status`, `/deploy:status`, `/ponytail:debt`) run directly without spawning an agent. The full rules are in the `token-efficiency` skill.
 
-**Ponytail (less code):** frontend-dev and backend-dev preload the `ponytail` skill, adapted from [dietrichgebert/ponytail](https://github.com/dietrichgebert/ponytail) (MIT). Before writing code they climb a ladder: YAGNI → reuse → stdlib → native → installed dependency → one line → minimum code. They end each report with `Skipped (ponytail): …`. The spec, DESIGN.md states, validation, security and accessibility are never cut; Ponytail only decides how little code delivers them. The default level is `full`; add `ponytail: lite|ultra|off` to a `/fe:*` or `/be:*` command to change it for that call. Deliberate shortcuts are marked with `ponytail:` comments and listed by `/ponytail:debt`.
+**Ponytail (less code):** every coding agent (frontend-dev, backend-dev, architect, qa-agent, code-reviewer, vercel-deployer, agent-factory) preloads the `ponytail` skill; court, resume and Figma agents don't, since they never touch code. It is adapted from [dietrichgebert/ponytail](https://github.com/dietrichgebert/ponytail) (MIT). Before writing code they climb a ladder: YAGNI → reuse → stdlib → native → installed dependency → one line → minimum code. They end each report with `Skipped (ponytail): …`. The spec, DESIGN.md states, validation, security and accessibility are never cut; Ponytail only decides how little code delivers them. The default level is `full`; add `ponytail: lite|ultra|off` to a `/fe:*` or `/be:*` command to change it for that call. Deliberate shortcuts are marked with `ponytail:` comments and listed by `/ponytail:debt`.
 
 The old `design-system` agent was replaced by `figma-designer`. Its skills carry over, and it is kept in the backup.
 
@@ -125,26 +151,30 @@ The old `design-system` agent was replaced by `figma-designer`. Its skills carry
 | `/arch:analyze-issue <ISSUE-###>` | Triages an issue. **Gate 4** |
 | `/arch:issue-decision <ISSUE-###> Fix\|Defer\|Accept` | Records the decision and assigns it |
 
-### `/fe:*` (8) and `/be:*` (8)
-| Command | fe | be | What it does |
-|---|---|---|---|
-| `code` | ✅ | ✅ | Implements tasks (F#/B#), with tests |
-| `debug` | ✅ | ✅ | Finds the root cause, fixes it, adds a regression test |
-| `ask` | ✅ | ✅ | Question, advice or explanation |
-| `review` | ✅ | ✅ | Review by severity, with file:line |
-| `test` | ✅ | ✅ | Writes or improves tests and runs them |
-| `refactor` | ✅ | ✅ | Restructures without changing behavior |
-| `performance` | ✅ | ✅ | Measures, then optimizes, then measures again |
-| `accessibility` | ✅ | | WCAG 2.1 AA audit and fixes |
-| `security` | | ✅ | Security audit and fixes |
+### `/fe:*` (9), `/be:*` (8) and `/fs:*` (10)
+`/fs:*` always uses `fullstack-dev`, whatever the feature's Dev team is: use it to ask or build directly across the whole stack.
+
+| Command | fe | be | fs | What it does |
+|---|---|---|---|---|
+| `code` | ✅ | ✅ | ✅ | Implements tasks (F#/B#, or both with fs), with tests |
+| `design` | ✅ | | ✅ | Designs in code (tokens, preview page, DESIGN.md), then Gate 0 |
+| `debug` | ✅ | ✅ | ✅ | Finds the root cause (fs: across UI → API → DB), fixes it, adds a regression test |
+| `ask` | ✅ | ✅ | ✅ | Question, advice or explanation |
+| `review` | ✅ | ✅ | ✅ | Review by severity, with file:line |
+| `test` | ✅ | ✅ | ✅ | Writes or improves tests and runs them |
+| `refactor` | ✅ | ✅ | ✅ | Restructures without changing behavior |
+| `performance` | ✅ | ✅ | ✅ | Measures, then optimizes, then measures again |
+| `accessibility` | ✅ | | ✅ | WCAG 2.1 AA audit and fixes |
+| `security` | | ✅ | ✅ | Security audit and fixes |
 
 ### `/qa:*` (6)
 `/qa:start-testing` · `/qa:test-scenario <SC-#>` · `/qa:report-issue` · `/qa:test-checklist` · `/qa:update-progress` · `/qa:approve-feature`
 
-### `/flow:*` (10): orchestration
+### `/flow:*` (11): orchestration
 | Command | What it does |
 |---|---|
 | `/flow:mode <mode>` | Sets or switches hybrid / sequential / parallel |
+| `/flow:team <split\|fullstack>` | Switches the Dev team for a feature: frontend-dev + backend-dev, or one fullstack-dev (works for /quick features too) |
 | `/flow:start <feature> [--scope all\|per-section] [--design\|--no-design]` | Runs the full gated pipeline. Before building, asks **Implement all** or **Implement per section** |
 | `/flow:section <SEC-# \| name \| next>` | Builds and tests one section, then stops at a checkpoint |
 | `/flow:status [all]` | Gates, design link, progress, blockers, recent activity |
@@ -153,6 +183,31 @@ The old `design-system` agent was replaced by `figma-designer`. Its skills carry
 | `/flow:handoff <architecture\|development\|qa\|release>` | Checks readiness and moves to the next phase |
 | `/flow:report` | Writes REPORT.md |
 | `/flow:stop` · `/flow:resume` | Pauses and saves state · continues from it |
+
+### `/quick:*` (3): small team for simple projects
+| Command | What it does |
+|---|---|
+| `/quick:start <project> [--team fullstack\|split] [--design none\|frontend] [--frontend-only\|--backend-only]` | architect writes one PLAN.md (1 gate) → fullstack-dev (default) or frontend-dev ║ backend-dev → main session runs build, lint, tests and scenarios → optional deploy |
+| `/quick:status [feature\|all]` | Phase, tasks and deploy URL from PLAN.md (no agent) |
+| `/quick:upgrade [feature]` | Moves the project to the big team (`/flow:start`) without losing work |
+
+### `/factory:*` (9): agents, skills and commands
+| Command | What it does |
+|---|---|
+| `/factory:find <need>` | Search local, then Anthropic, then GitHub. Review only, installs nothing |
+| `/factory:agent` · `/factory:skill` · `/factory:command <need>` | Reuse a safe existing item or build one. Always a proposal first; builds after you approve |
+| `/factory:review <path\|plugin\|GitHub URL>` | Security review (GitHub code is cloned into quarantine, never run) |
+| `/factory:improve <item>` | A better, leaner, security-reviewed version (backup first) |
+| `/factory:organize` | Duplicates, broken links, grouping and token waste: writes a catalog and a fix plan |
+| `/factory:needed [--pr] [N-ids]` | Builds the `approved` rows of `factory/NEEDED.md` (max 5 per run). Weekly routine: `--pr` opens a pull request; by hand: edits in place and asks before committing |
+| `/factory:observe [--days 14]` | Run stats from the hook's run log + routine findings → the observer proposes rows → queued in NEEDED.md (laptop only: transcripts stay local) |
+
+New coding agents always preload `ponytail`; coding skills point to its ladder and coding commands pass `ponytail: lite|ultra|off` (rules in the `agent-factory` skill). Every result gets a row in `factory/REGISTRY.md`.
+
+### `/resume:*` (1)
+| Command | What it does |
+|---|---|
+| `/resume:update` | Update the MyResume site: add GitHub projects, edit experience/skills/about, sync or remove projects, preview (resume-manager) |
 
 ### `/court:*` (1): stress-test an idea
 | Command | What it does |
@@ -202,6 +257,7 @@ The scope and current section are saved in Flow State, so `/flow:resume` restart
 2. After `/arch:breakdown`: task review
 3. After `/arch:finalize`: final approval
 4. During QA, `/arch:analyze-issue`: Fix / Defer / Accept
+5. After release (optional): **deploy**. Preview first; production only if you pick **Promote to production**
 
 Each stop asks you **Approve / Send back / Reject**.
 
@@ -224,16 +280,19 @@ docs/features/<feature-slug>/
   REPORT.md            written by /flow:report
 ```
 
-## Skills (39)
+## Skills (46)
 - **Design / Figma:** figma-design-workflow, design-handoff, figma-integration, design-systems, component-design, design-patterns, accessibility-design
+- **Design quality:** design-taste (marketing UI), impeccable (app UI critique and audit), motion-design (animation)
 - **Architect:** architecture-analysis, scenario-validation, task-breakdown, decision-making, issue-triage
+- **Code structure:** code-patterns (design patterns, SOLID, layering; rung 7 of the ponytail ladder)
 - **Frontend:** frontend-component-development, frontend-api-integration, frontend-testing, frontend-design (official Anthropic)
 - **React-only:** react-best-practices, typescript-for-frontend, component-composition-patterns, react-data-fetching, react-testing-patterns
 - **UI libraries:** shadcn-ui, material-ui. frontend-dev loads the one the project uses. For a new React project it chooses from the spec: shadcn/ui for a custom design, Tailwind or Next.js; MUI for data-heavy admin tools or a standard Material look. It records the choice for SPEC.md → Tech Stack, and never adds a second library.
 - **Backend:** api-design, database-design, backend-security, supabase-mcp (loaded when the stack uses Supabase)
 - **QA:** test-scenario-execution, test-checklist, issue-reporting, browser-testing (Node Playwright, based on Anthropic's webapp-testing)
-- **Cross-cutting:** token-efficiency (preloaded in every agent)
+- **Cross-cutting:** token-efficiency (preloaded in every agent), input-source (reference vs prompt mode for plan-driven agents), project-gitignore (security baseline before the first commit)
 - **Ponytail (less code, MIT):** ponytail, ponytail-review, ponytail-audit, ponytail-debt
 - **Court:** court-terminal
 - **Deploy:** vercel-deploy
-- **Other:** hello-world
+- **Factory:** agent-factory (house rules, quality rubric, security checklist)
+- **Personal:** resume-portfolio

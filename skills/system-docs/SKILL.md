@@ -63,4 +63,4 @@ A topic page uses the matching template section from `templates.md` when one fit
    - a **map** (`flowchart LR`) with one `subgraph` per group and labeled edges for each relationship type. If it has more than 15 nodes, draw one overview map of groups and one map per group.
    - a **run** (`sequenceDiagram`) for each main path, e.g. user → command → main session → agent → skill, including stops and gates (`Note over`) and hand-backs.
 4. **Tables**: `Item | Kind | Purpose | Uses | Used by`. Mark items nothing references as _(unused?)_.
-5. Example for `~/.claude`: commands call agents through the main session, agents preload or load skills, agents request new ones with `NEEDS:` and agent-factory builds them after approval. Draw it, don't just list it.
+5. Example for `~/.claude`: commands call agents through the main session, agents preload or load skills, agents report gaps with `FEEDBACK:`, the main session queues them in factory/NEEDED.md and agent-factory builds approved ones. Draw it, don't just list it.

@@ -4,8 +4,9 @@ One file replaces SPEC.md, analysis.md, scenarios.md, the three task files and P
 
 ```markdown
 # <Project> — Plan
-Status: Draft | Approved (<date>)   Team: quick   Design: none | frontend
-Phase: plan | build | check | done | stopped      Last updated: <timestamp>
+Status: Draft | Approved (<date>)   Team: quick   Dev team: fullstack | split   Design: none | frontend
+Phase: plan | build | check | deploy | done | stopped      Last updated: <timestamp>
+Deploy: — | preview <url> | production <url> | skipped | n/a
 
 ## Goal
 <1-3 lines: who uses it and what they can do>

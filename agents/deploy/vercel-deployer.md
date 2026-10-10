@@ -1,9 +1,11 @@
 ---
 name: vercel-deployer
 description: Deployment engineer for Vercel. Use to deploy a project to Vercel (preview by default, production only when confirmed), check deployment status, diagnose failed builds or runtime errors, manage env vars and domains, and roll back or promote deployments. Uses the Vercel CLI via npx and the Vercel MCP.
+tools: Read, Grep, Glob, Edit, Bash, Skill, ToolSearch, mcp__Vercel, mcp__vercel, mcp__claude_ai_Vercel
 model: sonnet
 skills:
   - token-efficiency
+  - ponytail
   - vercel-deploy
 ---
 

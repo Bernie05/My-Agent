@@ -18,9 +18,10 @@ Names are lowercase-kebab. Put related items in the same group, following the ex
 - **Frontmatter:**
   - `name`, and a `description` that says what it does **and when to use it**. The description is how the agent gets picked.
   - `tools:` listed explicitly with least privilege. **Never leave it out**, because an agent without it inherits every tool.
+  - Connector (MCP) tools: grant a whole server with `mcp__<server>`, and list the name variants, since the server name differs between machines (claude.ai connector, plugin, local): e.g. `mcp__Figma, mcp__figma, mcp__claude_ai_Figma, mcp__plugin_figma_figma`. Only the servers the agent's job needs.
   - Don't combine a shell tool with WebFetch or WebSearch unless the job truly needs both, since that pairing is a path for sending data out.
   - `model:` is `sonnet` for routine work (coding, searching, writing). Use `opus` for judgment: specs, security, final verdicts.
-  - `skills:` holds `token-efficiency` plus only the 1–2 core skills.
+  - `skills:` holds `token-efficiency`, then **`ponytail` for every coding agent** (one that writes, reviews, tests, deploys or designs code, specs or agent files), plus only the 1–2 core skills. Skip `ponytail` only for agents that never touch code (e.g. court, resume, Figma design); say so in the proposal.
 - **Body:**
   1. a one-line role
   2. a "load on demand" table (when → skill)
@@ -30,12 +31,13 @@ Names are lowercase-kebab. Put related items in the same group, following the ex
 
   House example: `agents/development/frontend-dev.md`.
 - If it needs answers from the user, it returns `INTAKE: QUESTIONS` lines for the main session to ask. See `agents/court/trial-agent.md`.
-- It gets the `NEEDS:` skill-request protocol by preloading `token-efficiency`. If it doesn't preload it, add one line pointing to that skill's "Missing skill" section (see `agents/review/code-reviewer.md`).
+- It gets the `FEEDBACK:` protocol by preloading `token-efficiency`. If it doesn't preload it, add one line pointing to that skill's "Feedback" section (see `agents/review/code-reviewer.md`).
 - System actions (install, clone, opening windows) belong in the command running in the main session, not in the agent.
 
 ## Skill
 - `description` says **what + when**, plus when **not** to use it for stack-specific skills ("Use ONLY when…").
 - Use progressive disclosure: keep SKILL.md short (under about 150 lines) and move checklists, templates and long references into sibling files that SKILL.md names and loads only when needed.
+- **Ponytail in coding skills:** a skill that guides writing, reviewing or structuring code points to the `ponytail` ladder at the decisions where less code is possible (e.g. "**Reuse first (Ponytail)**", "native `<input type="date">` before a picker library"). One line at each such decision, no copy of the ladder. Non-coding skills stay unchanged. House examples: `skills/shadcn-ui/SKILL.md`, `skills/code-patterns/SKILL.md`.
 - Scripts go in `scripts/`. A script must run without prompts, only touch its own inputs and outputs, and never download or run remote code.
 - For deeper skill-authoring guidance, read `plugins/marketplaces/anthropic-agent-skills/skills/skill-creator/SKILL.md`. Read it only when building a skill, and grep for the section you need.
 
@@ -43,6 +45,7 @@ Names are lowercase-kebab. Put related items in the same group, following the ex
 - Frontmatter holds `description` (`"<Group>: <what it does>"`) and `argument-hint`.
 - The body is a thin wrapper: "Use the **X** agent, operation **Y**, for: $ARGUMENTS", then how to relay the report. House example: `commands/fe/code.md`.
 - No `allowed-tools` and no `!` shell lines unless they are essential. If one is used, justify it in a comment.
+- **Ponytail in coding commands:** a command that runs a coding agent adds `[ponytail: lite|ultra|off]` to its `argument-hint` and passes any level through to the agent (default `full`). House example: `commands/fe/code.md`.
 
 ## Token budget (applies to everything you build)
 - Preload only what every run needs; everything else is loaded on demand.

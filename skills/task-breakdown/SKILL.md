@@ -11,7 +11,7 @@ Input: approved `SPEC.md` + `scenarios.md`. Output: `frontend-task.md`, `backend
 
 ```markdown
 ### B1: <Short name>
-Owner: backend-dev
+Owner: backend-dev          (the layer; with `Dev team: fullstack`, fullstack-dev builds both F# and B#)
 Section: SEC-1
 Status: ⏳ Todo | 🔄 In Progress | ✅ Done | ⛔ Blocked
 Depends on: <task IDs or "none">

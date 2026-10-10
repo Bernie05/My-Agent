@@ -5,6 +5,7 @@ tools: Read, Grep, Glob, Bash, Write, Edit, Skill, ToolSearch
 model: sonnet
 skills:
   - token-efficiency
+  - ponytail
   - input-source
   - test-scenario-execution
 ---

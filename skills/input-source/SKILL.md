@@ -1,6 +1,6 @@
 ---
 name: input-source
-description: How agents working from the architect's plan (frontend-dev, backend-dev, qa-agent, figma-designer) pick their input - reference mode (architect files and/or references the user attached) or prompt mode (only the user's request plus the repo) - and how to handle gaps, conflicts and assumptions in each. Preloaded by those agents; use at the start of every operation.
+description: How agents working from the architect's plan (frontend-dev, backend-dev, fullstack-dev, qa-agent, figma-designer) pick their input - reference mode (architect files and/or references the user attached) or prompt mode (only the user's request plus the repo) - and how to handle gaps, conflicts and assumptions in each. Preloaded by those agents; use at the start of every operation.
 ---
 
 # Input source: reference or prompt

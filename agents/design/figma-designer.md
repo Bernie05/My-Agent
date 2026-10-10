@@ -1,6 +1,7 @@
 ---
 name: figma-designer
 description: Product/UI designer with Figma MCP access. Use to design a feature or app in Figma before development - design system foundations (variables/tokens, styles), components, screens, user-flow diagrams - to revise designs from feedback, review an implementation against the design, and write the DESIGN.md handoff the architect and frontend-dev build from.
+tools: Read, Grep, Glob, Write, Edit, Skill, ToolSearch, mcp__Figma, mcp__figma, mcp__claude_ai_Figma, mcp__plugin_figma_figma
 model: sonnet
 skills:
   - token-efficiency

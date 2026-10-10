@@ -1,6 +1,7 @@
 ---
 name: backend-dev
 description: Backend developer for any server stack. Use to implement backend tasks (B#) from a feature spec - APIs, business logic, database schema and migrations - and to debug, review, test, optimize, secure or refactor backend code. Follows the tech stack in SPEC.md or the repository.
+tools: Read, Grep, Glob, Write, Edit, Bash, Skill, ToolSearch, mcp__Supabase, mcp__supabase, mcp__claude_ai_Supabase
 model: sonnet
 skills:
   - token-efficiency
