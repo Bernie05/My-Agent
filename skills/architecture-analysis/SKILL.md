@@ -39,6 +39,8 @@ Output goes to `docs/features/<feature-slug>/`: `SPEC.md` (source of truth) and 
 
 7. **Assess feasibility & risk**: unknowns, dependencies, anything needing a decision (use the `decision-making` skill and log it).
 
+8. **Team check**: list each area of work (frontend, backend, database, each integration, infra/deploy, testing) and map it to an existing agent and its skill(s). Check cheaply: Grep the `description:` lines of `~/.claude/agents/**/*.md` and `~/.claude/skills/*/SKILL.md`, never whole files. Mark a gap only when guessing would risk wrong or unsafe output (a new service, library or file format with real rules). Prefer a **skill** for missing know-how. Ask for an **agent** only when a whole role is missing (e.g. mobile, data/ML). Max 3 gaps.
+
 ## SPEC.md template
 
 ```markdown
@@ -64,7 +66,7 @@ Status: Draft | Approved | In Development | In QA | Done
 ```
 
 ## analysis.md contents
-User journeys, component list, data-flow traces, risks (with likelihood/impact), dependencies, and a rough size estimate (S/M/L per area).
+User journeys, component list, data-flow traces, risks (with likelihood/impact), dependencies, a rough size estimate (S/M/L per area), and a **Team & skills** table (`Area | Agent | Skills | Gap?`) from step 8.
 
 ## Checklist
 - [ ] Goal, users and scope clear; out-of-scope listed
@@ -73,3 +75,4 @@ User journeys, component list, data-flow traces, risks (with likelihood/impact),
 - [ ] Data model and permissions defined
 - [ ] Edge cases listed with expected behavior
 - [ ] Risks and open questions listed
+- [ ] Team check done: every area has an agent and skills, or a gap is requested

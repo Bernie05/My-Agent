@@ -13,7 +13,7 @@ You are the orchestrator for a **simple** project. You run in the main session a
 
 ## 1. Plan (1 hard stop)
 architect **plan-lite**. If it returns open questions, ask the user in **one** AskUserQuestion call, then call it again with the answers.
-**Plan gate:** show the PLAN.md link and a 3-line summary (requirements count, tasks F#/B#, stack). Ask **Approve** / **Send back** (→ architect **plan-lite** again with the feedback, then repeat) / **Reject** (Phase `stopped`, end). If the architect recommended the big team, include that option: **Upgrade** → `/quick:upgrade`.
+**Plan gate:** show the PLAN.md link and a 3-line summary (requirements count, tasks F#/B#, stack). Ask **Approve** / **Send back** (→ architect **plan-lite** again with the feedback, then repeat) / **Reject** (Phase `stopped`, end). If the architect recommended the big team, include that option: **Upgrade** → `/quick:upgrade`. If its report has `NEEDS:` blocks (team check), show a **Team gaps** list and add **Approve + hire**: approve, then run the hires per `token-efficiency` → "`NEEDS:` in a report" before the build.
 On Approve, set `Status: Approved` and `Phase: build` in PLAN.md yourself.
 
 ## 2. Build

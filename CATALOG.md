@@ -23,6 +23,7 @@ A one-line reference for everything in `~/.claude`. For the full design → spec
 | `lawyer-defender` | court | Defends the work: rebuts, fixes holes, returns a stronger version |
 | `judge` | court | Neutral final verdict: rules on each hole, gives the best final version |
 | `vercel-deployer` | deploy | Deploys to Vercel (preview, or production after you confirm); status, logs, env, domains, rollback |
+| `system-documenter` | docs | Documents a whole system into `Notes/`: config, system flow, data flow, DB schema, with Mermaid diagrams and plain-language summaries |
 
 ---
 
@@ -106,6 +107,13 @@ The same commands exist in both groups. `/be:security` is backend only; `/fe:acc
 | `/deploy:env` | Which env vars are missing per environment, or add one |
 | `/deploy:rollback` | Roll production back, or `promote <url>` a preview (asks first) |
 
+### `/docs:*`: System notes
+| Command | What it does |
+|---|---|
+| `/docs:generate` | Write `Notes/` for the project: overview, configuration, system flow, data flow, database schema, glossary |
+| `/docs:update` | Refresh only the Notes sections whose source files changed since the last run |
+| `/docs:request` | Document one topic or folder (e.g. how the agents call each other) with diagrams, saved `to <folder>` of your choice |
+
 ### `/ponytail:*`: Less code
 | Command | What it does |
 |---|---|
@@ -164,6 +172,7 @@ The same commands exist in both groups. `/be:security` is backend only; `/fe:acc
 | | `browser-testing` | Playwright testing in a real browser |
 | **Court** | `court-terminal` | Runs the trial in Windows Terminal tabs (Clerk, Attacker, Defender, Judge) |
 | **Deploy** | `vercel-deploy` | Vercel preflight, deploy, verify, logs, env, domains, rollback |
+| **Docs** | `system-docs` | Notes/ layout, TL;DR-first writing style, Mermaid diagram rules |
 
 ### Also available (plugins and built-in, not in this folder)
 - **Figma plugin** (`figma:*`): use, generate-design, generate-library, generate-diagram, code-connect, create-new-file

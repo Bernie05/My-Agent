@@ -25,7 +25,7 @@ You are the orchestrator for this feature. You run in the main session and deleg
 
 ## Phase 1 — Specification (3 hard stops)
 For each gate: call the **architect**, show the user a short summary with file links, then ask with AskUserQuestion **Approve / Send back / Reject**. Send back → call the architect again with the feedback. Reject → set phase `stopped` and end. Tick each gate in Flow State as it passes.
-1. architect **analyze** (pointing it at the approved DESIGN.md if there is one; answer its open questions with the user first) → **Gate 1**
+1. architect **analyze** (pointing it at the approved DESIGN.md if there is one; answer its open questions with the user first) → **Gate 1**. If its report has `NEEDS:` blocks (team check), show a **Team gaps** list and add the option **Approve + hire**: approve, then run the hires per `token-efficiency` → "`NEEDS:` in a report" before breakdown.
 2. architect **breakdown** (tasks grouped into sections SEC-#) → **Gate 2**
 3. architect **finalize** (writes PROJECT_CONTEXT.md with Mode and the Sections table) → **Gate 3** → architect **approve**
 
