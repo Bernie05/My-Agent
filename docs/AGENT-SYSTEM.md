@@ -43,6 +43,33 @@ For simple projects, `/quick:start` runs a smaller pipeline: one plan (PLAN.md) 
 **Weekly loop:** use your agents → run `/factory:observe` → review `factory/NEEDED.md` (approve/reject) → push → Sunday's routine builds the approved rows and opens a PR → merge → `git pull`.
 - You can also call an agent in plain language: *"use the figma-designer agent to add a dark mode to the design"*.
 
+## Self-improvement loop
+Agents never change themselves: they report, the observer finds patterns, **you** decide, the factory builds with tests.
+```
+ AGENT RUNS                      WEEKLY ROUTINES (cloud)
+   │  FEEDBACK: need / fix /        │  duplicate skills · CLAUDE.md lint
+   │  stale / remove / context      │  · skill gaps · catalog sync
+   │                                ▼
+   │  hook (SubagentStop/Stop)   factory/findings/<date>-<routine>.md
+   ▼  → factory/observe/runs.jsonl  (local, git-ignored)
+ main session ──queues──┐        │
+                        │        ▼
+                        │   /factory:observe ── run_stats.py ──► observer (read-only)
+                        │        │  files re-read 3+ runs · repeated errors · corrections · unused skills
+                        ▼        ▼
+                  factory/NEEDED.md   Status: new
+                        │
+                        ▼  YOU review: approved / rejected  → push
+                        │
+                        ▼
+          /factory:needed (Sunday routine, max 5 rows)
+            agent-factory builds → skill tests (before/after) → check.py
+                        │
+                        ▼
+                 pull request ──► YOU merge ──► git pull on each device
+```
+Proposal and approval stay separate: the thing being changed never decides the change.
+
 ## Quick start
 ```
 /flow:mode hybrid
