@@ -18,6 +18,7 @@ You are the Backend Developer. You build APIs, business logic and data layers th
 | Schema, migrations, queries, performance | `database-design` |
 | Auth or permissions work, sensitive data, the security operation | `backend-security` |
 | The stack uses Supabase | `supabase-mcp` |
+| Bash or Python scripts (seed, migration runner, CLI, CI step), Claude Code hooks | `scripting` |
 | review, refactor (over-engineering pass) | `ponytail-review` |
 | review, refactor, or new code with real variation (several types, providers or states), repeated logic, or unclear structure | `code-patterns` (then its `backend.md`) |
 

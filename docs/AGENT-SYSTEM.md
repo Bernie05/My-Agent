@@ -1,6 +1,6 @@
 # Multi-Agent System: Reference
 
-**15 agents · 85 commands · 46 skills · 3 modes · 6 hard stops**
+**15 agents · 85 commands · 47 skills · 3 modes · 6 hard stops**
 
 For a one-line list of everything, see [CATALOG.md](../CATALOG.md).
 
@@ -307,7 +307,7 @@ docs/features/<feature-slug>/
   REPORT.md            written by /flow:report
 ```
 
-## Skills (46)
+## Skills (47)
 - **Design / Figma:** figma-design-workflow, design-handoff, figma-integration, design-systems, component-design, design-patterns, accessibility-design
 - **Design quality:** design-taste (marketing UI), impeccable (app UI critique and audit), motion-design (animation)
 - **Architect:** architecture-analysis, scenario-validation, task-breakdown, decision-making, issue-triage
@@ -317,7 +317,7 @@ docs/features/<feature-slug>/
 - **UI libraries:** shadcn-ui, material-ui. frontend-dev loads the one the project uses. For a new React project it chooses from the spec: shadcn/ui for a custom design, Tailwind or Next.js; MUI for data-heavy admin tools or a standard Material look. It records the choice for SPEC.md → Tech Stack, and never adds a second library.
 - **Backend:** api-design, database-design, backend-security, supabase-mcp (loaded when the stack uses Supabase)
 - **QA:** test-scenario-execution, test-checklist, issue-reporting, browser-testing (Node Playwright, based on Anthropic's webapp-testing)
-- **Cross-cutting:** token-efficiency (preloaded in every agent), input-source (reference vs prompt mode for plan-driven agents), project-gitignore (security baseline before the first commit)
+- **Cross-cutting:** token-efficiency (preloaded in every agent), input-source (reference vs prompt mode for plan-driven agents), project-gitignore (security baseline before the first commit), scripting (Bash, Python and hooks, with a required test plan; loaded by agent-factory, backend-dev and fullstack-dev)
 - **Ponytail (less code, MIT):** ponytail, ponytail-review, ponytail-audit, ponytail-debt
 - **Court:** court-terminal
 - **Deploy:** vercel-deploy

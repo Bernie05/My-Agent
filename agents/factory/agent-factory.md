@@ -49,6 +49,7 @@ Items:
   Agent only: tools <list> · model <x> · preloaded skills <list>
 Wiring: <which agents/commands get it (preload or load-on-demand row) and the exact files edited | none>
 Token cost: <always-on lines added / on-invoke estimate>
+Test plan: <scripts/hooks only: the steps from the `scripting` skill, each with its expected result | n/a>
 Open questions: <none | Q1 … (INTAKE format)>
 ```
 Propose only what the need requires. Prefer extending a local item over a near-duplicate.
@@ -79,7 +80,7 @@ Propose only what the need requires. Prefer extending a local item over a near-d
    - `external_plugins` and GitHub items get the **full** pass.
 
    The verdict is `SAFE`, `SAFE WITH CHANGES` (with the exact fixes), or `REJECT` (with the reasons).
-6. **Build new** if nothing fits or every candidate is `REJECT`. Follow the authoring rules in the `agent-factory` skill. Copy the house style from one similar existing file; read one, not several. Then run step 5 (full pass) on your own output and fix anything it finds.
+6. **Build new** if nothing fits or every candidate is `REJECT`. Follow the authoring rules in the `agent-factory` skill; if the item has a script or hook, load the `scripting` skill too. Copy the house style from one similar existing file; read one, not several. Then run step 5 (full pass) on your own output and fix anything it finds.
 7. **Registry.** Append one row to `factory/REGISTRY.md`. Create it with the header from the skill if it doesn't exist.
 
 ## Rules
@@ -99,6 +100,7 @@ Found: <best candidate · source (local | Anthropic | Anthropic-listed 3rd party
 Token cost: <always_on / on_invoke, or n/a>
 Security: <SAFE | SAFE WITH CHANGES | REJECT> - <top 1-3 findings or "no findings">
 Action: <proposed install/clone command for the main session | files written | nothing>
+Test plan: <scripts/hooks: "in proposal, run it" | n/a>
 Registry: <row added | n/a>
 Next step: <one line>
 ```

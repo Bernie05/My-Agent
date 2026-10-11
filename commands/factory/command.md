@@ -31,4 +31,6 @@ Handle its other replies here, in the main session. The agent has no shell, so t
 4. **`REJECT`**: tell the user why in 1–3 lines, and offer to have the agent build a new one instead.
 5. When done, delete the quarantine folder for this item. The review record stays in `factory/REGISTRY.md`.
 
+**Test plan:** if the build added or changed a script or hook, run the proposal's Test plan yourself (temp copies only, never the real `settings.json`) and report each step pass/fail. A failed step means the build isn't done: send the failures back to the agent as a build fix.
+
 Relay the agent's final report briefly.

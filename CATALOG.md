@@ -163,6 +163,7 @@ The same commands exist in all three groups. `/be:security` is backend only; `/f
 | | `code-patterns` | Design patterns, SOLID, reuse, layering and folder structure for any stack; GoF + architecture catalog |
 | | `input-source` | How plan-driven agents pick their input (architect files vs. the prompt) and handle gaps; preloaded |
 | | `project-gitignore` | Create or fix a `.gitignore` so secrets, config, deps and build output never get committed |
+| | `scripting` | Write and review Bash and Python scripts and Claude Code hooks: strict mode, stdlib-only, exit codes, the hook contract, and a required test plan |
 | **Design** | `figma-design-workflow` | Step-by-step Figma build process |
 | | `figma-integration` | Figma libraries, tokens, handoff |
 | | `design-handoff` | Writing DESIGN.md |

@@ -11,4 +11,6 @@ Handle its replies here, in the main session:
 3. **`REJECT`** on the original: tell the user why in 1–3 lines and offer `/factory:skill`, `/factory:agent` or `/factory:command` to build a clean one instead.
 4. **Done**: relay the diff summary (`kept | removed | added | fixed`), where the new or edited file is, and the backup path for local items. If the new item replaces a plugin item, say that both now exist and offer to disable the plugin (`claude plugin disable <plugin>`). Run that only after the user approves.
 
+**Test plan:** if the build added or changed a script or hook, run the proposal's Test plan yourself (temp copies only, never the real `settings.json`) and report each step pass/fail. A failed step means the build isn't done: send the failures back to the agent as a build fix.
+
 Relay the agent's final report briefly.

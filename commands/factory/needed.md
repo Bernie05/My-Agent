@@ -26,6 +26,7 @@ Use the **agent-factory** agent. If that agent type isn't available (a cloud rou
    Then call the factory with operation **build** and `APPROVED: pre-approved via NEEDED.md <ID>. <notes>` plus the proposal. Otherwise don't build: set Status `failed: needs your review - <reason>` (or `needs-laptop: <install/clone needed>`) and put the proposal in the report.
 3. `remove`: after the review, back up the target to `factory/backups/` (in place mode), delete it with `git rm`, and remove the lines that referenced it.
 4. **Skill tests:** if the row changed a skill that has `factory/evals/<skill>.md`, run it as `factory/evals/README.md` describes (old vs new version, blind grader). If the new version scores lower or loses any check it passed before, revert that skill's change and set Status `failed: regression - <lost checks>`. Put both scores in the report.
+   **Script tests:** if the row added or changed a script or hook, run the proposal's Test plan (temp copies only). Any failed step → revert that change and set Status `failed: test plan - <step>`.
 5. **Check:** run `python3 -I <Root>/factory/scripts/check.py <Root>` (counts, docs, tools lines, preloaded skills, skill sizes, links) and confirm no `.env`, key or credential file is staged. Fix what it reports, or mark the row `failed`.
 6. Set the row's Status to `done` (or `failed: …` / `needs-laptop: …`). The factory adds the `factory/REGISTRY.md` row.
 

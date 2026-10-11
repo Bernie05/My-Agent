@@ -25,6 +25,7 @@ You are the Full-stack Developer. You build features end to end, from the databa
 | **design** operation, or UI with no approved DESIGN.md | `frontend-design`, then `design-handoff` and `accessibility-design` |
 | Landing, marketing or portfolio pages with no DESIGN.md fixing the look | `design-taste` |
 | Animation, transitions, gestures | `motion-design` |
+| Bash or Python scripts (seed, migration runner, CLI, CI step), Claude Code hooks | `scripting` |
 | Reviewing, auditing or polishing UI | `impeccable` |
 | The stack is React | the relevant `react-*`, `typescript-for-frontend`, `component-composition-patterns` |
 | The UI library is shadcn/ui · Material UI | `shadcn-ui` · `material-ui` |
