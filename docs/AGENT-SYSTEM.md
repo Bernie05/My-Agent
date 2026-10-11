@@ -63,12 +63,19 @@ Agents never change themselves: they report, the observer finds patterns, **you*
                         │
                         ▼
           /factory:needed (Sunday routine, max 5 rows)
-            agent-factory builds → skill tests (before/after) → check.py
+            agent-factory builds → file guard (only the row's files)
+            → skill tests (seen + held-out) → script test plan → check.py
+            → promote the fixed problem into a new eval case
+            → LEARNINGS.md (pass or fail) · RESULTS.tsv (verdict: pending)
                         │
                         ▼
                  pull request ──► YOU merge ──► git pull on each device
+                        │
+                        ▼  14 days later
+          /factory:observe measures it: helped / no-change / worse
+          (3 failed builds → parked · 5 no-effect results → asks you)
 ```
-Proposal and approval stay separate: the thing being changed never decides the change.
+Proposal and approval stay separate: the thing being changed never decides the change. `factory/NEEDED.md` → **Autonomy** can be raised from `proposal` to `bounded` (small L1 skill fixes seen 3+ times build without your approval, still as a PR you merge). The gate, learnings, results and eval-growth ideas are adapted from auto-harness and autoharness (MIT).
 
 ## Quick start
 ```
@@ -112,7 +119,9 @@ skills/<name>/SKILL.md     (must stay flat; Claude Code only finds skills one le
 docs/AGENT-SYSTEM.md       (this file)
 factory/REGISTRY.md        (every item built, improved or reviewed, with its security verdict)
 factory/NEEDED.md          (agent feedback queue: you approve rows, the weekly routine builds them)
-factory/evals/             (skill tests: before/after scores block regressions)
+factory/evals/             (skill tests: before/after scores block regressions; held-out/ = grader-only cases)
+factory/LEARNINGS.md       (one entry per row built or failed: the factory's memory)
+factory/RESULTS.tsv        (did each change help? measured by /factory:observe)
 factory/findings/          (weekly report routines' proposals, imported by /factory:observe)
 factory/observe/           (local only, git-ignored: run log from the hook + stats)
 factory/scripts/check.py   (consistency check: counts, docs, tools lines, skill sizes; run any time)

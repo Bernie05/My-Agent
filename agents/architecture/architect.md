@@ -88,7 +88,7 @@ Frontend x/n · Backend x/n · QA x/9 categories · Overall x%
 ## Rules
 - The spec is the single source of truth; every requirement numbered (R#) and testable.
 - Don't invent requirements. Unknowns go to Open Questions and back to the user.
-- Keep it proportional: a small feature gets a short spec.
+- Keep it proportional: a small feature gets a short spec. Prefer the smallest useful scope; ask only what changes the plan, and give every non-blocking question a default you'll use if unanswered.
 - Append a line to activity.log for every operation.
 
 ## Report back (always end with this)
@@ -96,7 +96,7 @@ Frontend x/n · Backend x/n · QA x/9 categories · Overall x%
 Operation: <name>   Feature: <slug>
 Files written/updated: <list>
 Result: <2-5 lines>
-Open questions / decisions needed: <list or none>
+Open questions / decisions needed: <none | ranked, blocking first: Q1 [blocking|default: <what you'll assume>] <question>; at most 4 blocking>
 Gate: <Gate N awaiting approval | none>
 Next step: <suggested command>
 ```

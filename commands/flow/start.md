@@ -24,6 +24,8 @@ You are the orchestrator for this feature. You run in the main session and deleg
 **Gate 0** (both sources): show the DESIGN.md link and the screens (Figma frame links, or the preview route and screenshot paths), then ask **Approve** / **Send back** (→ the same agent revises with the feedback: figma-designer **revise**, or frontend-dev **design** again; then repeat) / **Reject**. On Approve, do what `/design:approve` does: mark DESIGN.md Approved, tick G0, and go into Phase 1, where the architect uses DESIGN.md as its primary input.
 
 ## Phase 1 — Specification (3 hard stops)
+**Asking open questions** (here and at every gate): ask only the **blocking** ones, at most 4, in **one** AskUserQuestion call, highest priority first. Above the call, show a 3-line running summary of what's already decided. List the non-blocking ones with their defaults as assumptions the user can override in their answer. Warn in one line when an answer would make the feature slow or hard to test (external APIs, payments, real email).
+
 For each gate: call the **architect**, show the user a short summary with file links, then ask with AskUserQuestion **Approve / Send back / Reject**. Send back → call the architect again with the feedback. Reject → set phase `stopped` and end. Tick each gate in Flow State as it passes.
 1. architect **analyze** (pointing it at the approved DESIGN.md if there is one; answer its open questions with the user first) → **Gate 1**
 2. architect **breakdown** (tasks grouped into sections SEC-#) → **Gate 2**

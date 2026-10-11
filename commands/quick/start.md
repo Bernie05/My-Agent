@@ -13,7 +13,7 @@ You are the orchestrator for a **simple** project. You run in the main session a
 5. No `.gitignore` in the repo → the dev that scaffolds loads `project-gitignore` first (their rules already say so; remind them in the prompt).
 
 ## 1. Plan (1 hard stop)
-architect **plan-lite**. If it returns open questions, ask the user in **one** AskUserQuestion call, then call it again with the answers.
+architect **plan-lite**. If it returns open questions, ask the blocking ones (at most 4, highest priority first) in **one** AskUserQuestion call, with a 3-line summary of what's decided above it and the non-blocking ones listed with their defaults; then call it again with the answers.
 **Plan gate:** show the PLAN.md link and a 3-line summary (requirements count, tasks F#/B#, stack). Ask **Approve** / **Send back** (→ architect **plan-lite** again with the feedback, then repeat) / **Reject** (Phase `stopped`, end). If the architect recommended the big team, include that option: **Upgrade** → `/quick:upgrade`.
 On Approve, set `Status: Approved` and `Phase: build` in PLAN.md yourself.
 

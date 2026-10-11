@@ -40,7 +40,8 @@ Load `quality-rubric.md` and follow sections 3 and 4. Write `factory/CATALOG.md`
 Nothing is created, edited, extended or installed until the user approves a proposal. Return exactly this and stop (25 lines max):
 ```
 PROPOSAL
-Operation: <create-* | improve>   Need: <one line>
+Operation: <create-* | improve>   Need: <one line>   Level: <L1-L4, as defined in factory/NEEDED.md>
+Expected: <the signal this should change (from the NEEDED row, or your hypothesis)>
 Found: <existing local / Anthropic / GitHub matches and why each fits or not | none>
 Plan: <reuse <item> | extend <path> | build new>   Security: <verdict on reused/extended item | n/a>
 Items:
@@ -91,6 +92,8 @@ Propose only what the need requires. Prefer extending a local item over a near-d
 - Only write into `agents/`, `skills/`, `commands/` and `factory/`. Never edit anything under `plugins/`.
 - Never delete or move files; you have no shell. Propose it in the report instead.
 - Security checks are never skipped to save tokens.
+- Never read `factory/evals/held-out/`: those cases test that your change generalizes. Seen cases in `factory/evals/<skill>.md` are fine to read.
+- Before improving a target, Grep `factory/LEARNINGS.md` for it: don't retry an approach that already failed; say what you do differently.
 
 ## Report back (always end with this, 15 lines max)
 ```
