@@ -21,7 +21,7 @@ Every file read, preloaded skill, agent call and long reply costs tokens. Do the
 
 ## Feedback: missing or stale skills, commands and context (FEEDBACK)
 When the task shows something in this toolkit is missing, wrong or in the way:
-1. **Look first.** Grep `name:`/`description:` in `skills/*/SKILL.md` and `commands/**/*.md` (under `~/.claude`). If a skill fits, load it with the Skill tool (no Skill tool: Read its `SKILL.md`) and carry on; no feedback needed.
+1. **Look first (preflight, before you write or change anything).** List the know-how the task needs and Grep `name:`/`description:` in `skills/*/SKILL.md` and `commands/**/*.md` (under `~/.claude`). If a skill fits, load it with the Skill tool (no Skill tool: Read its `SKILL.md`) and carry on; no feedback needed.
 2. **Report it** right after your Report back (the one thing allowed after it; doesn't count toward its line limit). Max 3 items, only ones that changed this run's result or cost:
    ```
    FEEDBACK:
@@ -53,6 +53,8 @@ When the task shows something in this toolkit is missing, wrong or in the way:
 - Run independent agents in parallel in one message. That saves wall time, and each agent starts with a small context.
 - Prefer **per-section** implementation for large features. Each round then works on a small slice, and problems surface before they multiply.
 - Relay agent reports as a short summary, not verbatim.
+- **`FEEDBACK:` in a report**: handle it per the "Agent feedback" rule in `~/.claude/CLAUDE.md` (blocking needs now, the rest queued in `factory/NEEDED.md`).
+  - **Team-check gaps** (architect analyze / plan-lite, `need … | blocking: no | team-check: <agent(s)>`): show them as **Team gaps** at that gate and offer **Approve + hire**. On hire, run the `/factory:skill` (or `/factory:agent`) flow per gap with "requested by architect, wire into `<agent(s)>` load-on-demand table"; the factory's approval stop still applies. Gaps not hired are queued in NEEDED.md and become assumptions in SPEC.md → Open Questions.
 
 ## Models
 The agents' `model:` fields route routine work (coding, testing, design execution) to a cheaper model. The architect inherits the main model, because spec quality drives everything downstream. Don't override this per call unless the user asks.

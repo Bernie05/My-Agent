@@ -27,7 +27,7 @@ You are the orchestrator for this feature. You run in the main session and deleg
 **Asking open questions** (here and at every gate): ask only the **blocking** ones, at most 4, in **one** AskUserQuestion call, highest priority first. Above the call, show a 3-line running summary of what's already decided. List the non-blocking ones with their defaults as assumptions the user can override in their answer. Warn in one line when an answer would make the feature slow or hard to test (external APIs, payments, real email).
 
 For each gate: call the **architect**, show the user a short summary with file links, then ask with AskUserQuestion **Approve / Send back / Reject**. Send back → call the architect again with the feedback. Reject → set phase `stopped` and end. Tick each gate in Flow State as it passes.
-1. architect **analyze** (pointing it at the approved DESIGN.md if there is one; answer its open questions with the user first) → **Gate 1**
+1. architect **analyze** (pointing it at the approved DESIGN.md if there is one; answer its open questions with the user first) → **Gate 1**. If its report has team-check `FEEDBACK:` items, show a **Team gaps** list and add the option **Approve + hire**: approve, then run the hires per `token-efficiency` → "Team-check gaps" before breakdown.
 2. architect **breakdown** (tasks grouped into sections SEC-#) → **Gate 2**
 3. architect **finalize** (writes PROJECT_CONTEXT.md with Mode and the Sections table) → **Gate 3** → architect **approve**
 
@@ -86,3 +86,5 @@ Finish with a short final report, including the deploy URL (offer `/flow:report`
 - Keep Flow State (phase, scope, current section, gates, blockers) in PROJECT_CONTEXT.md current, so /flow:status and /flow:resume work from any session.
 - Keep your messages to the user short: phase or section, what just finished, what's next.
 - The user can interrupt at any time; /flow:stop pauses cleanly.
+
+**Flow log:** load the `flow-log` skill and keep this run's `FLOW.md` current: create it when the run starts, then update it at every step, gate, pause and finish. Show its path in your first message.

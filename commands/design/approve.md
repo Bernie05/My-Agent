@@ -11,3 +11,5 @@ Arguments: $ARGUMENTS
 2. In DESIGN.md set `Status: Approved (<today>)`. In `PROJECT_CONTEXT.md` → Flow State tick `G0 Design` and set `Phase: analysis` (create the file with a Flow State block if it doesn't exist yet — Mode from an earlier /flow:mode, else hybrid). Log to activity.log: `<timestamp> | user | design approved`.
 3. **Hand off to architecture:** use the **architect** agent, operation **analyze**, telling it that the approved `DESIGN.md` is the primary input — screens, copy, states and flows become requirements (R#) and scenarios (SC-#), and the design's Assumptions become Open Questions. Include any notes from the arguments.
 4. Continue exactly like `/arch:analyze`: resolve open questions with the user, then **Gate 1** (Approve / Send back / Reject). After Gate 1, if this feature is running under `/flow:start`, carry on with its Phase 1; otherwise suggest `/arch:breakdown`.
+
+**Flow log:** if the run folder has a `FLOW.md`, update it for what this command changed (`flow-log` skill).

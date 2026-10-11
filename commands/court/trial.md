@@ -39,3 +39,5 @@ Keep tokens low. Pass agents only what is listed here, never the whole conversat
    - Required actions
    - The judge's FINAL VERSION
    - The trial folder path, which holds the full record
+
+**Flow log:** load the `flow-log` skill and keep this run's `FLOW.md` current: create it when the run starts, then update it at every step, gate, pause and finish. Show its path in your first message.

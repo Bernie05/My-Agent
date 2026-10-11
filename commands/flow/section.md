@@ -14,3 +14,5 @@ Arguments: $ARGUMENTS. Follow the `token-efficiency` skill.
 5. **Test**: mark it 🧪 Testing; qa-agent **test-scenario** for the section's SC-# plus a smoke check of sections already done. For issues: architect **analyze-issue** → Gate 4 (Fix / Defer / Accept) → the owning dev fixes → qa-agent re-tests.
 6. Mark it ✅ Done, update the task statuses yourself, and log it.
 7. **Checkpoint**: show a 3-line summary and the remaining sections, then ask with AskUserQuestion: **Next section** (run this command again with `next`) / **Fix or change something** / **Stop**. When no sections are left, suggest the final `/qa:test-checklist`, then `/qa:approve-feature`.
+
+**Flow log:** if the run folder has a `FLOW.md`, update it for what this command changed (`flow-log` skill).

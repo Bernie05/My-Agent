@@ -8,3 +8,5 @@ argument-hint: "[feature] <task id + status, e.g. F1 done>"
 Do this **directly, without spawning an agent** (token-efficiency), for: $ARGUMENTS
 
 Edit the Status line of each named task in its task file; update the progress line, the Sections table (a section is ✅ when all its tasks are done and its scenarios have passed) and Blockers in PROJECT_CONTEXT.md; append `<timestamp> | <who> | <what>` to activity.log. Reply with the new progress in 2 lines.
+
+**Flow log:** if the run folder has a `FLOW.md`, update it for what this command changed (`flow-log` skill).

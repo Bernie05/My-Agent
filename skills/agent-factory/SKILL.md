@@ -31,6 +31,7 @@ Names are lowercase-kebab. Put related items in the same group, following the ex
 
   House example: `agents/development/frontend-dev.md`.
 - If it needs answers from the user, it returns `INTAKE: QUESTIONS` lines for the main session to ask. See `agents/court/trial-agent.md`.
+- It gets the `FEEDBACK:` protocol by preloading `token-efficiency`. If it doesn't preload it, add one line pointing to that skill's "Feedback" section (see `agents/review/code-reviewer.md`).
 - System actions (install, clone, opening windows) belong in the command running in the main session, not in the agent.
 
 ## Skill

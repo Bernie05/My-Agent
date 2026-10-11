@@ -17,3 +17,5 @@ Critical path: B1 → B3 → F3 → QA
 ```
 
 Flag circular or missing dependencies and oversized tasks (send those back to the architect). Write the plan to PROJECT_CONTEXT.md under "Execution Plan", then ask the user whether to start Batch 1 now. If yes, dispatch each batch's agents in parallel (multiple Agent calls in one message).
+
+**Flow log:** if the run folder has a `FLOW.md`, update it for what this command changed (`flow-log` skill).

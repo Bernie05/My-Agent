@@ -12,3 +12,5 @@ Arguments: $ARGUMENTS
 3. In PROJECT_CONTEXT.md → Flow State, set `Phase: stopped (was <previous phase>)`, and write a "Resume notes" section: what was in flight, the next action, and open questions.
 4. Log to activity.log: `<timestamp> | orchestrator | stopped: <reason>`.
 5. Tell the user it's paused and that `/flow:resume` continues from here.
+
+**Flow log:** if the run folder has a `FLOW.md`, update it for what this command changed (`flow-log` skill).

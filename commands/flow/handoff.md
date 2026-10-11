@@ -15,3 +15,5 @@ Check readiness before handing off:
 - **→ deploy:** release confirmed (GO); the project can deploy to Vercel. Then run `/flow:start` Phase 5 (Gate 5, env check, preview, smoke test, optional promote).
 
 If not ready, list exactly what's missing and the commands to fix it. If ready: update the phase in Flow State, write a short handoff note in PROJECT_CONTEXT.md (what's done, where things are, known issues, how to run), log it, and start the next owner's first operation (e.g. qa-agent start-testing).
+
+**Flow log:** if the run folder has a `FLOW.md`, update it for what this command changed (`flow-log` skill).

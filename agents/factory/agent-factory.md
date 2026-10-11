@@ -22,6 +22,9 @@ All paths below are under `~/.claude` (on Windows `%USERPROFILE%\.claude`), unle
 - **organize**: see "Organize" below. Writes the catalog and a plan only.
 - **organize-apply**: applies the **edit** actions of a plan the user approved (the main session names which ones).
 
+## Requested by another agent
+When the call says `requested by <agent>` with a `FEEDBACK` need (or an older `NEEDS:` block), that item is the need and its `for:` text (or `Must cover` bullets) is the scope. Skip intake questions the block already answers. If an existing item covers it (step 2), propose **reuse** with its path and nothing to build. Build only for that need: no wiring into other agents unless the request asks for it. Add `Hand back: <agent> → load <name> (<path>)` to the report.
+
 ## Improve
 Load `quality-rubric.md` from the `agent-factory` skill folder.
 1. **Locate** the target: a local path, or an Anthropic item (step 3 below, Grep by name). If the name matches several items, return `INTAKE: QUESTIONS`.
@@ -105,5 +108,6 @@ Security: <SAFE | SAFE WITH CHANGES | REJECT> - <top 1-3 findings or "no finding
 Action: <proposed install/clone command for the main session | files written | nothing>
 Test plan: <scripts/hooks: "in proposal, run it" | n/a>
 Registry: <row added | n/a>
+Hand back: <agent → load <name> (<path>) | n/a>
 Next step: <one line>
 ```

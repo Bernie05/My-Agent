@@ -1,6 +1,6 @@
 # Multi-Agent System: Reference
 
-**15 agents · 85 commands · 47 skills · 3 modes · 6 hard stops**
+**16 agents · 88 commands · 49 skills · 3 modes · 6 hard stops**
 
 For a one-line list of everything, see [CATALOG.md](../CATALOG.md).
 
@@ -99,6 +99,7 @@ agents/
   court/         trial-agent.md, lawyer-attacker.md, lawyer-defender.md, judge.md
   deploy/        vercel-deployer.md
   factory/       agent-factory.md, observer.md
+  docs/          system-documenter.md
   personal/      resume-manager.md
 commands/
   design/  (7)   /design:*
@@ -114,6 +115,7 @@ commands/
   quick/   (3)   /quick:*
   factory/ (9)   /factory:*
   resume/  (1)   /resume:update
+  docs/    (3)   /docs:*
   summarize.md   /summarize
 skills/<name>/SKILL.md     (must stay flat; Claude Code only finds skills one level deep)
 docs/AGENT-SYSTEM.md       (this file)
@@ -148,6 +150,7 @@ backups/agent-system-2026-09-25/   (previous version)
 | `vercel-deployer` | deploy | sonnet | Vercel deploys (preview; prod after you confirm), status, logs, env, domains, rollback. Runs Phase 5 of `/flow:start` and step 4 of `/quick:start` | token-efficiency, ponytail, vercel-deploy | — |
 | `agent-factory` | factory | opus | Finds, security-reviews, builds, improves and organizes agents, skills and commands. Proposal first, builds only after you approve; no shell | token-efficiency, ponytail, agent-factory | quality-rubric.md, security-checklist.md (files in its skill) |
 | `observer` | factory | sonnet | Reviews run stats, activity and routine findings; proposes evidence-backed NEEDED.md rows. Read-only (never edits) | token-efficiency | — |
+| `system-documenter` | docs | sonnet | Documents a system or folder into `Notes/` (or a chosen folder): configuration, system flow, data flow, DB schema, or a requested topic, with Mermaid diagrams and a plain-language TL;DR per page. Read and write only (no shell) | token-efficiency, system-docs | — |
 | `resume-manager` | personal | sonnet | Keeps your MyResume site current: adds GitHub projects, edits experience/skills/about, previews | token-efficiency, resume-portfolio | — |
 
 **Token saving:** each agent preloads only its core skills and loads the rest with the Skill tool when an operation needs them. Routine work runs on Sonnet, while the architect inherits your main model because spec quality drives everything after it. Bookkeeping commands (`/arch:checklist`, `/arch:update`, `/arch:summary`, `/flow:status`, `/deploy:status`, `/ponytail:debt`) run directly without spawning an agent. The full rules are in the `token-efficiency` skill.
@@ -240,6 +243,13 @@ The old `design-system` agent was replaced by `figma-designer`. Its skills carry
 
 New coding agents always preload `ponytail`; coding skills point to its ladder and coding commands pass `ponytail: lite|ultra|off` (rules in the `agent-factory` skill). Every result gets a row in `factory/REGISTRY.md`.
 
+### `/docs:*` (3): system notes (system-documenter)
+| Command | What it does |
+|---|---|
+| `/docs:generate [path] [to <folder>] [overwrite]` | Write `Notes/` for the project: overview, configuration, system flow, data flow, database schema, glossary |
+| `/docs:update [path] [to <folder>]` | Refresh only the Notes sections whose source files changed since the last run |
+| `/docs:request <topic> [to <folder>]` | Document one topic or folder (e.g. how the agents call each other) with diagrams |
+
 ### `/resume:*` (1)
 | Command | What it does |
 |---|---|
@@ -316,7 +326,7 @@ docs/features/<feature-slug>/
   REPORT.md            written by /flow:report
 ```
 
-## Skills (47)
+## Skills (49)
 - **Design / Figma:** figma-design-workflow, design-handoff, figma-integration, design-systems, component-design, design-patterns, accessibility-design
 - **Design quality:** design-taste (marketing UI), impeccable (app UI critique and audit), motion-design (animation)
 - **Architect:** architecture-analysis, scenario-validation, task-breakdown, decision-making, issue-triage
@@ -326,9 +336,10 @@ docs/features/<feature-slug>/
 - **UI libraries:** shadcn-ui, material-ui. frontend-dev loads the one the project uses. For a new React project it chooses from the spec: shadcn/ui for a custom design, Tailwind or Next.js; MUI for data-heavy admin tools or a standard Material look. It records the choice for SPEC.md → Tech Stack, and never adds a second library.
 - **Backend:** api-design, database-design, backend-security, supabase-mcp (loaded when the stack uses Supabase)
 - **QA:** test-scenario-execution, test-checklist, issue-reporting, browser-testing (Node Playwright, based on Anthropic's webapp-testing)
-- **Cross-cutting:** token-efficiency (preloaded in every agent), input-source (reference vs prompt mode for plan-driven agents), project-gitignore (security baseline before the first commit), scripting (Bash, Python and hooks, with a required test plan; loaded by agent-factory, backend-dev and fullstack-dev)
+- **Cross-cutting:** token-efficiency (preloaded in every agent), flow-log (live FLOW.md for every orchestrator run), input-source (reference vs prompt mode for plan-driven agents), project-gitignore (security baseline before the first commit), scripting (Bash, Python and hooks, with a required test plan; loaded by agent-factory, backend-dev and fullstack-dev)
 - **Ponytail (less code, MIT):** ponytail, ponytail-review, ponytail-audit, ponytail-debt
 - **Court:** court-terminal
 - **Deploy:** vercel-deploy
 - **Factory:** agent-factory (house rules, quality rubric, security checklist)
+- **Docs:** system-docs (Notes/ layout, TL;DR-first writing, Mermaid rules)
 - **Personal:** resume-portfolio

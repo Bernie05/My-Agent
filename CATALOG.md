@@ -27,6 +27,7 @@ A one-line reference for everything in `~/.claude`. For the full design → spec
 | `agent-factory` | factory | Finds, security-reviews, builds, improves and organizes agents, skills and commands. Proposal first; builds only after you approve |
 | `observer` | factory | Watches how the agents actually worked (run stats, routine findings) and proposes improvements for NEEDED.md. Read-only |
 | `resume-manager` | personal | Keeps your MyResume portfolio site up to date: GitHub projects, experience, skills, about |
+| `system-documenter` | docs | Documents a whole system into `Notes/`: config, system flow, data flow, DB schema, with Mermaid diagrams and plain-language summaries |
 
 ---
 
@@ -118,6 +119,13 @@ The same commands exist in all three groups. `/be:security` is backend only; `/f
 | `/deploy:env` | Which env vars are missing per environment, or add one |
 | `/deploy:rollback` | Roll production back, or `promote <url>` a preview (asks first) |
 
+### `/docs:*`: System notes
+| Command | What it does |
+|---|---|
+| `/docs:generate` | Write `Notes/` for the project: overview, configuration, system flow, data flow, database schema, glossary |
+| `/docs:update` | Refresh only the Notes sections whose source files changed since the last run |
+| `/docs:request` | Document one topic or folder (e.g. how the agents call each other) with diagrams, saved `to <folder>` of your choice |
+
 ### `/ponytail:*`: Less code
 | Command | What it does |
 |---|---|
@@ -155,6 +163,7 @@ The same commands exist in all three groups. `/be:security` is backend only; `/f
 | Area | Skill | What it's for |
 |---|---|---|
 | **General** | `token-efficiency` | Rules for keeping token use low, plus the `FEEDBACK:` block agents use to report missing or stale skills, commands and context; preloaded in every agent |
+| **General** | `flow-log` | FLOW.md format: the live flow of a /flow, /quick, /court or /factory run (step diagram, timeline, gate decisions, what's next) |
 | **Ponytail** | `ponytail` | Write the least code that works: YAGNI → reuse → stdlib → native → one line. Preloaded in every coding agent |
 | | `ponytail-review` | Over-engineering findings, one line each, with `net: -N lines` |
 | | `ponytail-audit` | The same review across the whole repo, plus unneeded dependencies |
@@ -199,6 +208,7 @@ The same commands exist in all three groups. `/be:security` is backend only; `/f
 | | `browser-testing` | Playwright testing in a real browser |
 | **Court** | `court-terminal` | Runs the trial in Windows Terminal tabs (Clerk, Attacker, Defender, Judge) |
 | **Deploy** | `vercel-deploy` | Vercel preflight, deploy, verify, logs, env, domains, rollback |
+| **Docs** | `system-docs` | Notes/ layout, TL;DR-first writing style, Mermaid diagram rules |
 | **Factory** | `agent-factory` | House rules for building agents, skills and commands, plus the quality rubric, security checklist and registry format |
 | **Personal** | `resume-portfolio` | Turning GitHub repos into honest portfolio entries and verifying the MyResume build |
 

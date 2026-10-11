@@ -14,3 +14,5 @@ Handle its replies here, in the main session:
 **Test plan:** if the build added or changed a script or hook, run the proposal's Test plan yourself (temp copies only, never the real `settings.json`) and report each step pass/fail. A failed step means the build isn't done: send the failures back to the agent as a build fix.
 
 Relay the agent's final report briefly.
+
+**Flow log:** load the `flow-log` skill and keep this run's `FLOW.md` current: create it when the run starts, then update it at every step, gate, pause and finish. Show its path in your first message.
