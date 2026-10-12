@@ -17,7 +17,7 @@ Every file read, preloaded skill, agent call and long reply costs tokens. Do the
 
 ## Skills
 - Agents preload only their core skill(s). Load any other skill with the Skill tool **only when the current operation needs it**. Each agent's instructions list which skill goes with which operation.
-- Stack-specific skills (react-*, shadcn-ui, material-ui, supabase-mcp, frontend-design, browser-testing) are loaded only when the stack or task matches. Load only one UI library skill.
+- Stack-specific skills (react-*, shadcn-ui, material-ui, supabase-mcp, supabase-connect, frontend-design, browser-testing) are loaded only when the stack or task matches. Load only one UI library skill.
 
 ## Feedback: missing or stale skills, commands and context (FEEDBACK)
 When the task shows something in this toolkit is missing, wrong or in the way:

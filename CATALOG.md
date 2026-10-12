@@ -71,6 +71,7 @@ The same commands exist in all three groups. `/be:security` is backend only; `/f
 | `review` | Review code for bugs, security, performance, test gaps, plus an over-engineering section |
 | `refactor` | Improve structure without changing behavior. Makes the Ponytail cuts first |
 | `performance` | Measure and optimize |
+| `optimize` | Audit perf, structure, patterns, robustness, maintainability and best practices into a ranked OPTIMIZE.md plan, then apply the chosen O-# items in verified steps |
 | `ask` | Quick question or explanation |
 | `/fe:accessibility` | Audit and fix WCAG 2.1 AA issues |
 | `/be:security` | Security audit and fixes |
@@ -172,6 +173,8 @@ The same commands exist in all three groups. `/be:security` is backend only; `/f
 | | `ponytail-debt` | Ledger of the `ponytail:` shortcut comments |
 | | `decision-making` | Compare options and record a decision |
 | | `code-patterns` | Design patterns, SOLID, reuse, layering and folder structure for any stack; GoF + architecture catalog |
+| | `performance-optimization` | Measure → fix biggest cost → re-measure across DB, API, caching, rendering and bundle; shared rules of the optimize operation |
+| | `code-quality` | Robustness (validate at boundaries, no swallowed errors, timeouts, safe retries, transactions) and maintainability (names, size, dead code, consistency) lenses |
 | | `input-source` | How plan-driven agents pick their input (architect files vs. the prompt) and handle gaps; preloaded |
 | | `project-gitignore` | Create or fix a `.gitignore` so secrets, config, deps and build output never get committed |
 | | `scripting` | Write and review Bash and Python scripts and Claude Code hooks: strict mode, stdlib-only, exit codes, the hook contract, and a required test plan |

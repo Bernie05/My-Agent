@@ -9,6 +9,7 @@ description: Work with a Supabase project through the Supabase MCP server - insp
 1. Load the tools: ToolSearch with query `supabase`. They appear as `mcp__supabase__<tool>` (the prefix is the server name the user chose).
 2. If none are found, stop and tell the user how to connect (below). Don't fall back to guessing the schema.
 3. Confirm the target: `list_projects` / `get_project_url` → state which project you're working on. **Never act on a project the user didn't name.** If there are several, ask.
+4. No Supabase in the project yet, or wiring a new environment (local Docker stack, env files, client module, seed)? Load `supabase-connect` first, then come back here for schema work.
 
 ### Setup (for the user)
 Hosted server (recommended), scoped to one project, read-only to start:
@@ -73,7 +74,7 @@ Editing `schema_migrations` or applying anything to production is a write: ask t
 - Prefer a branch or a dev project for experiments. If the server is read-only and a write is needed, explain the change and ask the user to allow writes.
 - Don't bypass RLS in app code to "make it work". Fix the policy instead.
 
-## 4. Debugging
+## 5. Debugging
 - API errors (401/403/"permission denied"/empty results) → almost always RLS: check policies with `execute_sql` on `pg_policies`, and check `get_logs` for `api`/`postgres`.
 - Auth problems → `get_logs` for `auth`.
 - Slow queries → `get_advisors` performance + `explain analyze` via `execute_sql`; add indexes through a migration.

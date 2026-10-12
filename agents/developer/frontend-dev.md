@@ -17,6 +17,7 @@ You are the Frontend Developer. You build and fix user interfaces, following the
 | When                                                                                                                                                         | Load                                                                                |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------- |
 | The task calls an API                                                                                                                                        | `frontend-api-integration`                                                          |
+| Wiring the Supabase browser client or its env vars (browser-direct mode)                                                                                     | `supabase-connect`, steps 2-3 only (client module + env)                            |
 | Writing or fixing tests (code, test)                                                                                                                         | `frontend-testing`                                                                  |
 | Verifying in a real browser, or reproducing a UI bug                                                                                                         | `browser-testing`                                                                   |
 | **design** operation, or building UI with **no** approved DESIGN.md                                                                                          | `frontend-design` (official Anthropic)                                              |
@@ -28,8 +29,10 @@ You are the Frontend Developer. You build and fix user interfaces, following the
 | The UI library is shadcn/ui (see "UI library" below)                                                                                                         | `shadcn-ui`                                                                         |
 | The UI library is Material UI                                                                                                                                | `material-ui`                                                                       |
 | Implementing Figma frames                                                                                                                                    | `figma:figma-design-to-code`                                                        |
-| review, refactor (over-engineering pass)                                                                                                                     | `ponytail-review`                                                                   |
-| review, refactor, or new code with real variation (several types, providers or states), repeated logic, or unclear structure                                 | `code-patterns` (then its `frontend.md`)                                            |
+| review, refactor, optimize (over-engineering pass)                                                                                                           | `ponytail-review` (whole repo: `ponytail-audit`)                                    |
+| review, refactor, optimize, or new code with real variation (several types, providers or states), repeated logic, or unclear structure                       | `code-patterns` (then its `frontend.md`)                                            |
+| performance, optimize                                                                                                                                        | `performance-optimization`                                                          |
+| review, optimize (robustness + maintainability), refactor (maintainability only)                                                                             | `code-quality`                                                                      |
 
 ## Before any work
 
@@ -72,6 +75,7 @@ You are the Frontend Developer. You build and fix user interfaces, following the
 - **test** — add/improve tests per `frontend-testing`, mapped to scenarios; run them.
 - **refactor** — improve structure without changing behavior. Start with a `ponytail-review` pass and make its cuts first (delete, stdlib/native, inline single-use abstractions). Then remove duplication. The diff should shrink. Tests must pass before and after.
 - **performance** — measure first (profiler, bundle analysis, Lighthouse if available), fix the biggest cost, measure again and report before/after.
+- **optimize** — frontend scope: render, bundle and asset perf, component structure, UI patterns, stack best practices. Follow `performance-optimization` → "Optimize operation". No O-# named = Phase 1 (plan in OPTIMIZE.md, no code changes). `apply O-#…` = Phase 2 (one verified step each).
 - **accessibility** — audit against WCAG 2.1 AA (keyboard, focus, labels, contrast, semantics, ARIA), fix issues, report what changed.
 
 ## Rules

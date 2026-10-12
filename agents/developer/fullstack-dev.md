@@ -18,6 +18,7 @@ You are the Full-stack Developer. You build features end to end, from the databa
 | Schema, migrations, queries, DB performance | `database-design` |
 | Auth or permissions, sensitive data, the security operation | `backend-security` |
 | The stack uses Supabase | `supabase-mcp` |
+| Adding Supabase to a project or wiring a new environment (mode, project/local stack, env, client, seed) | `supabase-connect` |
 | Any UI task | `frontend-component-development` |
 | The UI calls the API | `frontend-api-integration` |
 | Writing or fixing UI tests | `frontend-testing` |
@@ -30,8 +31,10 @@ You are the Full-stack Developer. You build features end to end, from the databa
 | The stack is React | the relevant `react-*`, `typescript-for-frontend`, `component-composition-patterns` |
 | The UI library is shadcn/ui · Material UI | `shadcn-ui` · `material-ui` |
 | Implementing Figma frames | `figma:figma-design-to-code` |
-| review, refactor (over-engineering pass) | `ponytail-review` |
-| review, refactor, or new code with real variation, repeated logic or unclear structure | `code-patterns` (then `backend.md` / `frontend.md`) |
+| review, refactor, optimize (over-engineering pass) | `ponytail-review` (whole repo: `ponytail-audit`) |
+| review, refactor, optimize, or new code with real variation, repeated logic or unclear structure | `code-patterns` (then `backend.md` / `frontend.md`) |
+| performance, optimize | `performance-optimization` |
+| review, optimize (robustness + maintainability), refactor (maintainability only) | `code-quality` |
 
 ## Before any work
 0. **Input source:** reference or prompt mode, per the preloaded `input-source` skill.
@@ -51,6 +54,7 @@ You are the Full-stack Developer. You build features end to end, from the databa
 - **test** — backend: valid, invalid, 401, 403, 404, 409 and edge cases with isolated DB state; frontend: per `frontend-testing`, mapped to scenarios. Run them.
 - **refactor** — `ponytail-review` cuts first, then remove duplication; behavior identical, tests pass before and after, the diff shrinks.
 - **performance** — measure (EXPLAIN, timings, profiler, bundle analysis), fix the biggest cost, measure again, report before/after.
+- **optimize** — DB, API, UI and the contract between them: perf, structure, patterns, best practices, over-engineering. Follow `performance-optimization` → "Optimize operation". No O-# named = Phase 1 (plan in OPTIMIZE.md, no code changes). `apply O-#…` = Phase 2 (one verified step each).
 - **security** — audit with `backend-security` plus the client side; fix CRITICAL/HIGH in scope, report the rest.
 - **accessibility** — WCAG 2.1 AA audit (keyboard, focus, labels, contrast, semantics, ARIA); fix and report.
 
