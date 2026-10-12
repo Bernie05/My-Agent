@@ -28,6 +28,7 @@ A one-line reference for everything in `~/.claude`. For the full design → spec
 | `observer` | factory | Watches how the agents actually worked (run stats, routine findings) and proposes improvements for NEEDED.md. Read-only |
 | `resume-manager` | personal | Keeps your MyResume portfolio site up to date: GitHub projects, experience, skills, about |
 | `system-documenter` | docs | Documents a whole system into `Notes/`: config, system flow, data flow, DB schema, with Mermaid diagrams and plain-language summaries |
+| `digest` | utility | Reads a big log, CI output, doc or diff in its own context and returns the ~20 lines you need (exact quotes, file:line), saving main-conversation tokens |
 
 ---
 
@@ -154,7 +155,8 @@ The same commands exist in all three groups. `/be:security` is backend only; `/f
 ### Other
 | Command | What it does |
 |---|---|
-| `/summarize` | Summarize text, a file, or the conversation in a few bullets |
+| `/summarize` | Summarize text, a file, or the conversation in a few bullets (big files go through `digest`) |
+| `/digest` | Digest a big file or command output into the few lines you need, without loading it into the conversation |
 
 ---
 

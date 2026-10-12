@@ -7,3 +7,5 @@ Summarize the following in 3-5 concise bullet points. Focus on key facts and dec
 skip filler.
 
 Target: $ARGUMENTS
+
+If the target is a file of roughly 300+ lines, don't read it here: use the **digest** agent with the path (question: "key points") and turn its report into the bullets.

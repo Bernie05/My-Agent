@@ -53,6 +53,7 @@ When the task shows something in this toolkit is missing, wrong or in the way:
 - Run independent agents in parallel in one message. That saves wall time, and each agent starts with a small context.
 - Prefer **per-section** implementation for large features. Each round then works on a small slice, and problems surface before they multiply.
 - Relay agent reports as a short summary, not verbatim.
+- **Big reads → `digest`.** When you only need facts from something roughly 300+ lines (a log, test or CI output, a long doc, a big diff, a saved web page), save command output to a file and call the `digest` agent with the path and your question instead of reading it here. Its context is thrown away; only ~20 lines come back. Smaller than that, read it yourself.
 - **`FEEDBACK:` in a report**: handle it per the "Agent feedback" rule in `~/.claude/CLAUDE.md` (blocking needs now, the rest queued in `factory/NEEDED.md`).
   - **Team-check gaps** (architect analyze / plan-lite, `need … | blocking: no | team-check: <agent(s)>`): show them as **Team gaps** at that gate and offer **Approve + hire**. On hire, run the `/factory:skill` (or `/factory:agent`) flow per gap with "requested by architect, wire into `<agent(s)>` load-on-demand table"; the factory's approval stop still applies. Gaps not hired are queued in NEEDED.md and become assumptions in SPEC.md → Open Questions.
 

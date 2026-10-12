@@ -1,6 +1,6 @@
 # Multi-Agent System: Reference
 
-**16 agents · 88 commands · 49 skills · 3 modes · 6 hard stops**
+**17 agents · 89 commands · 49 skills · 3 modes · 6 hard stops**
 
 For a one-line list of everything, see [CATALOG.md](../CATALOG.md).
 
@@ -100,6 +100,7 @@ agents/
   deploy/        vercel-deployer.md
   factory/       agent-factory.md, observer.md
   docs/          system-documenter.md
+  utility/       digest.md
   personal/      resume-manager.md
 commands/
   design/  (7)   /design:*
@@ -117,6 +118,7 @@ commands/
   resume/  (1)   /resume:update
   docs/    (3)   /docs:*
   summarize.md   /summarize
+  digest.md      /digest
 skills/<name>/SKILL.md     (must stay flat; Claude Code only finds skills one level deep)
 docs/AGENT-SYSTEM.md       (this file)
 factory/REGISTRY.md        (every item built, improved or reviewed, with its security verdict)
@@ -151,6 +153,7 @@ backups/agent-system-2026-09-25/   (previous version)
 | `agent-factory` | factory | opus | Finds, security-reviews, builds, improves and organizes agents, skills and commands. Proposal first, builds only after you approve; no shell | token-efficiency, ponytail, agent-factory | quality-rubric.md, security-checklist.md (files in its skill) |
 | `observer` | factory | sonnet | Reviews run stats, activity and routine findings; proposes evidence-backed NEEDED.md rows. Read-only (never edits) | token-efficiency | — |
 | `system-documenter` | docs | sonnet | Documents a system or folder into `Notes/` (or a chosen folder): configuration, system flow, data flow, DB schema, or a requested topic, with Mermaid diagrams and a plain-language TL;DR per page. Read and write only (no shell) | token-efficiency, system-docs | — |
+| `digest` | utility | haiku | Reads big inputs (logs, CI output, long docs, diffs) in a throwaway context and returns ≤20 lines with exact quotes and file:line, so they never enter the main conversation. Read-only | token-efficiency | — |
 | `resume-manager` | personal | sonnet | Keeps your MyResume site current: adds GitHub projects, edits experience/skills/about, previews | token-efficiency, resume-portfolio | — |
 
 **Token saving:** each agent preloads only its core skills and loads the rest with the Skill tool when an operation needs them. Routine work runs on Sonnet, while the architect inherits your main model because spec quality drives everything after it. Bookkeeping commands (`/arch:checklist`, `/arch:update`, `/arch:summary`, `/flow:status`, `/deploy:status`, `/ponytail:debt`) run directly without spawning an agent. The full rules are in the `token-efficiency` skill.
