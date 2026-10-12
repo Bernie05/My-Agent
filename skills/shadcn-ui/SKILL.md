@@ -1,6 +1,6 @@
 ---
 name: shadcn-ui
-description: Build UI with shadcn/ui (Radix/Base UI primitives + Tailwind, components copied into the repo) - setup, adding components with the CLI, theming with CSS variables, forms, data tables, dark mode, accessibility, and the shadcn MCP. Use ONLY when the project uses shadcn/ui (components.json, components/ui/) or frontend-dev picked it for a React/Next.js project.
+description: Build UI with shadcn/ui (Radix/Base UI primitives + Tailwind, components copied into the repo) - setup, adding components with the CLI, theming with CSS variables, forms, data tables, dark mode, accessibility, dashboards and charts (shadcn chart, Tremor Raw for gaps), and the shadcn MCP. Use ONLY when the project uses shadcn/ui (components.json, components/ui/) or frontend-dev picked it for a React/Next.js project.
 ---
 
 # shadcn/ui
@@ -38,6 +38,7 @@ The shadcn MCP server searches, browses and installs components from registries.
   - Show errors with `FormMessage`, or the field's error slot.
   - Disable submit and show pending state while submitting.
 - **Tables:** use the `data-table` pattern (TanStack Table + `Table`) only when you need sorting, filtering or pagination. A plain `Table` is fine otherwise.
+- **Dashboards, analytics, KPI tiles and charts:** load `dashboards.md` (this folder).
 - **Toasts:** `sonner`. **Dialogs and sheets:** `Dialog` / `Sheet` / `Drawer`, never custom modals.
 - **Accessibility** comes from the primitives. Keep it:
   - Never swap `DialogTitle` for a `div`. Use `VisuallyHidden` if it must be hidden.

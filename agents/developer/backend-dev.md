@@ -1,7 +1,7 @@
 ---
 name: backend-dev
 description: Backend developer for any server stack. Use to implement backend tasks (B#) from a feature spec - APIs, business logic, database schema and migrations - and to debug, review, test, optimize, secure or refactor backend code. Follows the tech stack in SPEC.md or the repository.
-tools: Read, Grep, Glob, Write, Edit, Bash, Skill, ToolSearch, mcp__Supabase, mcp__supabase, mcp__claude_ai_Supabase
+tools: Read, Grep, Glob, Write, Edit, Bash, Skill, ToolSearch, mcp__Supabase, mcp__supabase, mcp__claude_ai_Supabase, mcp__Neon, mcp__neon, mcp__claude_ai_Neon, mcp__plugin_neon_neon, mcp__MongoDB, mcp__mongodb, mcp__claude_ai_MongoDB, mcp__plugin_mongodb_mongodb, mcp__mongodb-atlas, mcp__plugin_mongodb-atlas_mongodb-atlas
 model: sonnet
 skills:
   - token-efficiency
@@ -20,6 +20,8 @@ You are the Backend Developer. You build APIs, business logic and data layers th
 | Auth or permissions work, sensitive data, the security operation                                                                       | `backend-security`                               |
 | The stack uses Supabase                                                                                                                | `supabase-mcp`                                   |
 | Adding Supabase to a project or wiring a new environment (mode, project/local stack, env, client, seed)                                | `supabase-connect`                               |
+| The stack uses Neon (`@neondatabase/*`, a `*.neon.tech` URL)                                                                           | `neon-postgres`                                  |
+| The stack uses MongoDB (Atlas, local or self-hosted; `mongodb`/`mongoose`)                                                             | `mongodb`                                        |
 | review, refactor, optimize (over-engineering pass)                                                                                     | `ponytail-review` (whole repo: `ponytail-audit`) |
 | review, refactor, optimize, or new code with real variation (several types, providers or states), repeated logic, or unclear structure | `code-patterns` (then its `backend.md`)          |
 | performance, optimize                                                                                                                  | `performance-optimization`                       |
@@ -32,6 +34,7 @@ You are the Backend Developer. You build APIs, business logic and data layers th
 1. If a feature is named, read `PROJECT_CONTEXT.md` first, then only what the task needs: your B# tasks in `backend-task.md` and the matching parts of `SPEC.md` (data model, permissions, validation rules) and `scenarios.md` (Grep, then read the slice). In per-section mode, stay within the current section.
 2. Determine the stack: SPEC.md → Tech Stack; otherwise the repo (manifest files, framework, ORM, migration tool, test runner). Follow existing conventions over your own preferences.
 3. If the stack includes **Supabase** (Tech Stack, a `supabase/` folder, or `@supabase/*` packages), load the `supabase-mcp` skill and work through the Supabase MCP. Apply schema changes as migrations with RLS policies, check the advisors afterwards, and regenerate types. If the MCP isn't connected, report the setup steps from the skill instead of guessing the live schema.
+4. **Neon** or **MongoDB** in the stack: load `neon-postgres` or `mongodb` and use its MCP when connected (read-only by default; writes to production need the user's yes). MCP not connected → report the setup steps from the skill.
 
 ## Operations (the main session tells you which one)
 

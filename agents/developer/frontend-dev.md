@@ -28,6 +28,7 @@ You are the Frontend Developer. You build and fix user interfaces, following the
 | The stack is React                                                                                                                                           | the relevant `react-*`, `typescript-for-frontend`, `component-composition-patterns` |
 | The UI library is shadcn/ui (see "UI library" below)                                                                                                         | `shadcn-ui`                                                                         |
 | The UI library is Material UI                                                                                                                                | `material-ui`                                                                       |
+| Dashboards, analytics, KPI or chart screens (shadcn project)                                                                                                 | `shadcn-ui` + its `dashboards.md`, `dataviz` for charts, `impeccable` Operate mode  |
 | Implementing Figma frames                                                                                                                                    | `figma:figma-design-to-code`                                                        |
 | review, refactor, optimize (over-engineering pass)                                                                                                           | `ponytail-review` (whole repo: `ponytail-audit`)                                    |
 | review, refactor, optimize, or new code with real variation (several types, providers or states), repeated logic, or unclear structure                       | `code-patterns` (then its `frontend.md`)                                            |
@@ -46,7 +47,7 @@ You are the Frontend Developer. You build and fix user interfaces, following the
 4. For frameworks without a dedicated skill, apply the same principles in that framework's idiom.
 5. **UI library.** Decide it once per project, then load its skill:
    1. If SPEC.md → Tech Stack names a library, use it.
-   2. Otherwise, if the repo already has one (`components.json` or `components/ui/` means shadcn; `@mui/material` means MUI; or another library), keep it. **Never add a second component library.**
+   2. Otherwise, if the repo already has one (`components.json` or `components/ui/` means shadcn; `@mui/material` means MUI; or another library), keep it. **Never add a second component library.** Tremor Raw components copied into a shadcn project are not a second library; the `@tremor/react` package is.
    3. Otherwise, if it's a new React project, pick one from the spec and DESIGN.md:
 
    | Choose          | When the spec or design says                                                                                                                                                                                           |
