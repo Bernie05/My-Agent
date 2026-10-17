@@ -1,6 +1,6 @@
 # Multi-Agent System: Reference
 
-**15 agents · 88 commands · 48 skills · 3 modes · 6 hard stops**
+**17 agents · 92 commands · 54 skills · 3 modes · 6 hard stops**
 
 For a one-line list of everything, see [CATALOG.md](../CATALOG.md).
 
@@ -98,270 +98,119 @@ Or run it step by step: `/design:start …` → `/design:approve` → `/arch:bre
 
 ```
 agents/
-  design/        figma-designer.md
-  architecture/  architect.md
-  developer/     frontend-dev.md, backend-dev.md, fullstack-dev.md
-  qa/            qa-agent.md
-  review/        code-reviewer.md
-  court/         trial-agent.md, lawyer-attacker.md, lawyer-defender.md, judge.md
-  deploy/        vercel-deployer.md
-  factory/       agent-factory.md, observer.md
-  docs/          system-documenter.md
-  utility/       digest.md
-  personal/      resume-manager.md
+  ├── design/              figma-designer
+  ├── architecture/        architect
+  ├── developer/           frontend-dev, backend-dev, fullstack-dev
+  ├── qa/                  qa-agent
+  ├── review/              code-reviewer
+  ├── court/               trial-agent, lawyer-attacker, lawyer-defender, judge
+  ├── deploy/              vercel-deployer
+  ├── factory/             agent-factory, observer
+  ├── personal/            resume-manager
+  ├── docs/                system-documenter
+  └── utility/             digest
+
 commands/
-  design/  (7)   /design:*
-  arch/    (11)  /arch:*
-  fe/      (10)  /fe:*
-  be/      (9)   /be:*
-  fs/      (11)  /fs:*
-  qa/      (6)   /qa:*
-  flow/    (11)  /flow:*
-  court/   (1)   /court:trial
-  deploy/  (5)   /deploy:*
-  ponytail/ (3)  /ponytail:*
-  quick/   (3)   /quick:*
-  factory/ (9)   /factory:*
-  resume/  (1)   /resume:update
-  docs/    (3)   /docs:*
-  summarize.md   /summarize
-  digest.md      /digest
-skills/<name>/SKILL.md     (must stay flat; Claude Code only finds skills one level deep)
-docs/AGENT-SYSTEM.md       (this file)
-factory/REGISTRY.md        (every item built, improved or reviewed, with its security verdict)
-factory/NEEDED.md          (agent feedback queue: you approve rows, the weekly routine builds them)
-factory/evals/             (skill tests: before/after scores block regressions; held-out/ = grader-only cases)
-factory/LEARNINGS.md       (one entry per row built or failed: the factory's memory)
-factory/RESULTS.tsv        (did each change help? measured by /factory:observe)
-factory/findings/          (weekly report routines' proposals, imported by /factory:observe)
-factory/observe/           (local only, git-ignored: run log from the hook + stats)
-factory/scripts/check.py   (consistency check: counts, docs, tools lines, skill sizes; run any time)
-backups/agent-system-2026-09-25/   (previous version)
+  ├── design/              `/design:start`, `/design:system`, `/design:screen`, `/design:revise`, `/design:review`, `/design:handoff`, `/design:approve`
+  ├── architecture/        `/arch:analyze`, `/arch:review`, `/arch:breakdown`, `/arch:finalize`, `/arch:analyze-issue`, `/arch:suggest-refactor`
+  ├── developer/           `/fe:*`, `/be:*`, `/fs:*` (code, debug, test, refactor, a11y/security, optimize)
+  ├── qa/                  `/qa:*` (start-testing, test-scenario, test-checklist, report-issue, triage-issue, approve-feature)
+  ├── flow/                `/flow:*` (start, status, team, mode, pause, resume)
+  ├── quick/               `/quick:*` (start, resume)
+  ├── court/               `/court:trial`
+  └── factory/             `/factory:*` (needed, observe, learn)
+
+skills/
+  ├── agent-factory/       House rules for building agents, skills, commands, tools
+  ├── api-design/          REST API design
+  ├── architecture-analysis/
+  ├── backend-security/
+  ├── browser-testing/
+  ├── code-patterns/
+  ├── code-quality/
+  ├── component-design/
+  ├── component-composition-patterns/
+  ├── court-terminal/
+  ├── database-design/
+  ├── decision-making/
+  ├── design-handoff/
+  ├── design-patterns/
+  ├── design-systems/
+  ├── design-taste/
+  ├── figma-design-workflow/
+  ├── figma-integration/
+  ├── flow-log/
+  ├── frontend-api-integration/
+  ├── frontend-component-development/
+  ├── frontend-design/
+  ├── frontend-testing/
+  ├── input-source/
+  ├── issue-reporting/
+  ├── issue-triage/
+  ├── material-ui/
+  ├── mongodb/
+  ├── motion-design/
+  ├── neon-postgres/
+  ├── performance-optimization/
+  ├── ponytail/
+  ├── ponytail-audit/
+  ├── ponytail-debt/
+  ├── ponytail-review/
+  ├── project-gitignore/
+  ├── react-best-practices/
+  ├── react-data-fetching/
+  ├── react-testing-patterns/
+  ├── resume-portfolio/
+  ├── scenario-validation/
+  ├── scripting/
+  ├── shadcn-ui/
+  ├── supabase-connect/
+  ├── supabase-mcp/
+  ├── system-docs/
+  ├── task-breakdown/
+  ├── test-checklist/
+  ├── test-scenario-execution/
+  ├── token-efficiency/
+  ├── typescript-for-frontend/
+  └── vercel-deploy/
+
+factory/
+  ├── scripts/
+  │   ├── check.py         ← Runs on every push (docs sync, counts, links)
+  │   ├── install_observer_hook.py
+  │   └── run_stats.py
+  ├── NEEDED.md            ← Queue for improvements (you review + approve / reject)
+  ├── findings/            ← Weekly routine findings (skill gaps, duplicate skills, etc.)
+  └── LEARNINGS.md         ← Record of what was built and if it worked
 ```
 
 ---
 
-## Agents
+## Agents table (description, skills, tools)
 
-| Agent               | Folder       | Model   | Role                                                                                                                                                                                                                               | Preloaded                                                  | Loaded on demand                                                                                                                |
-| ------------------- | ------------ | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| `figma-designer`    | design       | sonnet  | Designs in Figma through the MCP (foundations, components, screens, flows); writes DESIGN.md                                                                                                                                       | token-efficiency, figma-design-workflow                    | design-handoff, design-systems, component-design, design-patterns, accessibility-design, figma-integration, frontend-design     |
-| `architect`         | architecture | inherit | Spec (built from DESIGN.md when there is one), scenarios, tasks and sections, issue triage. Never writes app code. Keeps specs lean (extras go to Out of Scope)                                                                    | token-efficiency, ponytail                                 | architecture-analysis, scenario-validation, task-breakdown, issue-triage, decision-making                                       |
-| `frontend-dev`      | development  | sonnet  | UI tasks F#. Builds from Figma frames using `get_design_context`                                                                                                                                                                   | token-efficiency, frontend-component-development, ponytail | frontend-api-integration, frontend-testing, browser-testing, frontend-design, react-\*, shadcn-ui, material-ui, ponytail-review |
-| `backend-dev`       | development  | sonnet  | API, logic and data tasks B#                                                                                                                                                                                                       | token-efficiency, api-design, ponytail                     | database-design, backend-security, supabase-mcp, ponytail-review                                                                |
-| `fullstack-dev`     | development  | opus    | F# and B# tasks in one context when Dev team is `fullstack` (default for `/quick`): DB → API → UI, debug across the stack                                                                                                          | token-efficiency, ponytail, input-source                   | the frontend and backend skills above, per task                                                                                 |
-| `qa-agent`          | qa           | sonnet  | Test plan, scenarios, 9-category checklist, issues, go/no-go                                                                                                                                                                       | token-efficiency, ponytail, test-scenario-execution        | test-checklist, issue-reporting, issue-triage, browser-testing                                                                  |
-| `code-reviewer`     | review       | sonnet  | General code review plus an over-engineering section; whole-repo bloat audit                                                                                                                                                       | token-efficiency, ponytail, ponytail-review                | ponytail-audit                                                                                                                  |
-| `trial-agent`       | court        | sonnet  | Intake questions → Case File → launches the live trial tabs                                                                                                                                                                        | token-efficiency, court-terminal                           | —                                                                                                                               |
-| `lawyer-attacker`   | court        | sonnet  | Finds every real hole in any work, including over-engineering                                                                                                                                                                      | token-efficiency                                           | —                                                                                                                               |
-| `lawyer-defender`   | court        | sonnet  | Rebuts or fixes each hole with the smallest real fix; returns an enhanced version                                                                                                                                                  | token-efficiency                                           | —                                                                                                                               |
-| `judge`             | court        | opus    | Rules on each hole; final verdict and final version                                                                                                                                                                                | token-efficiency                                           | —                                                                                                                               |
-| `vercel-deployer`   | deploy       | sonnet  | Vercel deploys (preview; prod after you confirm), status, logs, env, domains, rollback. Runs Phase 5 of `/flow:start` and step 4 of `/quick:start`                                                                                 | token-efficiency, ponytail, vercel-deploy                  | —                                                                                                                               |
-| `agent-factory`     | factory      | opus    | Finds, security-reviews, builds, improves and organizes agents, skills and commands. Proposal first, builds only after you approve; no shell                                                                                       | token-efficiency, ponytail, agent-factory                  | quality-rubric.md, security-checklist.md (files in its skill)                                                                   |
-| `observer`          | factory      | sonnet  | Reviews run stats, activity and routine findings; proposes evidence-backed NEEDED.md rows. Read-only (never edits)                                                                                                                 | token-efficiency                                           | —                                                                                                                               |
-| `system-documenter` | docs         | sonnet  | Documents a system or folder into `Notes/` (or a chosen folder): configuration, system flow, data flow, DB schema, or a requested topic, with Mermaid diagrams and a plain-language TL;DR per page. Read and write only (no shell) | token-efficiency, system-docs                              | —                                                                                                                               |
-| `digest`            | utility      | haiku   | Reads big inputs (logs, CI output, long docs, diffs) in a throwaway context and returns ≤20 lines with exact quotes and file:line, so they never enter the main conversation. Read-only                                            | token-efficiency                                           | —                                                                                                                               |
-| `resume-manager`    | personal     | sonnet  | Keeps your MyResume site current: adds GitHub projects, edits experience/skills/about, previews                                                                                                                                    | token-efficiency, resume-portfolio                         | —                                                                                                                               |
-
-**Token saving:** each agent preloads only its core skills and loads the rest with the Skill tool when an operation needs them. Routine work runs on Sonnet, while the architect inherits your main model because spec quality drives everything after it. Bookkeeping commands (`/arch:checklist`, `/arch:update`, `/arch:summary`, `/flow:status`, `/deploy:status`, `/ponytail:debt`) run directly without spawning an agent. The full rules are in the `token-efficiency` skill.
-
-**Ponytail (less code):** every coding agent (frontend-dev, backend-dev, architect, qa-agent, code-reviewer, vercel-deployer, agent-factory) preloads the `ponytail` skill; court, resume and Figma agents don't, since they never touch code. It is adapted from [dietrichgebert/ponytail](https://github.com/dietrichgebert/ponytail) (MIT). Before writing code they climb a ladder: YAGNI → reuse → stdlib → native → installed dependency → one line → minimum code. They end each report with `Skipped (ponytail): …`. The spec, DESIGN.md states, validation, security and accessibility are never cut; Ponytail only decides how little code delivers them. The default level is `full`; add `ponytail: lite|ultra|off` to a `/fe:*` or `/be:*` command to change it for that call. Deliberate shortcuts are marked with `ponytail:` comments and listed by `/ponytail:debt`.
-
-The old `design-system` agent was replaced by `figma-designer`. Its skills carry over, and it is kept in the backup.
-
-**Figma MCP:** figma-designer and frontend-dev use the Figma connector's tools. Before calling them, they load the required Figma plugin skills (`figma:figma-use`, `figma:figma-create-new-file`, `figma:figma-generate-library`, `figma:figma-generate-design`, `figma:figma-generate-diagram`, `figma:figma-design-to-code`). If the connector isn't authorized, the agent stops and tells you.
+| Agent | Role | Skills | Tools |
+|---|---|---|---|
+| figma-designer | Design in Figma (tokens, components, screens, flows) → DESIGN.md | figma-design-workflow, figma-integration, design-systems, component-design, design-patterns, accessibility-design, design-taste, impeccable, motion-design | Figma MCP |
+| architect | Write spec (SPEC.md, scenarios) + break into F#/B#/QA tasks; triage QA issues | architecture-analysis, scenario-validation, task-breakdown, decision-making, issue-triage, code-patterns | none |
+| frontend-dev | Build F# tasks, debug/test/refactor/fix-a11y UI; minimal code (Ponytail); pick shadcn or MUI from spec | ponytail, frontend-component-development, frontend-api-integration, frontend-testing, frontend-design, react-best-practices, component-composition-patterns, react-data-fetching, react-testing-patterns, typescript-for-frontend, shadcn-ui, material-ui, code-quality, browser-testing, input-source | Node (shadcn/MUI, Vitest/Jest, Playwright, TypeScript) |
+| backend-dev | Build B# tasks (APIs, logic, DB, migrations); debug/test/secure; minimal code (Ponytail) | ponytail, api-design, database-design, backend-security, scripting, code-quality, input-source | Node + Python (Node.js frameworks, SQL tools, schema migration, secrets management) |
+| fullstack-dev | Build F# + B# tasks in one context (Opus); runs when Dev team = fullstack or /quick:start | ponytail, frontend-component-development, frontend-api-integration, frontend-testing, api-design, database-design, backend-security, code-quality, input-source | Node + Python (full stack tooling) |
+| qa-agent | Plan and run feature tests; report issues with evidence; final sign-off | test-checklist, test-scenario-execution, issue-reporting, scenario-validation, browser-testing | Playwright, GitHub (issues write) |
+| code-reviewer | Review a diff/PR for bugs, security, risky logic, over-engineering; whole-repo bloat audit | ponytail-review, ponytail-audit, code-patterns, code-quality, backend-security, token-efficiency | GitHub (PR read/review), all languages |
+| trial-agent | Court Clerk: asks you questions, writes the Case File, launches trial tabs (Figma for Figma sketches) | court-terminal, decision-making | Figma MCP |
+| lawyer-attacker | Attacks the work, finds every real hole (never fixes) | code-patterns, code-quality, backend-security, api-design | none |
+| lawyer-defender | Defends the work, rebuts attacker, returns a stronger version (may involve small fixes) | ponytail, code-patterns, code-quality, backend-security, api-design, database-design | relevant stack |
+| judge | Neutral verdict: rules on each hole, gives the best final version | code-patterns, code-quality, decision-making, api-design | none |
+| vercel-deployer | Deploy to Vercel (preview or production); monitor status, logs, env, domains; rollback, promote | vercel-deploy, input-source | Vercel CLI / Vercel MCP |
+| agent-factory | Find, security-review, build, improve agents/skills/commands; proposal first | agent-factory, ponytail, code-quality, scripting | Node, Python, GitHub (PR create), file system |
+| observer | Watch agent run logs (via hook); propose improvements to NEEDED.md | token-efficiency | factory/observe/runs.jsonl (read-only) |
+| resume-manager | Keep MyResume portfolio site up to date (GitHub projects → experience, skills, about) | resume-portfolio, frontend-design | GitHub (repo read), file system |
+| system-documenter | Document a whole system into Notes/ (overview, config, flow, data flow, DB schema, glossary) | system-docs | Mermaid, file system |
+| digest | Read a big log/output/doc in its own context; return the ~20 lines you need | token-efficiency | none (context-only) |
 
 ---
 
-## Commands
-
-### `/design:*`: Figma Designer (7)
-
-| Command                                             | What it does                                                                              |
-| --------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| `/design:start <feature> [Figma URL] [brand notes]` | Brief → design system → components → flow diagram → screens → DESIGN.md. **Gate 0**       |
-| `/design:approve`                                   | Approves the design, then hands it to the architect (`analyze`, which ends at **Gate 1**) |
-| `/design:system <what>`                             | Builds or extends variables, styles and components                                        |
-| `/design:screen <screens>`                          | Designs or updates specific screens and flows                                             |
-| `/design:revise <feedback>`                         | Applies feedback and logs it in the revision history                                      |
-| `/design:review <Figma or app URL>`                 | Reviews design quality, or compares the built app to the frames                           |
-| `/design:handoff`                                   | Regenerates DESIGN.md from the Figma file                                                 |
-
-### `/arch:*`: Architect (11)
-
-| Command                                               | What it does                                                                                |
-| ----------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| `/arch:analyze <feature>`                             | Writes SPEC.md, analysis.md and scenarios.md (from DESIGN.md when there is one). **Gate 1** |
-| `/arch:breakdown`                                     | Writes frontend-task.md, backend-task.md and qa-task.md. **Gate 2**                         |
-| `/arch:finalize`                                      | Writes PROJECT_CONTEXT.md (living checklist). **Gate 3**                                    |
-| `/arch:approve`                                       | Marks the feature ready for development                                                     |
-| `/arch:ask <q1; q2…>`                                 | Answers spec questions and logs them in Q&A                                                 |
-| `/arch:checklist` · `/arch:summary`                   | Progress % · full status report                                                             |
-| `/arch:update <F1 done>`                              | Logs completed or blocked work                                                              |
-| `/arch:update-specs <change>`                         | Changes the spec, adds a CHANGE HISTORY entry, flags affected tasks                         |
-| `/arch:analyze-issue <ISSUE-###>`                     | Triages an issue. **Gate 4**                                                                |
-| `/arch:issue-decision <ISSUE-###> Fix\|Defer\|Accept` | Records the decision and assigns it                                                         |
-
-### `/fe:*` (10), `/be:*` (9) and `/fs:*` (11)
-
-`/fs:*` always uses `fullstack-dev`, whatever the feature's Dev team is: use it to ask or build directly across the whole stack.
-
-| Command         | fe  | be  | fs  | What it does                                                                                                                                                           |
-| --------------- | --- | --- | --- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `code`          | ✅  | ✅  | ✅  | Implements tasks (F#/B#, or both with fs), with tests                                                                                                                  |
-| `design`        | ✅  |     | ✅  | Designs in code (tokens, preview page, DESIGN.md), then Gate 0                                                                                                         |
-| `debug`         | ✅  | ✅  | ✅  | Finds the root cause (fs: across UI → API → DB), fixes it, adds a regression test                                                                                      |
-| `ask`           | ✅  | ✅  | ✅  | Question, advice or explanation                                                                                                                                        |
-| `review`        | ✅  | ✅  | ✅  | Review by severity, with file:line                                                                                                                                     |
-| `test`          | ✅  | ✅  | ✅  | Writes or improves tests and runs them                                                                                                                                 |
-| `refactor`      | ✅  | ✅  | ✅  | Restructures without changing behavior                                                                                                                                 |
-| `performance`   | ✅  | ✅  | ✅  | Measures, then optimizes, then measures again                                                                                                                          |
-| `optimize`      | ✅  | ✅  | ✅  | Audits perf, structure, patterns, robustness, maintainability and best practices into a ranked OPTIMIZE.md plan (O-#), then applies the chosen items in verified steps |
-| `accessibility` | ✅  |     | ✅  | WCAG 2.1 AA audit and fixes                                                                                                                                            |
-| `security`      |     | ✅  | ✅  | Security audit and fixes                                                                                                                                               |
-
-### `/qa:*` (6)
-
-`/qa:start-testing` · `/qa:test-scenario <SC-#>` · `/qa:report-issue` · `/qa:test-checklist` · `/qa:update-progress` · `/qa:approve-feature`
-
-### `/flow:*` (11): orchestration
-
-| Command                                                                    | What it does                                                                                                          |
-| -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| `/flow:mode <mode>`                                                        | Sets or switches hybrid / sequential / parallel                                                                       |
-| `/flow:team <split\|fullstack>`                                            | Switches the Dev team for a feature: frontend-dev + backend-dev, or one fullstack-dev (works for /quick features too) |
-| `/flow:start <feature> [--scope all\|per-section] [--design\|--no-design]` | Runs the full gated pipeline. Before building, asks **Implement all** or **Implement per section**                    |
-| `/flow:section <SEC-# \| name \| next>`                                    | Builds and tests one section, then stops at a checkpoint                                                              |
-| `/flow:status [all]`                                                       | Gates, design link, progress, blockers, recent activity                                                               |
-| `/flow:distribute`                                                         | Plans tasks into parallel batches                                                                                     |
-| `/flow:coordinate`                                                         | Resolves blockers between agents                                                                                      |
-| `/flow:handoff <architecture\|development\|qa\|release>`                   | Checks readiness and moves to the next phase                                                                          |
-| `/flow:report`                                                             | Writes REPORT.md                                                                                                      |
-| `/flow:stop` · `/flow:resume`                                              | Pauses and saves state · continues from it                                                                            |
-
-### `/quick:*` (3): small team for simple projects
-
-| Command                                                                                                        | What it does                                                                                                                                                         |
-| -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `/quick:start <project> [--team fullstack\|split] [--design none\|frontend] [--frontend-only\|--backend-only]` | architect writes one PLAN.md (1 gate) → fullstack-dev (default) or frontend-dev ║ backend-dev → main session runs build, lint, tests and scenarios → optional deploy |
-| `/quick:status [feature\|all]`                                                                                 | Phase, tasks and deploy URL from PLAN.md (no agent)                                                                                                                  |
-| `/quick:upgrade [feature]`                                                                                     | Moves the project to the big team (`/flow:start`) without losing work                                                                                                |
-
-### `/factory:*` (9): agents, skills and commands
-
-| Command                                                         | What it does                                                                                                                                                       |
-| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `/factory:find <need>`                                          | Search local, then Anthropic, then GitHub. Review only, installs nothing                                                                                           |
-| `/factory:agent` · `/factory:skill` · `/factory:command <need>` | Reuse a safe existing item or build one. Always a proposal first; builds after you approve                                                                         |
-| `/factory:review <path\|plugin\|GitHub URL>`                    | Security review (GitHub code is cloned into quarantine, never run)                                                                                                 |
-| `/factory:improve <item>`                                       | A better, leaner, security-reviewed version (backup first)                                                                                                         |
-| `/factory:organize`                                             | Duplicates, broken links, grouping and token waste: writes a catalog and a fix plan                                                                                |
-| `/factory:needed [--pr] [N-ids]`                                | Builds the `approved` rows of `factory/NEEDED.md` (max 5 per run). Weekly routine: `--pr` opens a pull request; by hand: edits in place and asks before committing |
-| `/factory:observe [--days 14]`                                  | Run stats from the hook's run log + routine findings → the observer proposes rows → queued in NEEDED.md (laptop only: transcripts stay local)                      |
-
-New coding agents always preload `ponytail`; coding skills point to its ladder and coding commands pass `ponytail: lite|ultra|off` (rules in the `agent-factory` skill). Every result gets a row in `factory/REGISTRY.md`.
-
-### `/docs:*` (3): system notes (system-documenter)
-
-| Command                                           | What it does                                                                                               |
-| ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| `/docs:generate [path] [to <folder>] [overwrite]` | Write `Notes/` for the project: overview, configuration, system flow, data flow, database schema, glossary |
-| `/docs:update [path] [to <folder>]`               | Refresh only the Notes sections whose source files changed since the last run                              |
-| `/docs:request <topic> [to <folder>]`             | Document one topic or folder (e.g. how the agents call each other) with diagrams                           |
-
-### `/resume:*` (1)
-
-| Command          | What it does                                                                                                                   |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| `/resume:update` | Update the MyResume site: add GitHub projects, edit experience/skills/about, sync or remove projects, preview (resume-manager) |
-
-### `/court:*` (1): stress-test an idea
-
-| Command                                                      | What it does                                                                                                                                                                                                                |
-| ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `/court:trial <work> [--rounds N] [--no-intake] [--no-tabs]` | trial-agent asks you questions and writes a Case File. The attacker and defender then argue for N rounds in live Windows Terminal tabs, and the judge gives the verdict. The record is saved in `docs/court/<slug>-<date>/` |
-
-### `/deploy:*` (5): Vercel
-
-| Command                                    | What it does                                               |
-| ------------------------------------------ | ---------------------------------------------------------- |
-| `/deploy:vercel [preview\|prod]`           | Deploys a preview by default; production after you confirm |
-| `/deploy:status`                           | Last 5 deployments and domains (no agent)                  |
-| `/deploy:logs [url]`                       | Build or runtime errors, with the likely cause             |
-| `/deploy:env [check\|add …]`               | Missing env vars per target, or adds one                   |
-| `/deploy:rollback [url]` · `promote <url>` | Switches which deployment is live, after you confirm       |
-
-### `/ponytail:*` (3): less code
-
-| Command                     | What it does                                                            |
-| --------------------------- | ----------------------------------------------------------------------- |
-| `/ponytail:review [target]` | Over-engineering-only review: what to delete or replace (code-reviewer) |
-| `/ponytail:audit [folder]`  | Whole-repo audit for bloat and unneeded dependencies (code-reviewer)    |
-| `/ponytail:debt [save]`     | Ledger of the `ponytail:` shortcut comments (no agent)                  |
-
-`/fe:review` and `/be:review` also end with an Over-engineering section. `/fe:refactor` and `/be:refactor` make the Ponytail cuts first.
-
----
-
-## Implementation scope
-
-During breakdown, the architect groups tasks into **sections**: vertical slices such as SEC-1 Auth or SEC-2 Tenants, each with its own frontend tasks, backend tasks and scenarios. Before building, `/flow:start` asks:
-
-| Scope                     | How it runs                                                                                                                                                             | Use when                                                                  |
-| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| **Implement all**         | Build every task, then test the whole feature once                                                                                                                      | Small features                                                            |
-| **Implement per section** | For each section: build → test that section (plus a smoke check of earlier sections) → checkpoint (Next / Fix first / Stop). A full test checklist runs once at the end | Larger features. Uses fewer tokens per round and catches problems earlier |
-
-The scope and current section are saved in Flow State, so `/flow:resume` restarts at the right section.
-
-## Modes
-
-| Mode                 | Development phase                                         | Use when                                       |
-| -------------------- | --------------------------------------------------------- | ---------------------------------------------- |
-| **hybrid** (default) | Gates → frontend and backend in parallel → QA with triage | Most features                                  |
-| **sequential**       | One agent at a time, with a check-in after each           | You want full control                          |
-| **parallel**         | Gates → frontend, backend and QA planning all at once     | Tasks are clearly separated and you want speed |
-
-## Hard stops
-
-0. After `/design:start`: **design approval**. Approving hands off to the architect.
-1. After `/arch:analyze`: spec review
-2. After `/arch:breakdown`: task review
-3. After `/arch:finalize`: final approval
-4. During QA, `/arch:analyze-issue`: Fix / Defer / Accept
-5. After release (optional): **deploy**. Preview first; production only if you pick **Promote to production**
-
-Each stop asks you **Approve / Send back / Reject**.
-
----
-
-## Files per feature (in your project)
-
-```
-docs/features/<feature-slug>/
-  design-brief.md      design goals, screens, brand inputs (figma-designer)
-  DESIGN.md            Figma handoff: frame links, screens, tokens, components, copy (figma-designer)
-  SPEC.md              master spec (architect)
-  analysis.md          architecture reasoning, risks
-  scenarios.md         SC-# user scenarios
-  frontend-task.md     F# tasks
-  backend-task.md      B# tasks + API contract
-  qa-task.md           test plan + results
-  PROJECT_CONTEXT.md   living checklist + Flow State (mode, phase, gates G0–G4, blockers)
-  issues.md            ISSUE-### log with triage and decisions
-  activity.log         timestamp | agent | action
-  REPORT.md            written by /flow:report
-```
-
-<<<<<<< Updated upstream
-
-## Skills (49)
-
-=======
-
-## Skills (48)
-
-> > > > > > > Stashed changes
+## Skills (54)
 
 - **Design / Figma:** figma-design-workflow, design-handoff, figma-integration, design-systems, component-design, design-patterns, accessibility-design
 - **Design quality:** design-taste (marketing UI), impeccable (app UI critique and audit), motion-design (animation)
@@ -371,7 +220,7 @@ docs/features/<feature-slug>/
 - **Frontend:** frontend-component-development, frontend-api-integration, frontend-testing, frontend-design (official Anthropic)
 - **React-only:** react-best-practices, typescript-for-frontend, component-composition-patterns, react-data-fetching, react-testing-patterns
 - **UI libraries:** shadcn-ui, material-ui. frontend-dev loads the one the project uses. For a new React project it chooses from the spec: shadcn/ui for a custom design, Tailwind or Next.js; MUI for data-heavy admin tools or a standard Material look. It records the choice for SPEC.md → Tech Stack, and never adds a second library.
-- **Backend:** api-design, database-design, backend-security, supabase-mcp (loaded when the stack uses Supabase)
+- **Backend:** api-design, database-design, backend-security, mongodb, neon-postgres, supabase-connect, supabase-mcp
 - **QA:** test-scenario-execution, test-checklist, issue-reporting, browser-testing (Node Playwright, based on Anthropic's webapp-testing)
 - **Cross-cutting:** token-efficiency (preloaded in every agent), flow-log (live FLOW.md for every orchestrator run), input-source (reference vs prompt mode for plan-driven agents), project-gitignore (security baseline before the first commit), scripting (Bash, Python and hooks, with a required test plan; loaded by agent-factory, backend-dev and fullstack-dev)
 - **Ponytail (less code, MIT):** ponytail, ponytail-review, ponytail-audit, ponytail-debt
