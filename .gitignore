@@ -20,6 +20,7 @@
 /factory/runs/
 # observer run log + stats (built from local transcripts): never committed
 /factory/observe/
+/factory/probe/
 
 # --- Secrets & credentials ---
 .env

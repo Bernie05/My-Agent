@@ -13,6 +13,7 @@ Rules that read this file:
 **Pattern confirmed:** <the failure mode the row was about>
 **What worked / didn't:** <specifics: eval scores, lost checks, guard violations>
 **Needs from human:** <or "none">
+**Probe:** <probed rows only: A (<approach>) x/y · B (<approach>) x/y → chose <X> because <deciding check>>
 ```
 
 ## Log

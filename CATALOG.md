@@ -48,78 +48,116 @@ A one-line reference for everything in `~/.claude`. For the full design → spec
 ### `/arch:*`: Architect
 | Command | What it does |
 |---|---|
-| `/arch:analyze` | Full spec, scenarios, user journeys, architecture (SPEC.md) — then stops for approval (Gate 1) |
-| `/arch:review` | Read a spec and review its completeness, architecture, edge cases, risks |
-| `/arch:breakdown` | Split a spec into F# / B# / QA tasks with dependencies (Gate 2) |
-| `/arch:finalize` | Merge task fixes into a final spec (Gate 3) |
-| `/arch:analyze-issue` | Triage a QA issue: bug or new requirement, impact, recommendation |
-| `/arch:suggest-refactor` | Refactor opportunities in the codebase (read-only) |
+| `/arch:analyze` | Analyze a feature → SPEC.md, analysis.md, scenarios.md (Gate 1) |
+| `/arch:breakdown` | Split the spec into FE / BE / QA tasks (Gate 2) |
+| `/arch:finalize` | Finalize the specs and create the PROJECT_CONTEXT.md checklist (Gate 3) |
+| `/arch:approve` | Mark the feature approved for development |
+| `/arch:ask` | Ask questions about the spec |
+| `/arch:update-specs` | Change the spec and flag the affected tasks |
+| `/arch:update` | Log a task as done or blocked |
+| `/arch:checklist` | Task progress percentages |
+| `/arch:summary` | Full status report for a feature |
+| `/arch:analyze-issue` | Triage a QA issue: bug, new requirement, or ambiguous (Gate 4) |
+| `/arch:issue-decision` | Record Fix / Defer / Accept for an issue |
 
-### `/fe:*`: Frontend
+### `/fe:*`, `/be:*` and `/fs:*`: Frontend, backend and full-stack developers
+The same commands exist in all three groups. `/be:security` is backend only; `/fe:accessibility` and `/fe:design` are frontend only. `/fs:*` (fullstack-dev) has all of them, including `design`, `accessibility` and `security`, and always uses fullstack-dev whatever the feature's Dev team is.
+
 | Command | What it does |
 |---|---|
-| `/fe:code` | Build an F# task (one component or feature) |
-| `/fe:debug` | Reproduce a UI bug, root cause, push a fix |
-| `/fe:test` | Test a frontend feature end-to-end in a real browser |
-| `/fe:refactor` | Rewrite a section for clarity, consistency or performance |
-| `/fe:a11y` | Audit a UI for accessibility and fix issues |
-| `/fe:optimize` | Measure render/bundle size, fix the slowest part, re-measure |
-
-### `/be:*`: Backend
-| Command | What it does |
-|---|---|
-| `/be:code` | Build a B# task (API, logic, DB migration) |
-| `/be:debug` | Root-cause a runtime or test failure, push a fix |
-| `/be:test` | Test a backend feature (unit, integration, API) |
-| `/be:security` | Security audit of the backend code |
-| `/be:refactor` | Rewrite for clarity, consistency or performance |
-| `/be:optimize` | Measure query/API latency, fix the slowest, re-measure |
-
-### `/fs:*`: Fullstack (frontend + backend in one context)
-| Command | What it does |
-|---|---|
-| `/fs:code` | Build an F# + B# task pair (fullstack feature) |
-| `/fs:debug` | Fullstack debugging (frontend + backend root cause) |
-| `/fs:test` | Test the whole feature end to end (browser + API) |
-| `/fs:optimize` | Measure + fix slowest cost across both tiers |
+| `code` | Implement tasks (F# / B#) or a described change. Add `ponytail: lite\|ultra\|off` to change how minimal the code is (default full) |
+| `debug` | Find and fix the root cause of a bug |
+| `test` | Write or improve tests and run them |
+| `review` | Review code for bugs, security, performance, test gaps, plus an over-engineering section |
+| `refactor` | Improve structure without changing behavior. Makes the Ponytail cuts first |
+| `performance` | Measure and optimize |
+| `optimize` | Audit perf, structure, patterns, robustness, maintainability and best practices into a ranked OPTIMIZE.md plan, then apply the chosen O-# items in verified steps |
+| `ask` | Quick question or explanation |
+| `/fe:accessibility` | Audit and fix WCAG 2.1 AA issues |
+| `/be:security` | Security audit and fixes |
 
 ### `/qa:*`: QA
 | Command | What it does |
 |---|---|
-| `/qa:start-testing` | Plan a full test of a feature, execute it, report issues |
-| `/qa:test-scenario` | Execute one scenario from scenarios.md step by step |
-| `/qa:test-checklist` | Run the 9-category test checklist |
-| `/qa:report-issue` | Write a bug with repro, evidence, severity, blocking status |
-| `/qa:triage-issue` | Classify an issue as Valid Bug / New Requirement / Ambiguous |
-| `/qa:approve-feature` | Final sign-off: all tests pass, no blockers. Triggers release |
+| `/qa:start-testing` | Create the test plan (9 categories) |
+| `/qa:test-checklist` | Run the full 9-category checklist |
+| `/qa:test-scenario` | Run one scenario with evidence |
+| `/qa:report-issue` | Log an issue with repro steps and severity |
+| `/qa:update-progress` | Update testing progress and blockers |
+| `/qa:approve-feature` | Release go / no-go |
 
-### `/flow:*`: Orchestration & control
+### `/flow:*`: Run the whole pipeline
 | Command | What it does |
 |---|---|
-| `/flow:start` | Run the full pipeline: design → spec → tasks → build → QA → deploy |
-| `/flow:status` | Where are we now? Show the feature FLOW.md |
-| `/flow:team` | Switch Dev team between `split` (FE + BE parallel) and `fullstack` |
-| `/flow:mode` | Confirm or change execution mode (verbose, terse, silent, debugging) |
-| `/flow:pause` | Pause the pipeline; come back when ready |
-| `/flow:resume` | Continue from where you paused |
+| `/flow:start` | Run design → spec → build → QA → deploy with gates (choose mode and scope; design and deploy optional) |
+| `/flow:section` | Build and test one section, then stop at a checkpoint |
+| `/flow:status` | Progress, blockers, recent activity |
+| `/flow:distribute` | Plan which agent does which task, and in what order |
+| `/flow:coordinate` | Unblock dependencies between agents |
+| `/flow:handoff` | Move a feature to its next phase, with readiness checks |
+| `/flow:mode` | Switch mode: hybrid / sequential / parallel |
+| `/flow:team` | Switch a feature's Dev team: split (frontend-dev + backend-dev) or fullstack (one fullstack-dev) |
+| `/flow:stop` / `/flow:resume` | Pause and resume a feature workflow |
+| `/flow:report` | Full project report |
 
-### `/quick:*`: Fast path (plan → build → check → deploy)
+### `/quick:*`: Small team for simple projects
 | Command | What it does |
 |---|---|
-| `/quick:start` | Build a small feature in one pass: plan (PLAN.md) → build → QA → optional deploy |
-| `/quick:resume` | Pick up where you left off in a quick:start run |
+| `/quick:start` | Architect + fullstack-dev (or frontend-dev + backend-dev with `--team split`): one plan, one gate, build, final check, optional deploy |
+| `/quick:status` | Status and deploy URL of a quick-team project from its PLAN.md |
+| `/quick:upgrade` | Move a quick-team project to the big team (`/flow:start`) without losing work |
 
-### `/court:*`: Live code review trial
+### `/court:*`: Stress-test an idea
 | Command | What it does |
 |---|---|
-| `/court:trial` | Start a live courtroom trial: Clerk (you) → Attacker (finds holes) → Defender (rebuts) → Judge (verdict) |
+| `/court:trial` | Intake questions → attacker vs defender rounds in live terminal tabs → judge's verdict. Flags: `--rounds N`, `--no-intake`, `--no-tabs` |
 
-### `/factory:*`: Agent, skill and command factory
+### `/deploy:*`: Vercel
 | Command | What it does |
 |---|---|
-| `/factory:needed` | Build approved rows from factory/NEEDED.md (a routine task for Sunday) |
-| `/factory:observe` | Analyze agent run logs and propose improvements to NEEDED.md |
-| `/factory:learn` | Learn from the past week of agent runs: efficiency, patterns, fixes |
+| `/deploy:vercel` | Deploy: preview by default; `prod` asks for confirmation first |
+| `/deploy:status` | Last 5 deployments and production domains |
+| `/deploy:logs` | Error lines from a failed build or runtime errors, with the likely cause |
+| `/deploy:env` | Which env vars are missing per environment, or add one |
+| `/deploy:rollback` | Roll production back, or `promote <url>` a preview (asks first) |
+
+### `/docs:*`: System notes
+| Command | What it does |
+|---|---|
+| `/docs:generate` | Write `Notes/` for the project: overview, configuration, system flow, data flow, database schema, glossary |
+| `/docs:update` | Refresh only the Notes sections whose source files changed since the last run |
+| `/docs:request` | Document one topic or folder (e.g. how the agents call each other) with diagrams, saved `to <folder>` of your choice |
+
+### `/ponytail:*`: Less code
+| Command | What it does |
+|---|---|
+| `/ponytail:review` | Over-engineering review of a diff or files: what to delete, or replace with stdlib/native |
+| `/ponytail:audit` | Whole-repo audit: ranked list of code and dependencies to cut |
+| `/ponytail:debt` | List every `ponytail:` shortcut comment with its limit and when to upgrade (`save` writes a file) |
+
+### `/factory:*`: Agents, skills and commands
+| Command | What it does |
+|---|---|
+| `/factory:find` | Search for an existing agent, skill, command or plugin (local, Anthropic, GitHub). Installs nothing |
+| `/factory:agent` | Get a new agent: reuse a safe existing one or build it, security-reviewed |
+| `/factory:skill` | Get a new skill: reuse a safe existing one or build it, security-reviewed |
+| `/factory:command` | Get a new command: reuse a safe existing one or build it, security-reviewed |
+| `/factory:improve` | Turn an existing agent, skill or command into a leaner, security-reviewed version |
+| `/factory:review` | Security review of an agent, skill, command or plugin (path, plugin name or GitHub URL) |
+| `/factory:organize` | Find duplicates, broken links, bad grouping and token waste; write a catalog and fix plan |
+| `/factory:needed` | Build the rows you approved in `factory/NEEDED.md` (agent feedback). Runs weekly as a routine that opens a PR |
+| `/factory:observe` | Analyze recent agent runs and routine findings, queue evidence-backed improvements in NEEDED.md |
+
+### `/resume:*`: Portfolio site
+| Command | What it does |
+|---|---|
+| `/resume:update` | Update MyResume: add GitHub projects, edit experience/skills/about, sync or remove projects, preview |
+
+### Other
+| Command | What it does |
+|---|---|
+| `/summarize` | Summarize text, a file, or the conversation in a few bullets (big files go through `digest`) |
+| `/digest` | Digest a big file or command output into the few lines you need, without loading it into the conversation |
 
 ---
 
@@ -168,27 +206,27 @@ A one-line reference for everything in `~/.claude`. For the full design → spec
 | **Backend** | `api-design` | REST endpoints, status codes, validation, errors |
 | | `database-design` | Schemas, migrations, indexes, queries |
 | | `backend-security` | Auth, injection, rate limits, secrets |
-| | `mongodb` | MongoDB on Atlas, Docker or self-hosted: connection, document modeling, indexes, transactions, migrations |
-| | `neon-postgres` | Neon serverless Postgres: pooled/direct connections, ORM setup, branches, scale-to-zero |
-| | `supabase-connect` | Connect an app to Supabase end-to-end: choose auth mode, create project, env setup, migrations |
 | | `supabase-mcp` | Working with Supabase through its MCP |
+| | `supabase-connect` | Connect an app to Supabase end-to-end: choose auth mode, create project, env setup, migrations |
+| | `neon-postgres` | Neon serverless Postgres: pooled/direct connections, ORM setup, branches, scale-to-zero |
+| | `mongodb` | MongoDB on Atlas, Docker or self-hosted: connection, document modeling, indexes, transactions, migrations |
 | **QA** | `test-checklist` | The 9-category checklist |
 | | `test-scenario-execution` | Running a scenario step by step |
 | | `issue-reporting` | Writing an issue into issues.md |
 | | `browser-testing` | Playwright testing in a real browser |
 | **Court** | `court-terminal` | Runs the trial in Windows Terminal tabs (Clerk, Attacker, Defender, Judge) |
-| **Deploy** | `vercel-deploy` | Deploy and operate on Vercel |
-| **Factory** | `agent-factory` | Build agents, skills, commands with tests and security review |
-| **Docs** | `system-docs` | Notes/ structure, TL;DR writing, Mermaid rules |
-| **Personal** | `resume-portfolio` | Keep MyResume up to date with your projects and experience |
+| **Deploy** | `vercel-deploy` | Vercel preflight, deploy, verify, logs, env, domains, rollback |
+| **Docs** | `system-docs` | Notes/ layout, TL;DR-first writing style, Mermaid diagram rules |
+| **Factory** | `agent-factory` | House rules for building agents, skills and commands, plus the quality rubric, security checklist and registry format |
+| **Personal** | `resume-portfolio` | Turning GitHub repos into honest portfolio entries and verifying the MyResume build |
+
+### Also available (plugins and built-in, not in this folder)
+- **Figma plugin** (`figma:*`): use, generate-design, generate-library, generate-diagram, code-connect, create-new-file
+- **Adobe** (`adobe-for-creativity:*`): PDF tools, photo edits, resizing, design from templates
+- **Documents** (`anthropic-skills:*`): docx, xlsx, pptx, pdf, docs, deep-research, skill-creator
+- **MCP dev** (`mcp-server-dev:*`): build an MCP server, MCP app, or MCPB bundle
+- **Built-in:** `/code-review`, `/simplify`, `/security-review`, `/init`, `/loop`, `/schedule`, `/run`
 
 ---
-
-## Also available (plugins and built-in)
-
-- **Figma MCP** — design system integration, code connect, components, variables, assets, motion
-- **GitHub MCP** — PRs, issues, workflows, code search
-- **Supabase MCP** — schema, migrations, SQL, RLS, branches, edge functions, types
-- **Vercel MCP** — deployments, builds, env, domains, analytics
-- **Claude Code** — `/quick:start`, `/flow:start`, `/design:start`, `/arch:analyze`, `/court:trial`, `/factory:needed`
-- **Cowork mode** — plugins, connectors (Google Drive, Gmail, Slack, Jira, Asana, etc.)
+*Ponytail skills are adapted from [dietrichgebert/ponytail](https://github.com/dietrichgebert/ponytail) (MIT, license in `skills/ponytail/LICENSE`).*
+*When you add an agent, command or skill, add one line here.*

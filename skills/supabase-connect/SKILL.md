@@ -59,7 +59,7 @@ Never print, log or commit a secret key. Ask the user before anything that costs
 
 ## 5. Seed
 - `supabase/seed.sql` holds a no-op placeholder. User-owned rows need a real auth user, so they don't go there.
-- `scripts/seed.mjs` (`templates.md` → Seed) is idempotent: it upserts fixed ids with the service key and `SEED_USER_ID` from `.env.local`, and refuses non-local URLs unless `--remote` is passed. Run it with `node --env-file=.env.local scripts/seed.mjs` (Node 20.6+).
+- The project's `<project>/scripts/seed.mjs` (`templates.md` → Seed) is idempotent: it upserts fixed ids with the service key and `SEED_USER_ID` from `.env.local`, and refuses non-local URLs unless `--remote` is passed. Run it with `node --env-file=.env.local scripts/seed.mjs` (Node 20.6+).
 - To get `SEED_USER_ID`, open the app once (the anonymous sign-in creates the user), then copy the id from Studio → Authentication.
 - Never seed a hosted or production project without asking.
 
