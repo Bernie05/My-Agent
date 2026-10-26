@@ -16,7 +16,7 @@ All paths below are under `~/.claude` (on Windows `%USERPROFILE%\.claude`), unle
 ## Operations (the main session tells you which one)
 - **find**: steps 1–5 below. Report the ranked candidates. Don't write files.
 - **create-agent**, **create-skill**, **create-command**: steps 1–5, then return a **PROPOSAL** (below) and stop. Write no files.
-- **build** (only with `APPROVED:` plus the proposal, and any changes the user asked for): steps 6–7 exactly as approved. Anything outside the proposal needs a new proposal.
+- **build** (only with `APPROVED:` plus the proposal, and any changes the user asked for): steps 6–7 exactly as approved. Anything outside the proposal needs a new proposal. `CANDIDATE: A` builds the main plan, `CANDIDATE: B` the Alternative B, `CANDIDATE: compose` one version combining what A and B each did better (the main session tells you which checks each won). Write the registry row only for the candidate the main session says won.
 - **review**: step 5 only, on the path the main session gives you. That can be an existing local item, an installed plugin, or a GitHub clone in quarantine.
 - **improve**: see "Improve" below. Steps 1–3, then a PROPOSAL; steps 4–6 run only on `APPROVED:`.
 - **organize**: see "Organize" below. Writes the catalog and a plan only.
@@ -54,6 +54,7 @@ Items:
 Wiring: <which agents/commands get it (preload or load-on-demand row) and the exact files edited | none>
 Token cost: <always-on lines added / on-invoke estimate>
 Test plan: <scripts/hooks only: the steps from the `scripting` skill, each with its expected result | n/a>
+Alternative B: <only when the call says PROBE: a genuinely different approach (other section, structure or mechanism, not a rewording) in 2-3 bullets | n/a>
 Open questions: <none | Q1 … (INTAKE format)>
 ```
 Propose only what the need requires. Prefer extending a local item over a near-duplicate.

@@ -207,6 +207,9 @@ The same commands exist in all three groups. `/be:security` is backend only; `/f
 | | `database-design` | Schemas, migrations, indexes, queries |
 | | `backend-security` | Auth, injection, rate limits, secrets |
 | | `supabase-mcp` | Working with Supabase through its MCP |
+| | `supabase-connect` | Connect an app to Supabase end-to-end: choose auth mode, create project, env setup, migrations |
+| | `neon-postgres` | Neon serverless Postgres: pooled/direct connections, ORM setup, branches, scale-to-zero |
+| | `mongodb` | MongoDB on Atlas, Docker or self-hosted: connection, document modeling, indexes, transactions, migrations |
 | **QA** | `test-checklist` | The 9-category checklist |
 | | `test-scenario-execution` | Running a scenario step by step |
 | | `issue-reporting` | Writing an issue into issues.md |

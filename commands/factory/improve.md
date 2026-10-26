@@ -1,9 +1,11 @@
 ---
 description: "Factory: improve an existing agent, skill or command (local or Anthropic) into a better, leaner, security-reviewed version"
-argument-hint: "<local path | skill/agent/plugin name> [what to improve]"
+argument-hint: "<local path | skill/agent/plugin name> [what to improve] [--probe]"
 ---
 
 Use the **agent-factory** agent, operation **improve**, for: $ARGUMENTS
+
+`--probe` (or the target is an agent, or a whole-skill restructure): add `PROBE` so the proposal includes an Alternative B. On approval, build and test both as `factory/evals/README.md` → Probing describes, show the user the scores side by side, and keep the winner (ask with AskUserQuestion if the scores tie and the approaches differ in a way the user should choose).
 
 Handle its replies here, in the main session:
 1. **`INTAKE: QUESTIONS`**: ask them all in **one** AskUserQuestion call, then call the agent again with the answers.

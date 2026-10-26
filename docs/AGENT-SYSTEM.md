@@ -1,6 +1,6 @@
 # Multi-Agent System: Reference
 
-**15 agents · 88 commands · 48 skills · 3 modes · 6 hard stops**
+**17 agents · 92 commands · 54 skills · 3 modes · 6 hard stops**
 
 For a one-line list of everything, see [CATALOG.md](../CATALOG.md).
 
@@ -67,7 +67,8 @@ Agents never change themselves: they report, the observer finds patterns, **you*
                         │
                         ▼
           /factory:needed (Sunday routine, max 5 rows)
-            agent-factory builds → file guard (only the row's files)
+            agent-factory builds (uncertain rows: 2 candidates A/B, tests pick the winner)
+            → file guard (only the row's files)
             → skill tests (seen + held-out) → script test plan → check.py
             → promote the fixed problem into a new eval case
             → LEARNINGS.md (pass or fail) · RESULTS.tsv (verdict: pending)
@@ -80,7 +81,7 @@ Agents never change themselves: they report, the observer finds patterns, **you*
           (3 failed builds → parked · 5 no-effect results → asks you)
 ```
 
-Proposal and approval stay separate: the thing being changed never decides the change. `factory/NEEDED.md` → **Autonomy** can be raised from `proposal` to `bounded` (small L1 skill fixes seen 3+ times build without your approval, still as a PR you merge). The gate, learnings, results and eval-growth ideas are adapted from auto-harness and autoharness (MIT).
+Proposal and approval stay separate: the thing being changed never decides the change. `factory/NEEDED.md` → **Autonomy** can be raised from `proposal` to `bounded` (small L1 skill fixes seen 3+ times build without your approval, still as a PR you merge). The gate, learnings, results and eval-growth ideas are adapted from auto-harness and autoharness (MIT); two-candidate probing from Harness² (Apache-2.0).
 
 ## Quick start
 
@@ -355,7 +356,7 @@ docs/features/<feature-slug>/
 
 <<<<<<< Updated upstream
 
-## Skills (49)
+## Skills (54)
 
 =======
 
@@ -371,7 +372,7 @@ docs/features/<feature-slug>/
 - **Frontend:** frontend-component-development, frontend-api-integration, frontend-testing, frontend-design (official Anthropic)
 - **React-only:** react-best-practices, typescript-for-frontend, component-composition-patterns, react-data-fetching, react-testing-patterns
 - **UI libraries:** shadcn-ui, material-ui. frontend-dev loads the one the project uses. For a new React project it chooses from the spec: shadcn/ui for a custom design, Tailwind or Next.js; MUI for data-heavy admin tools or a standard Material look. It records the choice for SPEC.md → Tech Stack, and never adds a second library.
-- **Backend:** api-design, database-design, backend-security, supabase-mcp (loaded when the stack uses Supabase)
+- **Backend:** api-design, database-design, backend-security, supabase-mcp (loaded when the stack uses Supabase), supabase-connect (wire an app to Supabase end to end), neon-postgres, mongodb (loaded when the stack uses them)
 - **QA:** test-scenario-execution, test-checklist, issue-reporting, browser-testing (Node Playwright, based on Anthropic's webapp-testing)
 - **Cross-cutting:** token-efficiency (preloaded in every agent), flow-log (live FLOW.md for every orchestrator run), input-source (reference vs prompt mode for plan-driven agents), project-gitignore (security baseline before the first commit), scripting (Bash, Python and hooks, with a required test plan; loaded by agent-factory, backend-dev and fullstack-dev)
 - **Ponytail (less code, MIT):** ponytail, ponytail-review, ponytail-audit, ponytail-debt
