@@ -1,14 +1,20 @@
 ---
 name: vercel-deploy
-description: Deploy and operate a project on Vercel with low token use - preflight checks, linking, preview/production deploys via the Vercel CLI (npx) or a Git-connected project through the Vercel MCP, build-failure diagnosis, env vars, domains, rollback and promote. Use when the vercel-deployer agent or a /deploy command deploys or inspects a project on Vercel.
+description: Deploy and operate a project on Vercel with low token use - creating a new project (link, Git, Neon/Blob storage, secrets), multi-service repos (one project with client + server services, rewrites, bindings), preflight checks, preview/production deploys via the Vercel CLI (npx) or the Vercel MCP, build-failure diagnosis, env vars, domains, rollback and promote. Use when the vercel-deployer agent or a /deploy command sets up, deploys or inspects a project on Vercel.
 ---
 
 # Vercel deploy
 
+## Load on demand
+| When | Read |
+|---|---|
+| No Vercel project exists yet and the prompt says to create one | `new-project.md` (this folder) |
+| The repo has 2+ deployable apps (e.g. `client/` + `server/`) for one project, or `vercel.json` has `services` | `services.md` (this folder) |
+
 ## Tools
 - **CLI:** `npx --yes vercel@latest <cmd>`. No global install is needed. Run it in **Bash** (Git Bash) so `2>&1 | tail` works. Below, `vc` is short for `npx --yes vercel@latest`.
 - **Vercel MCP** (`mcp__claude_ai_Vercel__*`): for reads and for Git-based deploys. Load only the tools you need with `ToolSearch("select:<name>,<name>")`. Never keyword-search the whole list; it has 200+ tools.
-  - Look up the team/project: `list_teams`, `list_projects`, `get_project`
+  - Look up the team/project: `list_teams`, `list_projects`, `get_project`; settings: `update_project`
   - Check deployments: `list_deployments`, `get_deployment`
   - Read logs: `list_deployment_events` (build), `get_runtime_errors`, `get_runtime_logs`
   - Change state: `request_promote`, `request_rollback`
@@ -32,7 +38,7 @@ Run these in one batch:
 - **Not linked:**
   - Find the project first with the MCP `list_projects`, matched by name or repo.
   - Then run `vc link --yes --project <name> [--scope <team>] 2>&1 | tail -n 5`.
-  - Create a new project only when the prompt says so.
+  - Create a new project only when the prompt says so (`confirmed: create`), following `new-project.md`.
 
 ## 3. Pick a deploy method
 | Situation | Method |
@@ -87,7 +93,7 @@ Uncommitted changes plus a **production** deploy: warn about this in the report,
 - Production deploys, rollbacks, promotes, production env changes, domain changes and project deletion are **outward-facing**. Do them only when the prompt carries `confirmed: <action>`.
 - Never `git push`, commit, or change git config, unless the prompt says so.
 - Never print, log or commit secrets. Mask anything that looks like a key if it shows up in output.
-- Don't create Vercel projects, teams, or paid add-ons unless told to.
+- Don't create Vercel projects, teams, integrations or stores unless the prompt carries `confirmed: create`. Never accept a paid plan or add-on.
 
 ## Token rules
 - Always pipe CLI output through `tail` or `grep`. Never dump full build logs.
